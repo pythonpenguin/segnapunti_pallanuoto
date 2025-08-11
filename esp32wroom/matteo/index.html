@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+    body {
+      background-color: #0080ff;
+    }
+    .container {
+      background-color: #1b1b1b;
+      width: min(90%, 500px);
+      position: absolute;
+      transform: translate(-50%, -50%);
+      top: 50%;
+      left: 50%;
+      padding: 4em 2em;
+      border-radius: 0.5em;
+    }
+    button {
+      border: none;
+      outline: none;
+      cursor: pointer;
+    }
+    .title-container {
+      display: flex;
+      gap: 1em;
+      justify-content: center;
+	  margin-bottom: 2em;
+    }
+    #title {
+      text-align: center;
+      color: #ffffff;
+      font-size: 3em;
+      font-weight: 600;
+    }
+    .section-container {
+      display: flex;
+      gap: 1em;
+      justify-content: center;
+    }
+    .btn {
+      padding: 1em 2em;
+      border-radius: 0.5em;
+      background-color: #3e3f43;
+      color: #a9a7a7;
+    }
+    .btn-focus {
+      background-color: #0080ff;
+      color: #ffffff;
+    }
+    .time-btn-container {
+      display: flex;
+      flex-direction: column;
+      margin-top: 2em;
+    }
+    #time,
+    #timeack {
+      text-align: center;
+      color: #ffffff;
+      font-size: 5em;
+      font-weight: 600;
+    }
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      gap: 2em;
+    }
+    #btn-start,
+    #btn-pause {
+      padding: 1em 2em;
+      border-radius: 0.5em;
+      cursor: pointer;
+      background-color: #ffffff;
+    }
+    #btn-reset {
+      background-color: transparent;
+      border: none;
+      outline: none;
+      color: #ffffff;
+      font-size: 2em;
+    }
+    .hide {
+      display: none;
+    }
+    .show {
+      display: block;
+    }
+  </style>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PN Crema 30s</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="title-container">
+        <span id="title">PN Crema 30s</span>
+      </div>
+      <div class="section-container">
+        <button id="basicbreak" class="btn btn-timer btn-focus">Basic 30s</button>
+        <button id="shortbreak" class="btn btn-shortbreak">Short 20s</button>
+        <button id="longbreak" class="btn btn-longbreak">Long 40s</button>
+      </div>
+      <div class="time-btn-container">
+        <span id="time"></span>
+        <span id="timeack"></span>
+        <div class="btn-container">
+          <button id="btn-start" class="show">Start</button>
+          <button id="btn-pause" class="hide">Pause</button>
+          <button id="btn-reset" class="hide">
+            <i class="fa-solid fa-rotate-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    // local management ***********************************************************************************
+    let basicBreakButton = document.getElementById("basicbreak");
+    let shortBreakButton = document.getElementById("shortbreak");
+    let longBreakButton = document.getElementById("longbreak");
+    let buttons = document.querySelectorAll(".btn");
+    let startBtn = document.getElementById("btn-start");
+    let reset = document.getElementById("btn-reset");
+    let pause = document.getElementById("btn-pause");
+    let time = document.getElementById("time");
+    let timeAck = document.getElementById("timeack");
+    let set;
+    let active = "basicbreak";
+    let paused = true;
+    let secCount = 30;
+    let secAck = 30;
+    let buzzAck = 0;
+    const appendZero = (value) => {
+      value = value < 10 ? `0${value}` : value;
+      return value;
+    };
+    time.textContent = `${appendZero(secCount)}`;
+    timeAck.textContent = `--`;
+    reset.addEventListener(
+      "click",
+      (resetTime = () => {
+        pauseTimer();
+        switch (active) {
+          case "long":
+            secCount = 40;
+            break;
+          case "short":
+            secCount = 20;
+            break;
+          default:
+            secCount = 30;
+            break;
+        }
+        time.textContent = `${appendZero(secCount)}`;
+      })
+    );
+    const removeFocus = () => {
+      buttons.forEach((btn) => {
+        btn.classList.remove("btn-focus");
+      });
+    };
+    basicBreakButton.addEventListener("click", () => {
+      active = "basic";
+      removeFocus();
+      basicBreakButton.classList.add("btn-focus");
+      pauseTimer();
+      secCount = 30;
+      time.textContent = `${appendZero(secCount)}`;
+      setOutput(secCount);
+    });
+    shortBreakButton.addEventListener("click", () => {
+      active = "short";
+      removeFocus();
+      shortBreakButton.classList.add("btn-focus");
+      pauseTimer();
+      secCount = 20;
+      time.textContent = `${appendZero(secCount)}`;
+      setOutput(secCount);
+    });
+    longBreakButton.addEventListener("click", () => {
+      active = "long";
+      removeFocus();
+      longBreakButton.classList.add("btn-focus");
+      pauseTimer();
+      secCount = 40;
+      time.textContent = `${appendZero(secCount)}`;
+      setOutput(secCount);
+    });
+    pause.addEventListener(
+      "click",
+      (pauseTimer = () => {
+        paused = true;
+        clearInterval(set);
+        startBtn.classList.remove("hide");
+        pause.classList.remove("show");
+        reset.classList.remove("show");
+        setStartStop();
+      })
+    );
+    startBtn.addEventListener("click", () => {
+      reset.classList.add("show");
+      pause.classList.add("show");
+      startBtn.classList.add("hide");
+      startBtn.classList.remove("show");
+      if (paused) {
+        paused = false;
+        time.textContent = `${appendZero(secCount)}`;
+        set = setInterval(() => {
+          secCount--;
+          time.textContent = `${appendZero(secCount)}`;
+          if (secCount == 0) {
+            clearInterval(set);
+          }
+        }, 1000);
+      }
+      setStartStop();
+    });
+
+    // remote management ***********************************************************************************
+    async function update() {
+        const response = await fetch('/api');
+        if (response.ok) {
+            const data = await response.json();
+            secAck = (data.tableCounterXX);
+            buzzAck = (data.tableSirenX);
+            timeAck.textContent = `${appendZero(secAck)}`;
+        }
+        setTimeout(update, 1000); // refresh every second
+    }
+    update();
+
+    async function setOutput(newTimeVal) {
+        const response = await fetch('/api?newTime='+(newTimeVal*1000));
+        if (response.ok) {
+            const data = await response.json();
+            secAck = (data.tableCounterXX);
+            buzzAck = (data.tableSirenX);
+            timeAck.textContent = `${appendZero(secAck)}`;
+        }
+    }
+
+    async function setStartStop() {
+        runStatus = 1
+        if (paused) { runStatus = 0; }
+        const response = await fetch('/api?exeTime='+runStatus);
+        if (response.ok) {
+            const data = await response.json();
+            secAck = (data.tableCounterXX);
+            buzzAck = (data.tableSirenX);
+            timeAck.textContent = `${appendZero(secAck)}`;
+        }
+    }
+
+  </script>
+</html>
