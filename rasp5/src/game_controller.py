@@ -6,10 +6,15 @@
 
 """
 import asyncio
+
+import json
 from paho.mqtt import client as mqtt
 
 
 class GameController(object):
+
+    DISPLAY_SIRENA = "display/sirena"
+
     def __init__(self,game_configurator, mqtt_host="localhost",keepalive=300):
         """
 
@@ -39,12 +44,11 @@ class GameController(object):
         self._game_time_last_update = asyncio.get_event_loop().time()
 
     def publish(self, topic, msg,retain=False):
-        print(f"[MQTT] {topic} => {msg}")
         self.client.publish(topic, msg,retain=retain)
 
     def publish_all(self):
-        self.publish("game/time", self.format_game_time(self.tempo_periodo))
         self.publish("display/tempo", str(self.tempo_gioco))
+        self.publish("game/time", self.format_game_time(self.tempo_periodo))
         self.publish("game/score", f"{self.score_home:02d} {self.score_away:02d}")
         self.publish("game/period", str(self.period))
         if self.timeout_running:
@@ -68,7 +72,7 @@ class GameController(object):
         self._publish_shot_time()
 
     def stop(self):
-        print("⏸ STOP")
+        print("STOP")
         if self.timeout_running:
             return
         self.game_running = False
@@ -82,7 +86,7 @@ class GameController(object):
 
     def set_tempo_aggiuntivo(self):
         if self.tempo_gioco < self.game_config.tempo_aggiuntivo():
-            self.tempo_gioco = self.game_config.get_tempo_aggiuntivo()
+            self.tempo_gioco = self.game_config.tempo_aggiuntivo()
             self._publish_shot_time()
 
     def next_period(self):
@@ -91,7 +95,6 @@ class GameController(object):
             self.tempo_periodo = self.game_config.tempo_periodo()
             self.publish("game/period", str(self.period))
             self.publish("game/time", self.format_game_time(self.tempo_periodo))
-            self.sirena()
 
     def goal_home(self):
         self.score_home += 1
@@ -104,18 +107,24 @@ class GameController(object):
         self.publish("game/score", f"{self.score_home:02d} {self.score_away:02d}")
 
     def sirena(self):
-        print("SIRENA")
-        self.publish("game/sirena", "ON")
+        self.publish(self.DISPLAY_SIRENA, "1")
         asyncio.create_task(self._sirena_off())
 
     async def _sirena_off(self):
         await asyncio.sleep(2)
-        self.publish("game/sirena", "OFF")
+        self.publish(self.DISPLAY_SIRENA, "0")
 
     def start_timeout(self):
         self.stop()
         self.timeout_running = True
         self.publish("game/timeout", self.to_mmss(self.tempo_timeout))
+
+    def update_display(self):
+        self.stop()
+        self.publish("display/tempo", str(44))
+        jts = json.dumps({"url":"http://10.42.0.1/main.py","position":"main.py"})
+        self.publish("display/update", jts)
+
 
     async def game_time_loop(self):
         while True:
@@ -133,7 +142,6 @@ class GameController(object):
                         if self.tempo_periodo <= 0:
                             self.tempo_periodo = 0
                             self.game_running = False
-                            print("⏱ Fine tempo")
                             self.sirena()
                         self.publish("game/time", self.format_game_time(self.tempo_periodo))
             await asyncio.sleep(0.01)
@@ -148,7 +156,6 @@ class GameController(object):
                     self.game_running = False
                     self.sirena()
                     self.reset_tempo_gioco()
-                    self._publish_shot_time()
             if self.timeout_running and self.tempo_timeout > 0:
                 self.tempo_timeout -= 1
                 self.publish("game/timeout", self.to_mmss(self.tempo_timeout))

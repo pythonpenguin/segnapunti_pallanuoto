@@ -9,8 +9,8 @@
 import asyncio
 import sys
 
-from rasp5.game_controller import GameController
-from rasp5.game_configure import GameConfigure
+from rasp5.src.game_controller import GameController
+from rasp5.src.game_configure import GameConfigure
 
 async def main():
     configurer = GameConfigure()
@@ -31,6 +31,7 @@ async def main():
                 case "a": controller.goal_away()
                 case "z": controller.sirena()
                 case "t": controller.start_timeout()
+                case "u": controller.update_display()
                 case "q":
                     print("Uscita")
                     break

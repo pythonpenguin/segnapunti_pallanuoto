@@ -11,7 +11,7 @@ import json
 import os
 import tempfile
 
-from rasp5.game_configure import GameConfigure  # il tuo modulo
+from rasp5.src.game_configure import GameConfigure  # il tuo modulo
 
 class TestGameConfigurePerCampo(unittest.TestCase):
     def setUp(self):
