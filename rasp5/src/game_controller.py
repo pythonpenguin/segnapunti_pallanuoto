@@ -72,7 +72,7 @@ class GameController(object):
         self.shot_running = False
 
     def reset_possesso_palla(self):
-        self.tempo_possesso_palla = self.game_config.tempo_possesso_palla()
+        self.tempo_possesso_palla = self.game_config.tempo_gioco()
 
     def set_tempo_aggiuntivo(self):
         if self.tempo_possesso_palla < self.game_config.tempo_aggiuntivo():
@@ -114,7 +114,6 @@ class GameController(object):
                 delta = now - self._game_time_last_update
                 self.tempo_periodo -= delta
                 self.tempo_possesso_palla -= delta
-                self._game_time_last_update = now
                 if self.tempo_periodo <= 0:
                     self.tempo_periodo = 0
                     self.game_running = False
@@ -123,6 +122,7 @@ class GameController(object):
                     self.game_running = False
                     self.reset_possesso_palla()
                     self.sirena_on()
+            self._game_time_last_update = now
             self._check_stato_sirena()
             await asyncio.sleep(_tempo_sleep)
 
