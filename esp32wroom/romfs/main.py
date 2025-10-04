@@ -23,6 +23,8 @@ class Display(object):
         self.sirena = machine.Pin(16, machine.Pin.OUT)
         self.units = machine.Pin(33, machine.Pin.OUT)
         self.tens = machine.Pin(25, machine.Pin.OUT)
+        self._last_units = -1
+        self._last_tens = -1
         self._init_to_99()
 
     def set_value(self, val):
@@ -31,13 +33,21 @@ class Display(object):
 
     def set_sirena(self, val):
         self.sirena.value(val)
+        self._last_units = -1
+        self._last_tens = -1
 
     def _write_tens(self, val):
+        if self._last_tens == val:
+            return
+        self._last_tens = val
         self.units.value(1)
         self.tens.value(0)
         self._write(val)
 
     def _write_units(self, val):
+        if self._last_units == val:
+            return
+        self._last_units = val
         self.tens.value(1)
         self.units.value(0)
         self._write(val)
