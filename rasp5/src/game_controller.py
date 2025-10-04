@@ -8,14 +8,23 @@
 import asyncio
 
 import json
+import math
 from paho.mqtt import client as mqtt
 
 
 class GameController(object):
+    CANALE_DISPLAY = "display"
+    SIRENA = "{}/sirena".format(CANALE_DISPLAY)
+    TEMPO_GIOCO = "{}/tempo".format(CANALE_DISPLAY)
 
-    DISPLAY_SIRENA = "display/sirena"
+    CANALE_TABELLONE = "tabellone"
+    GOL_CASA = "{}/gol_casa".format(CANALE_TABELLONE)
+    PERIODO = "{}/periodo".format(CANALE_TABELLONE)
+    TEMPO_PERIODO = "{}/tempo".format(CANALE_TABELLONE)
+    REFRESH_TABELLONE = "{}/stato".format(CANALE_TABELLONE)
+    REFRESH_GLOBALE = "stato"
 
-    def __init__(self,game_configurator, mqtt_host="localhost",keepalive=300):
+    def __init__(self, game_configurator, mqtt_host="localhost", keepalive=300):
         """
 
         :param game_configure.GameConfigure game_configurator:
@@ -23,146 +32,114 @@ class GameController(object):
         :param keepalive:
         """
         self.game_config = game_configurator
+        self.mqtt_host = mqtt_host
+        self.mqtt_keepalive = keepalive
         self.client = mqtt.Client()
-        self.client.connect(mqtt_host,keepalive=keepalive)
 
-        self.tempo_periodo = self.game_config.tempo_periodo()
-        self.tempo_gioco = self.game_config.tempo_gioco()
+        self.tempo_periodo = self.game_config.tempo_periodo()  # in secondi
+        self.tempo_possesso_palla = self.game_config.tempo_gioco()
         self.tempo_timeout = self.game_config.tempo_timeout()
         self.tempo_pausa_periodi_1_3 = self.game_config.tempo_fine_periodo()
         self.tempo_pause_meta_partita = self.game_config.tempo_meta_partita()
 
-        self.period = 1
+        self.periodo = 1
         self.max_periodi = self.game_config.periodi_gioco()
         self.score_home = 0
         self.score_away = 0
+        self.sirena = 0
 
         self.game_running = False
-        self.shot_running = False
         self.timeout_running = False
-
+        self.tempo_refresh = 0.25
         self._game_time_last_update = asyncio.get_event_loop().time()
+        self._task_sirena = None
 
-    def publish(self, topic, msg,retain=False):
-        self.client.publish(topic, msg,retain=retain)
+    def connect_to_broker(self):
+        if self.client.is_connected():
+            return
+        self.client.connect(self.mqtt_host, self.mqtt_keepalive)
 
-    def publish_all(self):
-        self.publish("display/tempo", str(self.tempo_gioco))
-        self.publish("game/time", self.format_game_time(self.tempo_periodo))
-        self.publish("game/score", f"{self.score_home:02d} {self.score_away:02d}")
-        self.publish("game/period", str(self.period))
-        if self.timeout_running:
-            self.publish("game/timeout", self.to_mmss(self.tempo_timeout))
-        else:
-            self.publish("game/timeout", "OFF")
-
-    def format_game_time(self, t):
-        if t > 1.0:
-            return f"{int(t) // 60:02d}:{int(t) % 60:02d}"
-        else:
-            return f"{t:04.1f}"
-
-    def to_mmss(self, sec):
-        return f"{sec // 60:02d}:{sec % 60:02d}"
+    def publish(self, topic, msg, retain=False):
+        self.client.publish(topic, msg, retain=retain)
 
     def start(self):
         self.game_running = True
-        self.shot_running = True
-        self._game_time_last_update = asyncio.get_event_loop().time()
-        self._publish_shot_time()
 
     def stop(self):
-        print("STOP")
         if self.timeout_running:
             return
         self.game_running = False
         self.shot_running = False
 
-    def _publish_shot_time(self):
-        self.publish("display/tempo", str(self.tempo_gioco))
-
-    def reset_tempo_gioco(self):
-        self.tempo_gioco = self.game_config.tempo_gioco()
+    def reset_possesso_palla(self):
+        self.tempo_possesso_palla = self.game_config.tempo_possesso_palla()
 
     def set_tempo_aggiuntivo(self):
-        if self.tempo_gioco < self.game_config.tempo_aggiuntivo():
-            self.tempo_gioco = self.game_config.tempo_aggiuntivo()
-            self._publish_shot_time()
+        if self.tempo_possesso_palla < self.game_config.tempo_aggiuntivo():
+            self.tempo_possesso_palla = self.game_config.tempo_aggiuntivo()
 
     def next_period(self):
-        if self.period <= self.max_periodi:
-            self.period += 1
+        if self.periodo < self.max_periodi:
+            self.periodo += 1
             self.tempo_periodo = self.game_config.tempo_periodo()
-            self.publish("game/period", str(self.period))
-            self.publish("game/time", self.format_game_time(self.tempo_periodo))
 
     def goal_home(self):
         self.score_home += 1
-        print(f"Gol CASA → {self.score_home}")
-        self.publish("game/score", f"{self.score_home:02d} {self.score_away:02d}")
 
     def goal_away(self):
         self.score_away += 1
-        print(f"Gol TRASFERTA → {self.score_away}")
-        self.publish("game/score", f"{self.score_home:02d} {self.score_away:02d}")
 
-    def sirena(self):
-        self.publish(self.DISPLAY_SIRENA, "1")
-        asyncio.create_task(self._sirena_off())
-
-    async def _sirena_off(self):
-        await asyncio.sleep(2)
-        self.publish(self.DISPLAY_SIRENA, "0")
+    def sirena_on(self):
+        self.sirena = 1
 
     def start_timeout(self):
         self.stop()
         self.timeout_running = True
-        self.publish("game/timeout", self.to_mmss(self.tempo_timeout))
 
-    def update_display(self):
-        self.stop()
-        self.publish("display/tempo", str(44))
-        jts = json.dumps({"url":"http://10.42.0.1/main.py","position":"main.py"})
-        self.publish("display/update", jts)
+    async def refresh(self):
+        while True:
+            stato = {"tabellone": {"gol_casa": self.score_home,
+                                   "gol_trasferta": self.score_away,
+                                   "periodo": self.periodo,
+                                   "tempo_gioco": self._formato_tempo_periodo()},
+                     "display": {"tempo": self._formato_tempo_possesso_palla(), "sirena": self.sirena}}
+            self.publish(self.REFRESH_GLOBALE, json.dumps(stato))
+            await asyncio.sleep(self.tempo_refresh)
 
-
-    async def game_time_loop(self):
+    async def tempo_gioco_loop(self):
+        _tempo_sleep = 0.02
         while True:
             now = asyncio.get_event_loop().time()
             if self.game_running and self.tempo_periodo > 0:
-                if self.tempo_periodo > 1.0:
-                    if now - self._game_time_last_update >= 1.0:
-                        self.tempo_periodo -= 1.0
-                        self._game_time_last_update = now
-                        self.publish("game/time", self.format_game_time(self.tempo_periodo))
-                else:
-                    if now - self._game_time_last_update >= 0.1:
-                        self.tempo_periodo -= 0.1
-                        self._game_time_last_update = now
-                        if self.tempo_periodo <= 0:
-                            self.tempo_periodo = 0
-                            self.game_running = False
-                            self.sirena()
-                        self.publish("game/time", self.format_game_time(self.tempo_periodo))
-            await asyncio.sleep(0.01)
-
-    async def second_based_loop(self):
-        while True:
-            if self.shot_running and self.tempo_gioco >= 0:
-                self.tempo_gioco -= 1
-                self._publish_shot_time()
-                if self.tempo_gioco <= 0:
-                    self.shot_running = False
+                delta = now - self._game_time_last_update
+                self.tempo_periodo -= delta
+                self.tempo_possesso_palla -= delta
+                self._game_time_last_update = now
+                if self.tempo_periodo <= 0:
+                    self.tempo_periodo = 0
                     self.game_running = False
-                    self.sirena()
-                    self.reset_tempo_gioco()
-            if self.timeout_running and self.tempo_timeout > 0:
-                self.tempo_timeout -= 1
-                self.publish("game/timeout", self.to_mmss(self.tempo_timeout))
-                if self.tempo_timeout == 0:
-                    print("⏱ Fine timeout")
-                    self.timeout_running = False
-                    self.publish("game/timeout", "OFF")
-                    self.sirena()
+                    self.sirena_on()
+            self._check_stato_sirena()
+            await asyncio.sleep(_tempo_sleep)
 
-            await asyncio.sleep(1)
+    def _check_stato_sirena(self):
+        if self.sirena and self._task_sirena is None:
+            self._task_sirena = asyncio.create_task(self._sirena_off())
+
+    async def _sirena_off(self):
+        await asyncio.sleep(2)
+        self.sirena = 0
+        self._task_sirena=None
+
+    def _formato_tempo_periodo(self):
+        minuti, secondi = divmod(int(math.ceil(self.tempo_periodo)), 60)
+        return {"min": f"{minuti:02}", "sec": f"{secondi:02}"}
+
+    def _formato_tempo_possesso_palla(self):
+        return int(math.ceil(self.tempo_possesso_palla))
+
+    def update_display(self):  # da testare
+        self.stop()
+        self.publish("display/tempo", str(44))
+        jts = json.dumps({"url": "http://10.42.0.1/main.py", "position": "main.py"})
+        self.publish("display/update", jts)

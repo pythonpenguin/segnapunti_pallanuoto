@@ -25,6 +25,5 @@ Azioni:
 
 Per pubblicare uso il canale tabellone
 
-* `tabellone/gol_casa segue in valore da inseire ,da  0 a N
-* `tabellone/gol_ospiti segue in valore da inseire ,da  0 a N
-* `tabellone/gol_casa segue in valore da inseire ,da  0 a N
+* `tabellone/stato seguito da un oggetto json che contiene tutto queelo che verrà visualizzato sul tabellone
+* 

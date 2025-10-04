@@ -24,7 +24,7 @@ async def main():
             match cmd:
                 case "s": controller.start()
                 case "x": controller.stop()
-                case "3": controller.reset_tempo_gioco()
+                case "3": controller.reset_possesso_palla()
                 case "2": controller.set_tempo_aggiuntivo()
                 case "p": controller.next_period()
                 case "h": controller.goal_home()
@@ -39,8 +39,8 @@ async def main():
 
     await asyncio.gather(
         input_loop(),
-        controller.game_time_loop(),
-        controller.second_based_loop()
+        controller.tempo_gioco_loop(),
+        controller.possesso_palla_loop()
     )
 
 if __name__ == "__main__":

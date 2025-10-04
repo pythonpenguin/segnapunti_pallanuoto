@@ -19,15 +19,15 @@ from umqtt.robust import MQTTClient
 class Display(object):
 
     def __init__(self):
-        self.pins = [machine.Pin(_x, machine.Pin.OUT) for _x in (26,14,27,12)]
+        self.pins = [machine.Pin(_x, machine.Pin.OUT) for _x in (26, 14, 27, 12)]
         self.sirena = machine.Pin(16, machine.Pin.OUT)
         self.units = machine.Pin(33, machine.Pin.OUT)
         self.tens = machine.Pin(25, machine.Pin.OUT)
         self._init_to_99()
 
     def set_value(self, val):
-        self._write_tens(val//10)
-        self._write_units(val%10)
+        self._write_tens(val // 10)
+        self._write_units(val % 10)
 
     def set_sirena(self, val):
         self.sirena.value(val)
@@ -42,7 +42,7 @@ class Display(object):
         self.units.value(0)
         self._write(val)
 
-    def _write(self,val):
+    def _write(self, val):
         for _x in range(4):
             self.pins[_x].value((val >> _x) & 1)
 
@@ -52,13 +52,20 @@ class Display(object):
         self._write_tens(9)
         self._write_units(9)
 
-class PnCremaMqtt(MQTTClient):
 
-    def __init__(self, client_id, server, port=0, user=None, password=None, keepalive=0, ssl=None, ssl_params={},connection_params={}):
+class PnCremaMqtt(MQTTClient):
+    MSG = "display"
+    MSG_TEMPO = "tempo"
+    MSG_SIRENA = "sirena"
+
+    def __init__(self, client_id, server, port=0, user=None, password=None, keepalive=0, ssl=None, ssl_params={},
+                 connection_params={}):
         super().__init__(client_id, server, port, user, password, keepalive, ssl, ssl_params)
         self._connection_param = connection_params
-        self.topics = {b"display/tempo": self._mostra_numero,
-                       b"display/sirena": self._stato_sirena,
+        # self.topics = {b"display/tempo": self._mostra_numero,
+        #                b"display/sirena": self._stato_sirena,
+        #                b"display/update": self._update_sistema}
+        self.topics = {b"stato": self._json_msg,
                        b"display/update": self._update_sistema}
         self.nm = network.WLAN(network.STA_IF)
         self.set_callback(self._dispatch)
@@ -147,7 +154,15 @@ class PnCremaMqtt(MQTTClient):
     def _stato_sirena(self, msg):
         self._display.set_sirena(int(msg))
 
-    def _update_sistema(self,msg):
+    def _json_msg(self, msg):
+        try:
+            body = json.loads(msg)[self.MSG]
+            self._mostra_numero(body[self.MSG_TEMPO])
+            self._stato_sirena(body[self.MSG_SIRENA])
+        except KeyError:
+            pass
+
+    def _update_sistema(self, msg):
         try:
             info = json.loads(msg)
         except Exception:
@@ -158,12 +173,9 @@ class PnCremaMqtt(MQTTClient):
 
     def _connection_ready(self):
         self._display.set_value(88)
-        # self._stato_sirena(1)
-        # time.sleep(1)
-        # self._stato_sirena(0)
 
     def _on_connection(self):
-        for _x in range(99,10,-22):
+        for _x in range(99, 10, -22):
             self._display.set_value(_x)
             time.sleep(0.5)
 
@@ -189,9 +201,11 @@ class PnCremaMqtt(MQTTClient):
     def _reboot(self):
         machine.reset()
 
+
 def make_client_id_unique(cfg):
-    cfg["client_id"] = cfg.get("client_id","") + ubinascii.hexlify(machine.unique_id()).decode()
+    cfg["client_id"] = cfg.get("client_id", "") + ubinascii.hexlify(machine.unique_id()).decode()
     return cfg
+
 
 with open("/configurazioni/network.json", "r") as fp:
     cfg_net = json.load(fp)
@@ -199,7 +213,7 @@ with open("/configurazioni/mqtt.json", "r") as fp:
     cfg_mqtt = json.load(fp)
 
 try:
-    cfg_mqtt=make_client_id_unique(cfg_mqtt)
+    cfg_mqtt = make_client_id_unique(cfg_mqtt)
     client = PnCremaMqtt(cfg_mqtt.get("client_id", "esp32_display"),
                          cfg_mqtt.get("server", "10.42.0.1"), connection_params=cfg_net)
     client.connect()
