@@ -62,15 +62,13 @@ class PnCremaMqtt(MQTTClient):
                  connection_params={}):
         super().__init__(client_id, server, port, user, password, keepalive, ssl, ssl_params)
         self._connection_param = connection_params
-        # self.topics = {b"display/tempo": self._mostra_numero,
-        #                b"display/sirena": self._stato_sirena,
-        #                b"display/update": self._update_sistema}
         self.topics = {b"stato": self._json_msg,
                        b"display/update": self._update_sistema}
         self.nm = network.WLAN(network.STA_IF)
         self.set_callback(self._dispatch)
         self._display = Display()
         self._is_connected_to_server = False
+        self._anti_flickering = {self.MSG_TEMPO: -1, self.MSG_SIRENA: -1}
 
     def connect(self, clean_session=False, timeout=None):
         self.crea_connessione_rete()
@@ -149,10 +147,16 @@ class PnCremaMqtt(MQTTClient):
             pass
 
     def _mostra_numero(self, msg):
+        if msg == self._anti_flickering[self.MSG_TEMPO]:
+            return
         self._display.set_value(int(msg))
+        self._anti_flickering[self.MSG_TEMPO] = msg
 
     def _stato_sirena(self, msg):
+        if msg == self._anti_flickering[self.MSG_SIRENA]:
+            return
         self._display.set_sirena(int(msg))
+        self._anti_flickering[self.MSG_SIRENA] = msg
 
     def _json_msg(self, msg):
         try:
