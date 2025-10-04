@@ -15,7 +15,6 @@ from rasp5.src.game_configure import GameConfigure
 async def main():
     configurer = GameConfigure()
     controller = GameController(configurer)
-    controller.publish_all()
 
     async def input_loop():
         while True:
@@ -29,7 +28,7 @@ async def main():
                 case "p": controller.next_period()
                 case "h": controller.goal_home()
                 case "a": controller.goal_away()
-                case "z": controller.sirena()
+                case "z": controller.sirena_on()
                 case "t": controller.start_timeout()
                 case "u": controller.update_display()
                 case "q":
@@ -37,11 +36,7 @@ async def main():
                     break
                 case _: print("❓ Comando sconosciuto, premi `?`")
 
-    await asyncio.gather(
-        input_loop(),
-        controller.tempo_gioco_loop(),
-        controller.possesso_palla_loop()
-    )
+    await asyncio.gather(input_loop(),controller.tempo_gioco_loop(),)
 
 if __name__ == "__main__":
     try:

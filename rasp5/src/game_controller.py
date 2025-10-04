@@ -119,6 +119,10 @@ class GameController(object):
                     self.tempo_periodo = 0
                     self.game_running = False
                     self.sirena_on()
+                if self.tempo_possesso_palla <= 0:
+                    self.game_running = False
+                    self.reset_possesso_palla()
+                    self.sirena_on()
             self._check_stato_sirena()
             await asyncio.sleep(_tempo_sleep)
 
