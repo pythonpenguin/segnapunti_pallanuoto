@@ -68,7 +68,7 @@ class TestGameController(unittest.TestCase):
         controller = GameController(self.configuratore)
         self.assertEqual(0,controller.score_home)
         self.assertEqual(0, controller.score_away)
-        controller.goal_home()
+        controller.goal_casa_su()
         self.assertEqual(1, controller.score_home)
         self.assertEqual(0, controller.score_away)
 
@@ -76,7 +76,7 @@ class TestGameController(unittest.TestCase):
         controller = GameController(self.configuratore)
         self.assertEqual(0,controller.score_home)
         self.assertEqual(0, controller.score_away)
-        controller.goal_away()
+        controller.goal_tasferta_piu()
         self.assertEqual(0, controller.score_home)
         self.assertEqual(1, controller.score_away)
 
@@ -85,9 +85,9 @@ class TestGameController(unittest.TestCase):
         self.assertEqual(0,controller.score_home)
         self.assertEqual(0, controller.score_away)
         for _x in range(0,5):
-            controller.goal_home()
+            controller.goal_casa_su()
         for _x in range(0,3):
-            controller.goal_away()
+            controller.goal_tasferta_piu()
         self.assertEqual(5, controller.score_home)
         self.assertEqual(3, controller.score_away)
 

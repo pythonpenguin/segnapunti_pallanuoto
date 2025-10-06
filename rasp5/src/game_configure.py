@@ -21,7 +21,8 @@ class GameConfigure(object):
     PROMOZIONE = "promozione"
 
     DEFAULT = {"game_time": 480, "shot_time": 28, "periodi": 4, "shot_time_r": 18,
-               "shot_time_enable": True,"timeout_time": 60,"time_end_period":60,"half_time":120}
+               "shot_time_enable": True,"timeout_time": 60,"time_end_period":60,"half_time":120,
+               "max_timeouts":2}
 
     def __init__(self, ppathname=SERIE):
         self.file_cfg = ppathname
@@ -57,6 +58,9 @@ class GameConfigure(object):
 
     def tempo_meta_partita(self):
         return self._get("half_time")
+
+    def numero_timeouts(self):
+        return self._get("max_timeouts")
 
     def _get(self,field):
         return self.cfg.get(field,self.DEFAULT[field])

@@ -36,18 +36,43 @@ class GameController(object):
         self.mqtt_keepalive = keepalive
         self.client = mqtt.Client()
 
+        self.tempo_periodo = 0  # in secondi
+        self.tempo_possesso_palla = 0
+        self.tempo_timeout = 0
+        self.tempo_pausa_periodi_1_3 = 0
+        self.tempo_pause_meta_partita = 0
+
+        self.periodo = 0
+        self.max_periodi = 0
+        self.score_home = 0
+        self.score_away = 0
+        self.sirena = 0
+        self.timeout_home = 0
+        self.timeout_away = 0
+        self.max_timeout=0
+
+        self.game_running = False
+        self.timeout_running = False
+        self.tempo_refresh = 0.25
+        self._game_time_last_update = asyncio.get_event_loop().time()
+        self._task_sirena = None
+
+        self.reset_match()
+
+    def reset_match(self):
         self.tempo_periodo = self.game_config.tempo_periodo()  # in secondi
         self.tempo_possesso_palla = self.game_config.tempo_gioco()
         self.tempo_timeout = self.game_config.tempo_timeout()
         self.tempo_pausa_periodi_1_3 = self.game_config.tempo_fine_periodo()
         self.tempo_pause_meta_partita = self.game_config.tempo_meta_partita()
-
-        self.periodo = 1
         self.max_periodi = self.game_config.periodi_gioco()
+        self.max_timeout = self.game_config.numero_timeouts()
+        self.timeout_home=0
+        self.timeout_away=0
+        self.periodo = 1
         self.score_home = 0
         self.score_away = 0
         self.sirena = 0
-
         self.game_running = False
         self.timeout_running = False
         self.tempo_refresh = 0.25
@@ -57,7 +82,7 @@ class GameController(object):
     def connect_to_broker(self):
         if self.client.is_connected():
             return
-        self.client.connect(self.mqtt_host, self.mqtt_keepalive)
+        self.client.connect(self.mqtt_host, keepalive=self.mqtt_keepalive)
 
     def publish(self, topic, msg, retain=False):
         self.client.publish(topic, msg, retain=retain)
@@ -74,23 +99,65 @@ class GameController(object):
     def reset_possesso_palla(self):
         self.tempo_possesso_palla = self.game_config.tempo_gioco()
 
+    def reset_tempo_periodo(self):
+        self.tempo_periodo = self.game_config.tempo_periodo()
+
+    def force_tempo_periodo(self,value):
+        """
+
+        :param int value:
+        """
+        self.tempo_periodo = min(value, self.game_config.tempo_periodo())
+
     def set_tempo_aggiuntivo(self):
         if self.tempo_possesso_palla < self.game_config.tempo_aggiuntivo():
             self.tempo_possesso_palla = self.game_config.tempo_aggiuntivo()
 
     def next_period(self):
-        if self.periodo < self.max_periodi:
-            self.periodo += 1
-            self.tempo_periodo = self.game_config.tempo_periodo()
+        self.periodo += 1
+        self.periodo = min(self.periodo, self.max_periodi)
 
-    def goal_home(self):
+    def prev_period(self):
+        self.periodo -= 1
+        self.periodo = max(self.periodo,1)
+
+    def goal_casa_piu(self):
         self.score_home += 1
+        self.score_home = min(self.score_home, 99)
 
-    def goal_away(self):
+    def goal_casa_meno(self):
+        self.score_home -= 1
+        self.score_home = max(0, self.score_home)
+
+    def goal_tasferta_piu(self):
         self.score_away += 1
+        self.score_away = min(self.score_away, 99)
+
+    def goal_tasferta_meno(self):
+        self.score_away -= 1
+        self.score_away = max(0, self.score_away)
+
+    def timeout_casa_piu(self):
+        self.timeout_home += 1
+        self.timeout_home = min(self.timeout_home,self.max_timeout)
+
+    def timeout_casa_meno(self):
+        self.timeout_home -= 1
+        self.timeout_home = max(self.timeout_home,0)
+
+    def timeout_trasferta_piu(self):
+        self.timeout_away += 1
+        self.timeout_away = min(self.timeout_away,self.max_timeout)
+
+    def timeout_trasferta_meno(self):
+        self.timeout_away -= 1
+        self.timeout_away = max(self.timeout_away,0)
 
     def sirena_on(self):
         self.sirena = 1
+
+    def sirena_off(self):
+        self.sirena = 0
 
     def start_timeout(self):
         self.stop()
@@ -101,7 +168,10 @@ class GameController(object):
             stato = {"tabellone": {"gol_casa": self.score_home,
                                    "gol_trasferta": self.score_away,
                                    "periodo": self.periodo,
-                                   "tempo_gioco": self._formato_tempo_periodo()},
+                                   "tempo_gioco": self._formato_tempo_periodo(),
+                                   "timeout_casa":self.timeout_home,
+                                   "timeout_trasferta": self.timeout_away,
+                                   },
                      "display": {"tempo": self._formato_tempo_possesso_palla(), "sirena": self.sirena}}
             self.publish(self.REFRESH_GLOBALE, json.dumps(stato))
             await asyncio.sleep(self.tempo_refresh)
@@ -133,7 +203,7 @@ class GameController(object):
     async def _sirena_off(self):
         await asyncio.sleep(2)
         self.sirena = 0
-        self._task_sirena=None
+        self._task_sirena = None
 
     def _formato_tempo_periodo(self):
         minuti, secondi = divmod(int(math.ceil(self.tempo_periodo)), 60)

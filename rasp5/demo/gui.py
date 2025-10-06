@@ -6,67 +6,129 @@
 
 """
 
-import tkinter as tk
+import sys, json
 import paho.mqtt.client as mqtt
+from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QGridLayout
+from PyQt6.QtGui import QFont, QColor, QPalette
+from PyQt6.QtCore import Qt
+from PyQt6 import uic
 
+import game_controller
 
-class ScoreboardApp:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Tabellone Pallanuoto")
-        self.root.configure(bg="black")
-        self.root.attributes("-fullscreen", True)
+BROKER = "localhost"
+TOPIC_STATO = "stato"
 
-        # Labels
-        self.time_var = tk.StringVar(value="08:00")
-        self.periodo_var = tk.StringVar(value="1")
-        self.home_var = tk.StringVar(value="0")
-        self.guest_var = tk.StringVar(value="0")
-        self.shot_var = tk.StringVar(value="30")
+class Tabellone(QWidget):
+    def __init__(self, controller: game_controller.GameController):
+        super().__init__()
+        self.controller = controller
+        uic.loadUi("tabellone.ui", self)
 
-        tk.Label(root, textvariable=self.home_var,
-                 font=("Arial", 100, "bold"), fg="red", bg="black").pack(side="left", expand=True)
-        tk.Label(root, textvariable=self.time_var,
-                 font=("Arial", 80), fg="white", bg="black").pack(side="left", expand=True)
-        tk.Label(root, textvariable=self.guest_var,
-                 font=("Arial", 100, "bold"), fg="green", bg="black").pack(side="left", expand=True)
+        # MQTT client per ricevere aggiornamenti
+        self.client = mqtt.Client()
+        self.client.on_message = self.on_message
+        self.client.connect(BROKER)
+        self.client.subscribe(TOPIC_STATO)
+        self.client.loop_start()
 
-        tk.Label(root, text="Periodo", font=("Arial", 30), fg="yellow", bg="black").pack()
-        tk.Label(root, textvariable=self.periodo_var,
-                 font=("Arial", 40), fg="yellow", bg="black").pack()
+        self.buttonHomePlus.clicked.connect(self.goal_segnato_home)
+        self.buttonHomeMinus.clicked.connect(self.goal_tolto_home)
 
-        tk.Label(root, text="Shot", font=("Arial", 30), fg="orange", bg="black").pack()
-        tk.Label(root, textvariable=self.shot_var,
-                 font=("Arial", 40), fg="orange", bg="black").pack()
+        self.buttonGuestPlus.clicked.connect(self.goal_segnato_trasferta)
+        self.buttonGuestMinus.clicked.connect(self.goal_tolto_trasferta)
 
-    def update_value(self, key, value):
-        if key == "display/tempo":
-            self.time_var.set(value)
-        elif key == "gioco/periodo":
-            self.periodo_var.set(value)
-        elif key == "gioco/casa":
-            self.home_var.set(value)
-        elif key == "gioco/ospiti":
-            self.guest_var.set(value)
-        elif key == "gioco/shot":
-            self.shot_var.set(value)
+        self.buttonPeriodPlus.clicked.connect(self.incrementa_periodo)
+        self.buttonPeriodMinus.clicked.connect(self.decrementa_period)
 
-# MQTT callback
-def on_message(client, userdata, msg):
-    topic = msg.topic
-    value = msg.payload.decode()
-    app.update_value(topic, value)
+        self.buttonTimeoutHomePlus.clicked.connect(self.timeout_home_plus)
+        self.buttonTimeoutHomeMinus.clicked.connect(self.timeout_home_minus)
 
-BROKER = "0.0.0.0"
+        self.buttonTimeoutGuestPlus.clicked.connect(self.timeout_guest_plus)
+        self.buttonTimeoutGuestMinus.clicked.connect(self.timeout_guest_minus)
 
-root = tk.Tk()
-app = ScoreboardApp(root)
+        self.buttonStart.clicked.connect(self.start_game)
+        self.buttonStop.clicked.connect(self.stop_game)
+        self.buttonReset.clicked.connect(self.reset_game)
+        self.buttonSirena.clicked.connect(self.sirena)
 
-client = mqtt.Client()
-client.on_message = on_message
-client.connect(BROKER)
-client.subscribe("display/#")
-client.subscribe("gioco/#")
-client.loop_start()
+    def goal_segnato_home(self):
+        self.controller.goal_casa_piu()
 
-root.mainloop()
+    def goal_tolto_home(self):
+        self.controller.goal_casa_meno()
+
+    def goal_segnato_trasferta(self):
+        self.controller.goal_tasferta_piu()
+
+    def goal_tolto_trasferta(self):
+        self.controller.goal_tasferta_meno()
+
+    def incrementa_periodo(self):
+        self.controller.next_period()
+
+    def decrementa_period(self):
+        self.controller.prev_period()
+
+    def timeout_home_plus(self):
+        self.controller.timeout_casa_piu()
+
+    def timeout_home_minus(self):
+        self.controller.timeout_casa_meno()
+
+    def timeout_guest_plus(self):
+        self.controller.timeout_trasferta_piu()
+
+    def timeout_guest_minus(self):
+        self.controller.timeout_trasferta_meno()
+
+    def start_game(self):
+        self.controller.start()
+
+    def stop_game(self):
+        self.controller.stop()
+
+    def reset_game(self):
+        self.controller.reset_match()
+
+    def sirena(self):
+        self.controller.sirena_on()
+
+    def on_message(self, client, userdata, msg):
+        try:
+            stato = json.loads(msg.payload.decode())
+            tab = stato["tabellone"]
+            self._refresh_tempo_gioco(tab["tempo_gioco"])
+            self._refresh_gol_casa(tab["gol_casa"])
+            self._refresh_gol_trasferta(tab["gol_trasferta"])
+            self._refresh_periodo(tab["periodo"])
+            self._refresh_timeout_casa(tab["timeout_casa"])
+            self._refresh_timeout_trasferta(tab["timeout_trasferta"])
+
+        except Exception as e:
+            print("Errore parsing stato:", e)
+
+    def _refresh_tempo_gioco(self,msg):
+        """
+
+        :param dict msg:
+        :return:
+        """
+        if isinstance(msg, dict):
+            self.labelMainTime.setText(f"{msg['min']}:{msg['sec']}")
+        else:
+            self.labelMainTime.setText("--:--")
+
+    def _refresh_gol_casa(self,value):
+        self.labelHomeScore.setText(str(value))
+
+    def _refresh_gol_trasferta(self,value):
+        self.labelGuestScore.setText(str(value))
+
+    def _refresh_periodo(self,value):
+        self.labelPeriod.setText(str(value))
+
+    def _refresh_timeout_casa(self,value):
+        self.labelTimeOutHome.setText(str(value))
+
+    def _refresh_timeout_trasferta(self,value):
+        self.labelTimeOutGuest.setText(str(value))
