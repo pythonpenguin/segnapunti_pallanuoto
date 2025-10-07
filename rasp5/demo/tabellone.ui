@@ -147,12 +147,19 @@ QPushButton:pressed {
    </item>
    <item row="3" column="1">
     <layout class="QVBoxLayout" name="layoutTimeoutCenter">
+        <item>
+      <layout class="QHBoxLayout" name="layoutTimeoutButtons">
+       <item><widget class="QPushButton" name="buttonTimeoutCalled"><property name="text"><string>CHIAMATO</string></property></widget></item>
+       <item><widget class="QPushButton" name="buttonTimeout13"><property name="text"><string>PAUSA TEMPI 1-3</string></property></widget></item>
+       <item><widget class="QPushButton" name="buttonTimeoutHalf"><property name="text"><string>METÀ PARTITA</string></property></widget></item>
+      </layout>
+     </item>
      <item><widget class="QLabel" name="labelTimeoutClock"><property name="text"><string>02:00</string></property><property name="alignment"><set>Qt::AlignCenter</set></property><property name="font"><font><family>DS-Digital</family><pointsize>96</pointsize><bold>true</bold></font></property><property name="styleSheet"><string notr="true">color:lightblue;</string></property></widget></item>
      <item>
       <layout class="QHBoxLayout" name="layoutTimeoutButtons">
        <item><widget class="QPushButton" name="buttonTimeoutStart"><property name="text"><string>START</string></property></widget></item>
        <item><widget class="QPushButton" name="buttonTimeoutStop"><property name="text"><string>STOP</string></property></widget></item>
-       <item><widget class="QPushButton" name="buttonTimeoutHalf"><property name="text"><string>HALF TIME</string></property></widget></item>
+       <item><widget class="QPushButton" name="buttonTimeoutReset"><property name="text"><string>RESET</string></property></widget></item>
       </layout>
      </item>
     </layout>

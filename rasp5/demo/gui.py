@@ -27,7 +27,7 @@ class Tabellone(QWidget):
         # MQTT client per ricevere aggiornamenti
         self.client = mqtt.Client()
         self.client.on_message = self.on_message
-        self.client.connect(BROKER)
+        self.client.connect(BROKER,keepalive=5)
         self.client.subscribe(TOPIC_STATO)
         self.client.loop_start()
 
@@ -50,6 +50,12 @@ class Tabellone(QWidget):
         self.buttonStop.clicked.connect(self.stop_game)
         self.buttonReset.clicked.connect(self.reset_game)
         self.buttonSirena.clicked.connect(self.sirena)
+        self.buttonTimeoutCalled.clicked.connect(self.timeout_chiamato)
+        self.buttonTimeout13.clicked.connect(self.timeout_13)
+        self.buttonTimeoutHalf.clicked.connect(self.timeout_halftime)
+        self.buttonTimeoutStart.clicked.connect(self.timeout_start)
+        self.buttonTimeoutStop.clicked.connect(self.timeout_stop)
+        self.buttonTimeoutReset.clicked.connect(self.timeout_reset)
 
     def goal_segnato_home(self):
         self.controller.goal_casa_piu()
@@ -93,6 +99,24 @@ class Tabellone(QWidget):
     def sirena(self):
         self.controller.sirena_on()
 
+    def timeout_chiamato(self):
+        self.controller.timeout_set_chiamato_squadre()
+
+    def timeout_13(self):
+        self.controller.timeout_set_pausa_13()
+
+    def timeout_halftime(self):
+        self.controller.timeout_set_half_time()
+
+    def timeout_start(self):
+        self.controller.timeout_start()
+
+    def timeout_stop(self):
+        self.controller.timeout_stop()
+
+    def timeout_reset(self):
+        self.controller.timeout_reset()
+
     def on_message(self, client, userdata, msg):
         try:
             stato = json.loads(msg.payload.decode())
@@ -103,20 +127,23 @@ class Tabellone(QWidget):
             self._refresh_periodo(tab["periodo"])
             self._refresh_timeout_casa(tab["timeout_casa"])
             self._refresh_timeout_trasferta(tab["timeout_trasferta"])
-
+            self._refresh_timeout_clock(tab["timeout_clock"])
         except Exception as e:
             print("Errore parsing stato:", e)
 
     def _refresh_tempo_gioco(self,msg):
+        self._refresh_clock(msg,self.labelMainTime)
+
+    def _refresh_clock(self,msg,label):
         """
 
         :param dict msg:
         :return:
         """
         if isinstance(msg, dict):
-            self.labelMainTime.setText(f"{msg['min']}:{msg['sec']}")
+            label.setText(f"{msg['min']}:{msg['sec']}")
         else:
-            self.labelMainTime.setText("--:--")
+            label.setText("--:--")
 
     def _refresh_gol_casa(self,value):
         self.labelHomeScore.setText(str(value))
@@ -132,3 +159,6 @@ class Tabellone(QWidget):
 
     def _refresh_timeout_trasferta(self,value):
         self.labelTimeOutGuest.setText(str(value))
+
+    def _refresh_timeout_clock(self,msg):
+        self._refresh_clock(msg, self.labelTimeoutClock)
