@@ -131,8 +131,12 @@ class Tabellone(QWidget,tabellone.Ui_TabelloneLED):
             self._refresh_timeout_casa(tab["timeout_casa"])
             self._refresh_timeout_trasferta(tab["timeout_trasferta"])
             self._refresh_timeout_clock(tab["timeout_clock"])
+            self._refresh_possesso_palla(stato["display"]["tempo"])
         except Exception as e:
             print("Errore parsing stato:", e)
+
+    def _refresh_possesso_palla(self,msg):
+        self.labelPossesso.setText(str(msg))
 
     def _refresh_tempo_gioco(self,msg):
         self._refresh_clock(msg,self.labelMainTime)
