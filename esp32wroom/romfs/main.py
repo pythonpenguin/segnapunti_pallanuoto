@@ -42,6 +42,12 @@ class Display(object):
         if self._last_sirena != val:
             self._last_sirena = val
         self.sirena.value(val)
+        if not val:
+            self._refresh()
+
+    def _refresh(self):
+        self._write_units(self._last_units)
+        self._write_tens(self._last_tens)
 
     def _af_write_tens(self, val):
         if self._last_tens == val:
