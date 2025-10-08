@@ -1,189 +1,517 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TabelloneLED</class>
- <widget class="QWidget" name="TabelloneLED">
-  <property name="geometry">
-   <rect>
-    <x>0</x><y>0</y><width>1200</width><height>900</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string>Tabellone LED</string>
-  </property>
-  <property name="styleSheet">
-   <string notr="true">
-QWidget {
-    background-color: black;
-    color: white;
-}
-QPushButton {
-    background-color: #333333;
-    color: white;
-    border: none;
-    padding: 8px;
-}
-QPushButton:pressed {
-    background-color: #111111;
-}
-#buttonStart { background-color: #008000; }
-#buttonStart:pressed { background-color: #004d00; }
-#buttonStop { background-color: #B00000; }
-#buttonStop:pressed { background-color: #800000; }
-#buttonReset { background-color: #333333; }
-#buttonReset:pressed { background-color: #111111; }
-#buttonSirena { background-color: #FF8000; }
-#buttonSirena:pressed { background-color: #CC6600; }
-   </string>
-  </property>
+    <class>TabelloneLED</class>
+    <widget class="QWidget" name="TabelloneLED">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>1200</width>
+                <height>900</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>Tabellone LED</string>
+        </property>
+        <property name="styleSheet">
+            <string notr="true">
+                QWidget {
+                background-color: black;
+                color: white;
+                }
+                QPushButton {
+                background-color: #333333;
+                color: white;
+                border: none;
+                padding: 8px;
+                }
+                QPushButton:pressed {
+                background-color: #111111;
+                }
+                #buttonStart { background-color: #008000; }
+                #buttonStart:pressed { background-color: #004d00; }
+                #buttonStop { background-color: #B00000; }
+                #buttonStop:pressed { background-color: #800000; }
+                #buttonReset { background-color: #333333; }
+                #buttonReset:pressed { background-color: #111111; }
+                #buttonSirena { background-color: #FF8000; }
+                #buttonSirena:pressed { background-color: #CC6600; }
+            </string>
+        </property>
 
-  <layout class="QGridLayout" name="gridLayout" columnstretch="2,1,2">
+        <layout class="QGridLayout" name="gridLayout" columnstretch="2,1,2">
 
-   <!-- RIGA 0 -->
-   <item row="0" column="0">
-    <widget class="QLabel" name="labelHomeText">
-     <property name="text"><string>CASA</string></property>
-     <property name="alignment"><set>Qt::AlignCenter</set></property>
-     <property name="font"><font><pointsize>32</pointsize><bold>true</bold></font></property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLabel" name="labelTempoText">
-     <property name="text"><string>TEMPO</string></property>
-     <property name="alignment"><set>Qt::AlignCenter</set></property>
-     <property name="font"><font><pointsize>32</pointsize><bold>true</bold></font></property>
-    </widget>
-   </item>
-   <item row="0" column="2">
-    <widget class="QLabel" name="labelGuestText">
-     <property name="text"><string>OSPITI</string></property>
-     <property name="alignment"><set>Qt::AlignCenter</set></property>
-     <property name="font"><font><pointsize>32</pointsize><bold>true</bold></font></property>
-    </widget>
-   </item>
+            <!-- RIGA 0 -->
+            <item row="0" column="0">
+                <widget class="QLabel" name="labelHomeText">
+                    <property name="text">
+                        <string>CASA</string>
+                    </property>
+                    <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                    </property>
+                    <property name="font">
+                        <font>
+                            <pointsize>32</pointsize>
+                            <bold>true</bold>
+                        </font>
+                    </property>
+                </widget>
+            </item>
+            <item row="0" column="1">
+                <widget class="QLabel" name="labelTempoText">
+                    <property name="text">
+                        <string>TEMPO</string>
+                    </property>
+                    <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                    </property>
+                    <property name="font">
+                        <font>
+                            <pointsize>32</pointsize>
+                            <bold>true</bold>
+                        </font>
+                    </property>
+                </widget>
+            </item>
+            <item row="0" column="2">
+                <widget class="QLabel" name="labelGuestText">
+                    <property name="text">
+                        <string>OSPITI</string>
+                    </property>
+                    <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                    </property>
+                    <property name="font">
+                        <font>
+                            <pointsize>32</pointsize>
+                            <bold>true</bold>
+                        </font>
+                    </property>
+                </widget>
+            </item>
 
-   <!-- RIGA 1: Gol casa / Timer con frecce / Gol ospiti -->
-   <item row="1" column="0">
-    <layout class="QHBoxLayout" name="layoutHomeScore">
-     <item><widget class="QPushButton" name="buttonHomeMinus"><property name="text"><string>-</string></property></widget></item>
-     <item><widget class="QLabel" name="labelHomeScore"><property name="text"><string>0</string></property><property name="alignment"><set>Qt::AlignCenter</set></property><property name="font"><font><family>DS-Digital</family><pointsize>120</pointsize><bold>true</bold></font></property><property name="styleSheet"><string notr="true">color:#00FF00;</string></property></widget></item>
-     <item><widget class="QPushButton" name="buttonHomePlus"><property name="text"><string>+</string></property></widget></item>
-    </layout>
-   </item>
+            <!-- RIGA 1: Gol casa / Timer con frecce / Gol ospiti -->
+            <item row="1" column="0">
+                <layout class="QHBoxLayout" name="layoutHomeScore">
+                    <item>
+                        <widget class="QPushButton" name="buttonHomeMinus">
+                            <property name="text">
+                                <string>-</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLabel" name="labelHomeScore">
+                            <property name="text">
+                                <string>0</string>
+                            </property>
+                            <property name="alignment">
+                                <set>Qt::AlignCenter</set>
+                            </property>
+                            <property name="font">
+                                <font>
+                                    <family>DS-Digital</family>
+                                    <pointsize>120</pointsize>
+                                    <bold>true</bold>
+                                </font>
+                            </property>
+                            <property name="styleSheet">
+                                <string notr="true">color:#00FF00;</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="buttonHomePlus">
+                            <property name="text">
+                                <string>+</string>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
 
-   <item row="1" column="1">
-    <layout class="QVBoxLayout" name="layoutMainTime">
-     <item>
-      <layout class="QHBoxLayout" name="layoutTimeControls">
-       <item>
-        <layout class="QVBoxLayout" name="layoutMinutes">
-         <item><widget class="QPushButton" name="buttonMinPlus"><property name="text"><string>▲</string></property></widget></item>
-         <item><widget class="QPushButton" name="buttonMinMinus"><property name="text"><string>▼</string></property></widget></item>
+            <item row="1" column="1">
+                <layout class="QVBoxLayout" name="layoutMainTime">
+                    <item>
+                        <layout class="QHBoxLayout" name="layoutTimeControls">
+                            <item>
+                                <layout class="QVBoxLayout" name="layoutMinutes">
+                                    <item>
+                                        <widget class="QPushButton" name="buttonMinPlus">
+                                            <property name="text">
+                                                <string>▲</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <widget class="QPushButton" name="buttonMinMinus">
+                                            <property name="text">
+                                                <string>▼</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                </layout>
+                            </item>
+                            <item>
+                                <widget class="QLabel" name="labelMainTime">
+                                    <property name="text">
+                                        <string>08:00</string>
+                                    </property>
+                                    <property name="alignment">
+                                        <set>Qt::AlignCenter</set>
+                                    </property>
+                                    <property name="font">
+                                        <font>
+                                            <family>DS-Digital</family>
+                                            <pointsize>150</pointsize>
+                                            <bold>true</bold>
+                                        </font>
+                                    </property>
+                                    <property name="styleSheet">
+                                        <string notr="true">color:yellow;</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <layout class="QVBoxLayout" name="layoutSeconds">
+                                    <item>
+                                        <widget class="QPushButton" name="buttonSecPlus">
+                                            <property name="text">
+                                                <string>▲</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <widget class="QPushButton" name="buttonSecMinus">
+                                            <property name="text">
+                                                <string>▼</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                </layout>
+                            </item>
+                        </layout>
+                    </item>
+                    <item>
+                        <layout class="QHBoxLayout" name="layoutPeriod">
+                            <item>
+                                <widget class="QPushButton" name="buttonPeriodMinus">
+                                    <property name="text">
+                                        <string>-</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QLabel" name="labelPeriod">
+                                    <property name="text">
+                                        <string>1</string>
+                                    </property>
+                                    <property name="alignment">
+                                        <set>Qt::AlignCenter</set>
+                                    </property>
+                                    <property name="font">
+                                        <font>
+                                            <family>DS-Digital</family>
+                                            <pointsize>72</pointsize>
+                                            <bold>true</bold>
+                                        </font>
+                                    </property>
+                                    <property name="styleSheet">
+                                        <string notr="true">color:white;</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QPushButton" name="buttonPeriodPlus">
+                                    <property name="text">
+                                        <string>+</string>
+                                    </property>
+                                </widget>
+                            </item>
+                        </layout>
+                    </item>
+                </layout>
+            </item>
+
+            <item row="1" column="2">
+                <layout class="QHBoxLayout" name="layoutGuestScore">
+                    <item>
+                        <widget class="QPushButton" name="buttonGuestMinus">
+                            <property name="text">
+                                <string>-</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLabel" name="labelGuestScore">
+                            <property name="text">
+                                <string>0</string>
+                            </property>
+                            <property name="alignment">
+                                <set>Qt::AlignCenter</set>
+                            </property>
+                            <property name="font">
+                                <font>
+                                    <family>DS-Digital</family>
+                                    <pointsize>120</pointsize>
+                                    <bold>true</bold>
+                                </font>
+                            </property>
+                            <property name="styleSheet">
+                                <string notr="true">color:#FFA500;</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="buttonGuestPlus">
+                            <property name="text">
+                                <string>+</string>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+
+            <!-- RIGA 2: Etichette TIMEOUT -->
+            <item row="2" column="0">
+                <widget class="QLabel" name="labelTimeoutHomeText">
+                    <property name="text">
+                        <string>TIMEOUT CASA</string>
+                    </property>
+                    <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                    </property>
+                    <property name="font">
+                        <font>
+                            <pointsize>32</pointsize>
+                            <bold>true</bold>
+                        </font>
+                    </property>
+                </widget>
+            </item>
+            <item row="2" column="1">
+                <widget class="QLabel" name="labelTimeoutText">
+                    <property name="text">
+                        <string>TEMPO TIMEOUT</string>
+                    </property>
+                    <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                    </property>
+                    <property name="font">
+                        <font>
+                            <pointsize>32</pointsize>
+                            <bold>true</bold>
+                        </font>
+                    </property>
+                </widget>
+            </item>
+            <item row="2" column="2">
+                <widget class="QLabel" name="labelTimeoutGuestText">
+                    <property name="text">
+                        <string>TIMEOUT OSPITI</string>
+                    </property>
+                    <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                    </property>
+                    <property name="font">
+                        <font>
+                            <pointsize>32</pointsize>
+                            <bold>true</bold>
+                        </font>
+                    </property>
+                </widget>
+            </item>
+
+            <!-- RIGA 3: Timeout numerici e cronometro timeout -->
+            <item row="3" column="0">
+                <layout class="QHBoxLayout" name="layoutTimeoutHome">
+                    <item>
+                        <widget class="QPushButton" name="buttonTimeoutHomeMinus">
+                            <property name="text">
+                                <string>-</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLabel" name="labelTimeOutHome">
+                            <property name="text">
+                                <string>0</string>
+                            </property>
+                            <property name="alignment">
+                                <set>Qt::AlignCenter</set>
+                            </property>
+                            <property name="font">
+                                <font>
+                                    <family>DS-Digital</family>
+                                    <pointsize>72</pointsize>
+                                    <bold>true</bold>
+                                </font>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="buttonTimeoutHomePlus">
+                            <property name="text">
+                                <string>+</string>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+            <item row="3" column="1">
+                <layout class="QVBoxLayout" name="layoutTimeoutCenter">
+                    <item>
+                        <layout class="QHBoxLayout" name="layoutTimeoutButtons">
+                            <item>
+                                <widget class="QPushButton" name="buttonTimeoutCalled">
+                                    <property name="text">
+                                        <string>CHIAMATO</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QPushButton" name="buttonTimeout13">
+                                    <property name="text">
+                                        <string>PAUSA TEMPI 1-3</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QPushButton" name="buttonTimeoutHalf">
+                                    <property name="text">
+                                        <string>METÀ PARTITA</string>
+                                    </property>
+                                </widget>
+                            </item>
+                        </layout>
+                    </item>
+                    <item>
+                        <widget class="QLabel" name="labelTimeoutClock">
+                            <property name="text">
+                                <string>02:00</string>
+                            </property>
+                            <property name="alignment">
+                                <set>Qt::AlignCenter</set>
+                            </property>
+                            <property name="font">
+                                <font>
+                                    <family>DS-Digital</family>
+                                    <pointsize>96</pointsize>
+                                    <bold>true</bold>
+                                </font>
+                            </property>
+                            <property name="styleSheet">
+                                <string notr="true">color:lightblue;</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <layout class="QHBoxLayout" name="layoutTimeoutButtons">
+                            <item>
+                                <widget class="QPushButton" name="buttonTimeoutStart">
+                                    <property name="text">
+                                        <string>START</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QPushButton" name="buttonTimeoutStop">
+                                    <property name="text">
+                                        <string>STOP</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QPushButton" name="buttonTimeoutReset">
+                                    <property name="text">
+                                        <string>RESET</string>
+                                    </property>
+                                </widget>
+                            </item>
+                        </layout>
+                    </item>
+                </layout>
+            </item>
+            <item row="3" column="2">
+                <layout class="QHBoxLayout" name="layoutTimeoutGuest">
+                    <item>
+                        <widget class="QPushButton" name="buttonTimeoutGuestMinus">
+                            <property name="text">
+                                <string>-</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLabel" name="labelTimeOutGuest">
+                            <property name="text">
+                                <string>0</string>
+                            </property>
+                            <property name="alignment">
+                                <set>Qt::AlignCenter</set>
+                            </property>
+                            <property name="font">
+                                <font>
+                                    <family>DS-Digital</family>
+                                    <pointsize>72</pointsize>
+                                    <bold>true</bold>
+                                </font>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="buttonTimeoutGuestPlus">
+                            <property name="text">
+                                <string>+</string>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+
+            <!-- RIGA 4: Controlli generali -->
+            <item row="4" column="0" colspan="3">
+                <layout class="QHBoxLayout" name="layoutControls">
+                    <item>
+                        <widget class="QPushButton" name="buttonStart">
+                            <property name="text">
+                                <string>START</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="buttonStop">
+                            <property name="text">
+                                <string>STOP</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="buttonTimeReload">
+                            <property name="text">
+                                <string>RICARICA TEMPO</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="buttonSirena">
+                            <property name="text">
+                                <string>SIRENA</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="buttonReset">
+                            <property name="text">
+                                <string>RESET TOTALE</string>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+
         </layout>
-       </item>
-       <item>
-        <widget class="QLabel" name="labelMainTime">
-         <property name="text"><string>08:00</string></property>
-         <property name="alignment"><set>Qt::AlignCenter</set></property>
-         <property name="font"><font><family>DS-Digital</family><pointsize>150</pointsize><bold>true</bold></font></property>
-         <property name="styleSheet"><string notr="true">color:yellow;</string></property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="layoutSeconds">
-         <item><widget class="QPushButton" name="buttonSecPlus"><property name="text"><string>▲</string></property></widget></item>
-         <item><widget class="QPushButton" name="buttonSecMinus"><property name="text"><string>▼</string></property></widget></item>
-        </layout>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="layoutPeriod">
-       <item><widget class="QPushButton" name="buttonPeriodMinus"><property name="text"><string>-</string></property></widget></item>
-       <item><widget class="QLabel" name="labelPeriod"><property name="text"><string>1</string></property><property name="alignment"><set>Qt::AlignCenter</set></property><property name="font"><font><family>DS-Digital</family><pointsize>72</pointsize><bold>true</bold></font></property><property name="styleSheet"><string notr="true">color:white;</string></property></widget></item>
-       <item><widget class="QPushButton" name="buttonPeriodPlus"><property name="text"><string>+</string></property></widget></item>
-      </layout>
-     </item>
-    </layout>
-   </item>
-
-   <item row="1" column="2">
-    <layout class="QHBoxLayout" name="layoutGuestScore">
-     <item><widget class="QPushButton" name="buttonGuestMinus"><property name="text"><string>-</string></property></widget></item>
-     <item><widget class="QLabel" name="labelGuestScore"><property name="text"><string>0</string></property><property name="alignment"><set>Qt::AlignCenter</set></property><property name="font"><font><family>DS-Digital</family><pointsize>120</pointsize><bold>true</bold></font></property><property name="styleSheet"><string notr="true">color:#FFA500;</string></property></widget></item>
-     <item><widget class="QPushButton" name="buttonGuestPlus"><property name="text"><string>+</string></property></widget></item>
-    </layout>
-   </item>
-
-   <!-- RIGA 2: Etichette TIMEOUT -->
-   <item row="2" column="0">
-    <widget class="QLabel" name="labelTimeoutHomeText">
-     <property name="text"><string>TIMEOUT CASA</string></property>
-     <property name="alignment"><set>Qt::AlignCenter</set></property>
-     <property name="font"><font><pointsize>32</pointsize><bold>true</bold></font></property>
     </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QLabel" name="labelTimeoutText">
-     <property name="text"><string>TEMPO TIMEOUT</string></property>
-     <property name="alignment"><set>Qt::AlignCenter</set></property>
-     <property name="font"><font><pointsize>32</pointsize><bold>true</bold></font></property>
-    </widget>
-   </item>
-   <item row="2" column="2">
-    <widget class="QLabel" name="labelTimeoutGuestText">
-     <property name="text"><string>TIMEOUT OSPITI</string></property>
-     <property name="alignment"><set>Qt::AlignCenter</set></property>
-     <property name="font"><font><pointsize>32</pointsize><bold>true</bold></font></property>
-    </widget>
-   </item>
-
-   <!-- RIGA 3: Timeout numerici e cronometro timeout -->
-   <item row="3" column="0">
-    <layout class="QHBoxLayout" name="layoutTimeoutHome">
-     <item><widget class="QPushButton" name="buttonTimeoutHomeMinus"><property name="text"><string>-</string></property></widget></item>
-     <item><widget class="QLabel" name="labelTimeOutHome"><property name="text"><string>0</string></property><property name="alignment"><set>Qt::AlignCenter</set></property><property name="font"><font><family>DS-Digital</family><pointsize>72</pointsize><bold>true</bold></font></property></widget></item>
-     <item><widget class="QPushButton" name="buttonTimeoutHomePlus"><property name="text"><string>+</string></property></widget></item>
-    </layout>
-   </item>
-   <item row="3" column="1">
-    <layout class="QVBoxLayout" name="layoutTimeoutCenter">
-        <item>
-      <layout class="QHBoxLayout" name="layoutTimeoutButtons">
-       <item><widget class="QPushButton" name="buttonTimeoutCalled"><property name="text"><string>CHIAMATO</string></property></widget></item>
-       <item><widget class="QPushButton" name="buttonTimeout13"><property name="text"><string>PAUSA TEMPI 1-3</string></property></widget></item>
-       <item><widget class="QPushButton" name="buttonTimeoutHalf"><property name="text"><string>METÀ PARTITA</string></property></widget></item>
-      </layout>
-     </item>
-     <item><widget class="QLabel" name="labelTimeoutClock"><property name="text"><string>02:00</string></property><property name="alignment"><set>Qt::AlignCenter</set></property><property name="font"><font><family>DS-Digital</family><pointsize>96</pointsize><bold>true</bold></font></property><property name="styleSheet"><string notr="true">color:lightblue;</string></property></widget></item>
-     <item>
-      <layout class="QHBoxLayout" name="layoutTimeoutButtons">
-       <item><widget class="QPushButton" name="buttonTimeoutStart"><property name="text"><string>START</string></property></widget></item>
-       <item><widget class="QPushButton" name="buttonTimeoutStop"><property name="text"><string>STOP</string></property></widget></item>
-       <item><widget class="QPushButton" name="buttonTimeoutReset"><property name="text"><string>RESET</string></property></widget></item>
-      </layout>
-     </item>
-    </layout>
-   </item>
-   <item row="3" column="2">
-    <layout class="QHBoxLayout" name="layoutTimeoutGuest">
-     <item><widget class="QPushButton" name="buttonTimeoutGuestMinus"><property name="text"><string>-</string></property></widget></item>
-     <item><widget class="QLabel" name="labelTimeOutGuest"><property name="text"><string>0</string></property><property name="alignment"><set>Qt::AlignCenter</set></property><property name="font"><font><family>DS-Digital</family><pointsize>72</pointsize><bold>true</bold></font></property></widget></item>
-     <item><widget class="QPushButton" name="buttonTimeoutGuestPlus"><property name="text"><string>+</string></property></widget></item>
-    </layout>
-   </item>
-
-   <!-- RIGA 4: Controlli generali -->
-   <item row="4" column="0" colspan="3">
-    <layout class="QHBoxLayout" name="layoutControls">
-     <item><widget class="QPushButton" name="buttonStart"><property name="text"><string>START</string></property></widget></item>
-     <item><widget class="QPushButton" name="buttonStop"><property name="text"><string>STOP</string></property></widget></item>
-     <item><widget class="QPushButton" name="buttonReset"><property name="text"><string>RESET</string></property></widget></item>
-     <item><widget class="QPushButton" name="buttonSirena"><property name="text"><string>SIRENA</string></property></widget></item>
-    </layout>
-   </item>
-
-  </layout>
- </widget>
- <resources/>
- <connections/>
+    <resources/>
+    <connections/>
 </ui>

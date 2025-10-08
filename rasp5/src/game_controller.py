@@ -101,7 +101,8 @@ class GameController(object):
         self.tempo_possesso_palla = self.game_config.tempo_gioco()
 
     def reset_tempo_periodo(self):
-        self.tempo_periodo = self.game_config.tempo_periodo()
+        if not self.game_running:
+            self.tempo_periodo = self.game_config.tempo_periodo()
 
     def force_tempo_periodo(self,value):
         """

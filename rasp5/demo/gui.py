@@ -48,8 +48,10 @@ class Tabellone(QWidget):
 
         self.buttonStart.clicked.connect(self.start_game)
         self.buttonStop.clicked.connect(self.stop_game)
+        self.buttonTimeReload.clicked.connect(self.timeout_reload_time)
         self.buttonReset.clicked.connect(self.reset_game)
         self.buttonSirena.clicked.connect(self.sirena)
+
         self.buttonTimeoutCalled.clicked.connect(self.timeout_chiamato)
         self.buttonTimeout13.clicked.connect(self.timeout_13)
         self.buttonTimeoutHalf.clicked.connect(self.timeout_halftime)
@@ -113,6 +115,9 @@ class Tabellone(QWidget):
 
     def timeout_stop(self):
         self.controller.timeout_stop()
+
+    def timeout_reload_time(self):
+        self.controller.reset_tempo_periodo()
 
     def timeout_reset(self):
         self.controller.timeout_reset()
