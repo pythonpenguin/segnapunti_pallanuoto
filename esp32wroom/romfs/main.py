@@ -34,7 +34,7 @@ class Display(object):
 
     def af_set_sirena(self, val):
         self._af_sirena(val)
-        if val and self._last_sirena != val:
+        if val:
             self._write_units(0)
             self._write_tens(0)
 
