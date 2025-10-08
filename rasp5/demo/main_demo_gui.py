@@ -60,7 +60,6 @@ async def input_loop(controller):
 
 def main():
     app = QApplication(sys.argv)
-    app.setStyle("Fusion")
     loop = QEventLoop(app)
     asyncio.set_event_loop(loop)
 

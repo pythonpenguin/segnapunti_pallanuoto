@@ -6,26 +6,28 @@
 
 """
 
-import json
+import sys, json
 import paho.mqtt.client as mqtt
-from PyQt6.QtWidgets import QMainWindow,QWidget
-import tabellone
+from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QGridLayout
+from PyQt6.QtGui import QFont, QColor, QPalette
+from PyQt6.QtCore import Qt
+from PyQt6 import uic
 
 import game_controller
 
 BROKER = "localhost"
 TOPIC_STATO = "stato"
 
-class Tabellone(QWidget,tabellone.Ui_TabelloneLED):
-    def __init__(self, controller: game_controller.GameController,broker=BROKER):
+class Tabellone(QWidget):
+    def __init__(self, controller: game_controller.GameController):
         super().__init__()
-        self.setupUi(self)
         self.controller = controller
+        uic.loadUi("tabellone.ui", self)
 
         # MQTT client per ricevere aggiornamenti
         self.client = mqtt.Client()
         self.client.on_message = self.on_message
-        self.client.connect(broker,keepalive=5)
+        self.client.connect(BROKER,keepalive=5)
         self.client.subscribe(TOPIC_STATO)
         self.client.loop_start()
 
