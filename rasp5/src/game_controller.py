@@ -18,6 +18,7 @@ class GameController(object):
     CANALE_DISPLAY_STATO = "{}/stato".format(CANALE_DISPLAY)
 
     CANALE_TABELLONE = "tabellone"
+    CANALE_TABELLONE_STATO = "{}/stato".format(CANALE_TABELLONE)
     REFRESH_GLOBALE = "stato"
 
     def __init__(self, game_configurator, mqtt_host="localhost", keepalive=5):
@@ -221,6 +222,7 @@ class GameController(object):
                                    },
                      "display": {"tempo": self._formato_tempo_possesso_palla(), "sirena": self.sirena}}
             self.publish(self.CANALE_DISPLAY_STATO, json.dumps(stato["display"]))
+            self.publish(self.CANALE_TABELLONE_STATO, json.dumps(stato["tabellone"]))
             self.publish(self.REFRESH_GLOBALE, json.dumps(stato))
             await asyncio.sleep(self.tempo_refresh)
 
