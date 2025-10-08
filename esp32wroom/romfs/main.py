@@ -80,7 +80,7 @@ class PnCremaMqtt(MQTTClient):
                  connection_params={}):
         super().__init__(client_id, server, port, user, password, keepalive, ssl, ssl_params)
         self._connection_param = connection_params
-        self.topics = {b"stato": self._json_msg,
+        self.topics = {b"display/stato": self._json_msg,
                        b"display/update": self._update_sistema}
         self.nm = network.WLAN(network.STA_IF)
         self.set_callback(self._dispatch)
