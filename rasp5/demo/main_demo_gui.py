@@ -5,13 +5,18 @@
 ..date: 06/10/25
 
 """
+import os
+import sys
+import asyncio
 
-import sys, asyncio
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
+
 from PyQt6.QtWidgets import QApplication
 from qasync import QEventLoop
 from game_controller import GameController
 import game_configure
 from gui import Tabellone
+
 
 async def main_async(controller):
     # avvia i loop principali del controller
@@ -20,6 +25,7 @@ async def main_async(controller):
         controller.refresh(),
         controller.input_loop(),
     )
+
 
 def main():
     app = QApplication(sys.argv)
@@ -30,10 +36,10 @@ def main():
     # NB: qui puoi passare il tuo game_configurator reale
     game_config = game_configure.GameConfigure("../var/configurazione_serie.json")
     game_config.read()
-    controller = GameController(game_config,"10.42.0.1")
+    controller = GameController(game_config, "10.42.0.1")
     controller.connect_to_broker()
 
-    gui = Tabellone(controller,"10.42.0.1")
+    gui = Tabellone(controller, "10.42.0.1")
     gui.show()
 
     # avvia i loop asyncio del controller
@@ -41,6 +47,7 @@ def main():
 
     with loop:
         loop.run_forever()
+
 
 if __name__ == "__main__":
     main()
