@@ -14,14 +14,9 @@ from paho.mqtt import client as mqtt
 
 class GameController(object):
     CANALE_DISPLAY = "display"
-    SIRENA = "{}/sirena".format(CANALE_DISPLAY)
-    TEMPO_GIOCO = "{}/tempo".format(CANALE_DISPLAY)
+    CANALE_DISPLAY_STATO = "{}/stato".format(CANALE_DISPLAY)
 
     CANALE_TABELLONE = "tabellone"
-    GOL_CASA = "{}/gol_casa".format(CANALE_TABELLONE)
-    PERIODO = "{}/periodo".format(CANALE_TABELLONE)
-    TEMPO_PERIODO = "{}/tempo".format(CANALE_TABELLONE)
-    REFRESH_TABELLONE = "{}/stato".format(CANALE_TABELLONE)
     REFRESH_GLOBALE = "stato"
 
     def __init__(self, game_configurator, mqtt_host="localhost", keepalive=5):
@@ -210,6 +205,7 @@ class GameController(object):
                                    "timeout_clock":self._min_sec_fmt(self._current_time_out),
                                    },
                      "display": {"tempo": self._formato_tempo_possesso_palla(), "sirena": self.sirena}}
+            self.publish(self.CANALE_DISPLAY_STATO, json.dumps(stato["display"]))
             self.publish(self.REFRESH_GLOBALE, json.dumps(stato))
             await asyncio.sleep(self.tempo_refresh)
 
