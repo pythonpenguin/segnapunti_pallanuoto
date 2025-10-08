@@ -35,6 +35,7 @@
                 #buttonReset { background-color: #333333; }
                 #buttonReset:pressed { background-color: #111111; }
                 #buttonSirena { background-color: #FF8000; }
+                #buttonTimeReload { background-color: blue; }
                 #buttonSirena:pressed { background-color: #CC6600; }
             </string>
         </property>

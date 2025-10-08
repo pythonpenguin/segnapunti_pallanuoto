@@ -34,6 +34,7 @@ class Ui_TabelloneLED(object):
 "                #buttonReset { background-color: #333333; }\n"
 "                #buttonReset:pressed { background-color: #111111; }\n"
 "                #buttonSirena { background-color: #FF8000; }\n"
+"                #buttonTimeReload { background-color: blue; }\n"
 "                #buttonSirena:pressed { background-color: #CC6600; }\n"
 "            ")
         self.gridLayout = QtWidgets.QGridLayout(TabelloneLED)
