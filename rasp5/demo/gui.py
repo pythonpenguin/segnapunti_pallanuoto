@@ -16,7 +16,7 @@ import game_controller
 BROKER = "localhost"
 TOPIC_STATO = "stato"
 
-class Tabellone(QWidget,tabellone.Ui_TabelloneLED):
+class Tabellone(QMainWindow,tabellone.Ui_TabelloneLED):
     def __init__(self, controller: game_controller.GameController,broker=BROKER):
         super().__init__()
         self.setupUi(self)
@@ -56,6 +56,14 @@ class Tabellone(QWidget,tabellone.Ui_TabelloneLED):
         self.buttonTimeoutStart.clicked.connect(self.timeout_start)
         self.buttonTimeoutStop.clicked.connect(self.timeout_stop)
         self.buttonTimeoutReset.clicked.connect(self.timeout_reset)
+        self.mc_actionUnder12.triggered.connect(lambda:self._load_categoria("under12"))
+        self.mc_actionragazzi.triggered.connect(lambda: self._load_categoria("ragazzi"))
+        self.mc_actionallieve.triggered.connect(lambda: self._load_categoria("allieve"))
+        self.mc_actionallievi.triggered.connect(lambda: self._load_categoria("allievi"))
+        self.mc_actionjunioresF.triggered.connect(lambda: self._load_categoria("junioresF"))
+        self.mc_actionPromozione.triggered.connect(lambda: self._load_categoria("promozione"))
+        self.mc_actionMaster.triggered.connect(lambda: self._load_categoria("master"))
+
 
     def goal_segnato_home(self):
         self.controller.goal_casa_piu()
@@ -134,6 +142,15 @@ class Tabellone(QWidget,tabellone.Ui_TabelloneLED):
             self._refresh_possesso_palla(stato["display"]["tempo"])
         except Exception as e:
             print("Errore parsing stato:", e)
+
+    def closeEvent(self, event):
+        self.controller.shutdown()
+        super().closeEvent(event)
+
+    def _load_categoria(self,value):
+        print("carico ",value)
+        self.controller.load_categoria(value)
+        self.labelCategoriaText.setText(self.controller.label_categoria())
 
     def _refresh_possesso_palla(self,msg):
         self.labelPossesso.setText(str(msg))

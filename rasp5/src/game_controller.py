@@ -6,9 +6,10 @@
 
 """
 import asyncio
+import sys
+import math
 
 import json
-import math
 from paho.mqtt import client as mqtt
 
 
@@ -46,6 +47,8 @@ class GameController(object):
         self.timeout_away = 0
         self.max_timeout=0
 
+        self.possesso_palla_enable=True
+
         self.game_running = False
         self.timeout_running = False
         self._current_time_out = 0
@@ -53,7 +56,7 @@ class GameController(object):
         self._game_time_last_update = asyncio.get_event_loop().time()
         self._task_sirena = None
         self._task_timeout = None
-
+        self._loop_enable=True
         self.reset_match()
 
     def reset_match(self):
@@ -64,6 +67,7 @@ class GameController(object):
         self.tempo_pause_meta_partita = self.game_config.tempo_meta_partita()
         self.max_periodi = self.game_config.periodi_gioco()
         self.max_timeout = self.game_config.numero_timeouts()
+        self.possesso_palla_enable = self.game_config.tempo_effettivo()
         self.timeout_home=0
         self.timeout_away=0
         self.periodo = 1
@@ -77,6 +81,10 @@ class GameController(object):
         self._task_sirena = None
         self._current_time_out = 0
 
+    def shutdown(self):
+        self.timeout_reset()
+        self._loop_enable=False
+
     def connect_to_broker(self):
         if self.client.is_connected():
             return
@@ -84,6 +92,13 @@ class GameController(object):
 
     def publish(self, topic, msg, retain=False):
         self.client.publish(topic, msg, retain=retain)
+
+    def load_categoria(self, categoria):
+        self.game_config.set_categoria(categoria)
+        self.reset_match()
+
+    def label_categoria(self):
+        return self.game_config.get_label_categoria()
 
     def start(self):
         self.game_running = True
@@ -195,7 +210,7 @@ class GameController(object):
         pass
 
     async def refresh(self):
-        while True:
+        while self._loop_enable:
             stato = {"tabellone": {"gol_casa": self.score_home,
                                    "gol_trasferta": self.score_away,
                                    "periodo": self.periodo,
@@ -211,43 +226,61 @@ class GameController(object):
 
     async def tempo_gioco_loop(self):
         _tempo_sleep = 0.02
-        while True:
+        while self._loop_enable:
             now = asyncio.get_event_loop().time()
             if self.game_running and self.tempo_periodo > 0:
                 delta = now - self._game_time_last_update
                 self.tempo_periodo -= delta
-                self.tempo_possesso_palla -= delta
                 if self.tempo_periodo <= 0:
                     self.tempo_periodo = 0
                     self.game_running = False
                     self.sirena_on()
-                if self.tempo_possesso_palla <= 0:
-                    self.game_running = False
-                    self.reset_possesso_palla()
-                    self.sirena_on()
+                if self.possesso_palla_enable:
+                    self.tempo_possesso_palla -= delta
+                    if self.tempo_possesso_palla <= 0:
+                        self.game_running = False
+                        self.reset_possesso_palla()
+                        self.sirena_on()
             self._game_time_last_update = now
             self._check_stato_sirena()
             await asyncio.sleep(_tempo_sleep)
 
-    async def timeout_loop(self):
-        _tempo_sleep = 0.02
-        while True:
-            now = asyncio.get_event_loop().time()
-            if not self.game_running and self.timeout_running and self.tempo_periodo > 0:
-                delta = now - self._game_time_last_update
-                self.tempo_periodo -= delta
-                self.tempo_possesso_palla -= delta
-                if self.tempo_periodo <= 0:
-                    self.tempo_periodo = 0
-                    self.game_running = False
-                    self.sirena_on()
-                if self.tempo_possesso_palla <= 0:
-                    self.game_running = False
+    async def input_loop(self):
+        while self._loop_enable:
+            cmd = await asyncio.get_event_loop().run_in_executor(None, sys.stdin.readline)
+            cmd = cmd.strip().lower()
+            match cmd:
+                case "a":
+                    self.start()
+                case "b":
+                    self.stop()
+                case "c":
                     self.reset_possesso_palla()
+                case "d":
+                    self.set_tempo_aggiuntivo()
+                case "e":
+                    self.next_period()
+                case "f":
+                    self.goal_casa_piu()
+                case "g":
+                    self.goal_tasferta_piu()
+                case "h":
                     self.sirena_on()
-            self._game_time_last_update = now
-            self._check_stato_sirena()
-            await asyncio.sleep(_tempo_sleep)
+                case "i":
+                    self.timeout_start()
+                case "l":
+                    self.timeout_reset()
+                case "m":
+                    self.timeout_start()
+                case "p":
+                    self.timeout_set_pausa_13()
+                case "u":
+                    self.update_display()
+                case "q":
+                    print("Uscita")
+                    break
+                case _:
+                    print("❓ Comando sconosciuto, premi `?`")
 
     def _check_stato_sirena(self):
         if self.sirena and self._task_sirena is None:

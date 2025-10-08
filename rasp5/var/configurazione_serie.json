@@ -7,6 +7,73 @@
     "shot_time_enable": true,
     "timeout_time": 60,
     "time_end_period": 60,
-    "half_time": 120
+    "half_time": 120,
+    "label_categoria": "ALLIEVE U16 F"
+  },
+  "allievi": {
+    "game_time": 480,
+    "shot_time": 28,
+    "periodi": 4,
+    "shot_time_r": 18,
+    "shot_time_enable": true,
+    "timeout_time": 60,
+    "time_end_period": 60,
+    "half_time": 120,
+    "label_categoria": "ALLIEVI U16 M"
+  },
+  "junioresF": {
+    "game_time": 480,
+    "shot_time": 28,
+    "periodi": 4,
+    "shot_time_r": 18,
+    "shot_time_enable": true,
+    "timeout_time": 60,
+    "time_end_period": 60,
+    "half_time": 120,
+    "label_categoria": "JUNIORES U18 F"
+  },
+  "promozione": {
+    "game_time": 480,
+    "shot_time": 28,
+    "periodi": 4,
+    "shot_time_r": 18,
+    "shot_time_enable": true,
+    "timeout_time": 60,
+    "time_end_period": 60,
+    "half_time": 120,
+    "label_categoria": "PROMOZIONE"
+  },
+  "master": {
+    "game_time": 480,
+    "shot_time": 28,
+    "periodi": 4,
+    "shot_time_r": 18,
+    "shot_time_enable": true,
+    "timeout_time": 60,
+    "time_end_period": 60,
+    "half_time": 120,
+    "label_categoria": "MASTER"
+  },
+  "ragazzi": {
+    "game_time": 480,
+    "shot_time": 28,
+    "periodi": 4,
+    "shot_time_r": 18,
+    "shot_time_enable": true,
+    "timeout_time": 60,
+    "time_end_period": 60,
+    "half_time": 120,
+    "label_categoria": "Ragazzi/e U14"
+  },
+  "under12": {
+    "game_time": 420,
+    "shot_time": 0,
+    "periodi": 4,
+    "shot_time_r": 0,
+    "shot_time_enable": false,
+    "timeout_time": 60,
+    "time_end_period": 60,
+    "half_time": 120,
+    "label_categoria": "UNDER 12"
   }
 }
