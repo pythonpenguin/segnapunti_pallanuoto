@@ -25,18 +25,23 @@ class Display(object):
         self.tens = machine.Pin(25, machine.Pin.OUT)
         self._last_units = -1
         self._last_tens = -1
+        self._last_sirena = -1
         self._init_to_99()
 
-    def set_value(self, val):
+    def af_set_value(self, val):
         self._af_write_tens(val // 10)
         self._af_write_units(val % 10)
 
-    def set_sirena(self, val):
+    def af_set_sirena(self, val):
+        self._af_sirena(val)
+        if val and self._last_sirena != val:
+            self._write_units(0)
+            self._write_tens(0)
+
+    def _af_sirena(self, val):
+        if self._last_sirena != val:
+            self._last_sirena = val
         self.sirena.value(val)
-        self._write_units(self._last_units)
-        self._write_tens(self._last_tens)
-        self._last_units = -1
-        self._last_tens = -1
 
     def _af_write_tens(self, val):
         if self._last_tens == val:
@@ -80,13 +85,12 @@ class PnCremaMqtt(MQTTClient):
                  connection_params={}):
         super().__init__(client_id, server, port, user, password, keepalive, ssl, ssl_params)
         self._connection_param = connection_params
-        self.topics = {b"display/stato": self._json_msg,
-                       b"display/update": self._update_sistema}
+        self._topics = {b"display/stato": self._json_msg,
+                        b"display/update": self._update_sistema}
         self.nm = network.WLAN(network.STA_IF)
         self.set_callback(self._dispatch)
         self._display = Display()
         self._is_connected_to_server = False
-        self._anti_flickering = {self.MSG_TEMPO: -1, self.MSG_SIRENA: -1}
 
     def connect(self, clean_session=False, timeout=None):
         self.crea_connessione_rete()
@@ -100,7 +104,7 @@ class PnCremaMqtt(MQTTClient):
         return True
 
     def subscribe_all_topic(self):
-        for topic in self.topics:
+        for topic in self._topics:
             self.subscribe(topic, qos=1)
 
     def reconnect(self):
@@ -160,25 +164,19 @@ class PnCremaMqtt(MQTTClient):
 
     def _dispatch(self, topic, msg):
         try:
-            self.topics[topic](msg)
+            self._topics[topic](msg)
         except KeyError:
             pass
 
     def _mostra_numero(self, msg):
-        if msg == self._anti_flickering[self.MSG_TEMPO]:
-            return
-        self._display.set_value(int(msg))
-        self._anti_flickering[self.MSG_TEMPO] = msg
+        self._display.af_set_value(int(msg))
 
     def _stato_sirena(self, msg):
-        if msg == self._anti_flickering[self.MSG_SIRENA]:
-            return
-        self._display.set_sirena(int(msg))
-        self._anti_flickering[self.MSG_SIRENA] = msg
+        self._display.af_set_sirena(int(msg))
 
     def _json_msg(self, msg):
         try:
-            body = json.loads(msg)[self.MSG]
+            body = json.loads(msg)
             self._mostra_numero(body[self.MSG_TEMPO])
             self._stato_sirena(body[self.MSG_SIRENA])
         except KeyError:
@@ -194,11 +192,11 @@ class PnCremaMqtt(MQTTClient):
         self._reboot()
 
     def _connection_ready(self):
-        self._display.set_value(88)
+        self._display.af_set_value(88)
 
     def _on_connection(self):
         for _x in range(99, 10, -22):
-            self._display.set_value(_x)
+            self._display.af_set_value(_x)
             time.sleep(0.5)
 
     def _try_to_update(self, info):
