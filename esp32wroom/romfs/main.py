@@ -28,25 +28,33 @@ class Display(object):
         self._init_to_99()
 
     def set_value(self, val):
-        self._write_tens(val // 10)
-        self._write_units(val % 10)
+        self._af_write_tens(val // 10)
+        self._af_write_units(val % 10)
 
     def set_sirena(self, val):
         self.sirena.value(val)
+        self._write_units(self._last_units)
+        self._write_tens(self._last_tens)
         self._last_units = -1
         self._last_tens = -1
 
-    def _write_tens(self, val):
+    def _af_write_tens(self, val):
         if self._last_tens == val:
             return
+        self._write_tens(val)
+
+    def _write_tens(self, val):
         self._last_tens = val
         self.units.value(1)
         self.tens.value(0)
         self._write(val)
 
-    def _write_units(self, val):
+    def _af_write_units(self, val):
         if self._last_units == val:
             return
+        self._write_units(val)
+
+    def _write_units(self, val):
         self._last_units = val
         self.tens.value(1)
         self.units.value(0)
@@ -59,8 +67,8 @@ class Display(object):
     def _init_to_99(self):
         self.tens.value(0)
         self.units.value(0)
-        self._write_tens(9)
-        self._write_units(9)
+        self._af_write_tens(9)
+        self._af_write_units(9)
 
 
 class PnCremaMqtt(MQTTClient):
