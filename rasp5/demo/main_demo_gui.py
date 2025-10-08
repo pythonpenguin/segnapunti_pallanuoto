@@ -30,10 +30,10 @@ def main():
     # NB: qui puoi passare il tuo game_configurator reale
     game_config = game_configure.GameConfigure("../var/configurazione_serie.json")
     game_config.read()
-    controller = GameController(game_config)
+    controller = GameController(game_config,"10.42.0.1")
     controller.connect_to_broker()
 
-    gui = Tabellone(controller)
+    gui = Tabellone(controller,"10.42.0.1")
     gui.show()
 
     # avvia i loop asyncio del controller
