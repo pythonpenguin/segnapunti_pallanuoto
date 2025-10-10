@@ -160,6 +160,7 @@ class PnCremaMqtt(MQTTClient):
         self.set_callback(self._dispatch)
         self._display = Display()
         self._is_connected_to_server = False
+        self._current_status = {}
 
     def connect(self, clean_session=False, timeout=None):
         self.crea_connessione_rete()
@@ -240,10 +241,15 @@ class PnCremaMqtt(MQTTClient):
     def _json_msg(self, msg):
         try:
             body = json.loads(msg)
-            self._refresh_periodo(body["periodo"])
-            self._refresh_gol_casa(body["gol_casa"])
-            self._refresh_gol_trasferta(body["gol_trasferta"])
-            self._refresh_timer_gioco(body["tempo_gioco"])
+            if self._current_status.get("periodo")!=body["periodo"]:
+                self._refresh_periodo(body["periodo"])
+            if self._current_status.get("gol_casa") != body["gol_casa"]:
+                self._refresh_gol_casa(body["gol_casa"])
+            if self._current_status.get("gol_trasferta") != body["gol_trasferta"]:
+                self._refresh_gol_trasferta(body["gol_trasferta"])
+            if self._current_status.get("tempo_gioco") != body["tempo_gioco"]:
+                self._refresh_timer_gioco(body["tempo_gioco"])
+            self._current_status = body
         except KeyError:
             pass
 
