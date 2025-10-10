@@ -305,7 +305,7 @@ class GameController(object):
     def update_display(self):  # da testare
         self.stop()
         self.publish("display/tempo", str(44))
-        jts = json.dumps({"url": "http://10.42.0.1/main.py", "position": "main.py"})
+        jts = json.dumps({"url": "http://10.42.0.1/display/main.py", "position": "main.py"})
         self.publish("display/update", jts)
 
     def update_tabellone(self):

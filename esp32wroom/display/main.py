@@ -97,6 +97,7 @@ class PnCremaMqtt(MQTTClient):
         self.set_callback(self._dispatch)
         self._display = Display()
         self._is_connected_to_server = False
+        self._current_status = {}
 
     def connect(self, clean_session=False, timeout=None):
         self.crea_connessione_rete()
@@ -183,8 +184,10 @@ class PnCremaMqtt(MQTTClient):
     def _json_msg(self, msg):
         try:
             body = json.loads(msg)
-            self._mostra_numero(body[self.MSG_TEMPO])
-            self._stato_sirena(body[self.MSG_SIRENA])
+            if self._current_status.get(self.MSG_TEMPO) != body[self.MSG_TEMPO]:
+                self._mostra_numero(body[self.MSG_TEMPO])
+            if self._current_status.get(self.MSG_SIRENA) != body[self.MSG_SIRENA]:
+                self._stato_sirena(body[self.MSG_SIRENA])
         except KeyError:
             pass
 
