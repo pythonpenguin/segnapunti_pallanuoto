@@ -247,8 +247,7 @@ class PnCremaMqtt(MQTTClient):
                 self._refresh_gol_casa(body["gol_casa"])
             if self._current_status.get("gol_trasferta") != body["gol_trasferta"]:
                 self._refresh_gol_trasferta(body["gol_trasferta"])
-            if self._current_status.get("tempo_gioco") != body["tempo_gioco"]:
-                self._refresh_timer_gioco(body["tempo_gioco"])
+            self._refresh_timer_gioco(body["tempo_gioco"])
             self._current_status = body
         except KeyError:
             pass
@@ -263,8 +262,11 @@ class PnCremaMqtt(MQTTClient):
         self._display.af_refresh_gol_trasferta(int(value))
 
     def _refresh_timer_gioco(self,value):
-        self._display.af_refresh_timer_minuti(int(value["min"]))
-        self._display.af_refresh_timer_secondi(int(value["sec"]))
+        _ct= self._current_status.get("tempo_gioco",{})
+        if _ct.get("min")!=value["min"]:
+            self._display.af_refresh_timer_minuti(int(value["min"]))
+        if _ct.get("sec") != value["sec"]:
+            self._display.af_refresh_timer_secondi(int(value["sec"]))
 
     def _update_sistema(self,msg):
         try:
