@@ -278,6 +278,8 @@ class GameController(object):
                     self.timeout_set_pausa_13()
                 case "u":
                     self.update_display()
+                case "w":
+                    self.update_tabellone()
                 case "q":
                     print("Uscita")
                     break
@@ -305,3 +307,8 @@ class GameController(object):
         self.publish("display/tempo", str(44))
         jts = json.dumps({"url": "http://10.42.0.1/main.py", "position": "main.py"})
         self.publish("display/update", jts)
+
+    def update_tabellone(self):
+        self.stop()
+        jts = json.dumps({"url": "http://10.42.0.1/tabellone/main.py", "position": "main.py"})
+        self.publish("tabellone/update", jts)
