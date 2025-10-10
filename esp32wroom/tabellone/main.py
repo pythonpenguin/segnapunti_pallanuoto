@@ -56,7 +56,7 @@ class Display(object):
     def af_refresh_timer_minuti(self,value):
         if self._last_time_min != value:
             self._last_time_min = value
-        self._write_minutes(value // 10)
+        self._write_minutes(value)
 
     def af_refresh_timer_secondi(self,value):
         if self._last_time_sec != value:
