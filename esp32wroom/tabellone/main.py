@@ -265,15 +265,13 @@ class PnCremaMqtt(MQTTClient):
                 self._refresh_timer_secondi(body["tempo_gioco"]["sec"])
             if self._current_status.get("sirena") != body["sirena"]:
                 self._stato_sirena(body["sirena"])
+                self._refresh_after_sirena(body)
             self._current_status = body
         except KeyError:
             pass
 
-    def _refresh_after_sirena(self):
-        if not self._current_status:
-            return
+    def _refresh_after_sirena(self,body):
         try:
-            body = self._current_status.copy()
             self._refresh_periodo(body["periodo"])
             self._refresh_gol_casa(body["gol_casa"])
             self._refresh_gol_trasferta(body["gol_trasferta"])
@@ -284,7 +282,6 @@ class PnCremaMqtt(MQTTClient):
 
     def _stato_sirena(self, msg):
         self._display.af_set_sirena(int(msg))
-        self._refresh_after_sirena()
 
     def _refresh_periodo(self,value):
         self._display.af_refresh_periodo(int(value))
