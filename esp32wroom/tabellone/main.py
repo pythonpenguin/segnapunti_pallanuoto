@@ -45,29 +45,29 @@ class Display(object):
 
     def af_refresh_periodo(self,value):
         # if self._last_period != value:
-        #     self._last_period = value
+        self._last_period = value
         self._write_period(value)
 
     def af_refresh_gol_casa(self,value):
         # if self._last_goal_home != value:
-        #     self._last_goal_home = value
+        self._last_goal_home = value
         self._write_home_tens(value // 10)
         self._write_home_units(value % 10)
 
     def af_refresh_gol_trasferta(self,value):
         # if self._last_goal_away != value:
-        #     self._last_goal_away = value
+        self._last_goal_away = value
         self._write_away_tens(value // 10)
         self._write_away_units(value % 10)
 
     def af_refresh_timer_minuti(self,value):
         # if self._last_time_min != value:
-        #     self._last_time_min = value
+        self._last_time_min = value
         self._write_minutes(value)
 
     def af_refresh_timer_secondi(self,value):
         # if self._last_time_sec != value:
-        #     self._last_time_sec = value
+        self._last_time_sec = value
         self._write_second_tens(value // 10)
         self._write_second_units(value % 10)
 
@@ -82,11 +82,18 @@ class Display(object):
         self._write_away_units(val%10)
 
     def _af_sirena(self, val):
-        # if self._last_sirena != val:
-        #     self._last_sirena = val
+        if self._last_sirena != val:
+            self._last_sirena = val
         self.sirena.value(val)
-        # if not val:
-        #     self._refresh()
+        if not val:
+            self._refresh()
+
+    def _refresh(self):
+        self.af_refresh_gol_casa(self._last_goal_home)
+        self.af_refresh_gol_trasferta(self._last_goal_away)
+        self.af_refresh_timer_minuti(self._last_time_min)
+        self.af_refresh_timer_secondi(self._last_time_sec)
+        self.af_refresh_periodo(self._last_period)
 
     def _reset_table(self):
         self.second_units.value(1)
@@ -265,7 +272,6 @@ class PnCremaMqtt(MQTTClient):
                 self._refresh_timer_secondi(body["tempo_gioco"]["sec"])
             if self._current_status.get("sirena") != body["sirena"]:
                 self._stato_sirena(body["sirena"])
-                self._refresh_after_sirena(body)
             self._current_status = body
         except KeyError:
             pass
