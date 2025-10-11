@@ -219,6 +219,7 @@ class GameController(object):
                                    "timeout_casa":self.timeout_home,
                                    "timeout_trasferta": self.timeout_away,
                                    "timeout_clock":self._min_sec_fmt(self._current_time_out),
+                                   "sirena": self.sirena
                                    },
                      "display": {"tempo": self._formato_tempo_possesso_palla(), "sirena": self.sirena}}
             self.publish(self.CANALE_DISPLAY_STATO, json.dumps(stato["display"]))

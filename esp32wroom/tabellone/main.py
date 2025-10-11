@@ -34,7 +34,14 @@ class Display(object):
         self._last_goal_away = -1
         self._last_time_min = -1
         self._last_time_sec = -1
+        self._last_sirena = -1
         self._init_to_99()
+
+    def af_set_sirena(self, val):
+        self._af_sirena(val)
+        # if val:
+        #     self._write_units(0)
+        #     self._write_tens(0)
 
     def af_refresh_periodo(self,value):
         if self._last_period != value:
@@ -74,8 +81,12 @@ class Display(object):
         self._write_away_tens(val//10)
         self._write_away_units(val%10)
 
-    def set_sirena(self, val):
+    def _af_sirena(self, val):
+        if self._last_sirena != val:
+            self._last_sirena = val
         self.sirena.value(val)
+        # if not val:
+        #     self._refresh()
 
     def _reset_table(self):
         self.second_units.value(1)
@@ -248,9 +259,14 @@ class PnCremaMqtt(MQTTClient):
             if self._current_status.get("gol_trasferta") != body["gol_trasferta"]:
                 self._refresh_gol_trasferta(body["gol_trasferta"])
             self._refresh_timer_gioco(body["tempo_gioco"])
+            if self._current_status.get("sirena") != body["sirena"]:
+                self._stato_sirena(body["sirena"])
             self._current_status = body
         except KeyError:
             pass
+
+    def _stato_sirena(self, msg):
+        self._display.af_set_sirena(int(msg))
 
     def _refresh_periodo(self,value):
         self._display.af_refresh_periodo(int(value))
