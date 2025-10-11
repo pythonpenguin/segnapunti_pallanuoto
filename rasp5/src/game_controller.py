@@ -53,7 +53,8 @@ class GameController(object):
         self.game_running = False
         self.timeout_running = False
         self._current_time_out = 0
-        self.tempo_refresh = 0.25
+        self.default_tempo_refresh=0.25
+        self._current_tempo_refresh = self.default_tempo_refresh
         self._game_time_last_update = asyncio.get_event_loop().time()
         self._task_sirena = None
         self._task_timeout = None
@@ -77,7 +78,8 @@ class GameController(object):
         self.sirena = 0
         self.game_running = False
         self.timeout_running = False
-        self.tempo_refresh = 0.25
+        self.default_tempo_refresh = 0.25
+        self._current_tempo_refresh = self.default_tempo_refresh
         self._game_time_last_update = asyncio.get_event_loop().time()
         self._task_sirena = None
         self._current_time_out = 0
@@ -225,10 +227,14 @@ class GameController(object):
             self.publish(self.CANALE_DISPLAY_STATO, json.dumps(stato["display"]))
             self.publish(self.CANALE_TABELLONE_STATO, json.dumps(stato["tabellone"]))
             self.publish(self.REFRESH_GLOBALE, json.dumps(stato))
-            await asyncio.sleep(self.tempo_refresh)
+            if 0<self.tempo_periodo<1.0 or 0<self._current_time_out<1.0:
+                self._current_tempo_refresh=0.1
+            else:
+                self._current_tempo_refresh=self.default_tempo_refresh
+            await asyncio.sleep(self._current_tempo_refresh)
 
     async def tempo_gioco_loop(self):
-        _tempo_sleep = 0.02
+        _tempo_sleep = 0.01
         while self._loop_enable:
             now = asyncio.get_event_loop().time()
             if self.game_running and self.tempo_periodo > 0:
@@ -297,6 +303,10 @@ class GameController(object):
         self._task_sirena = None
 
     def _min_sec_fmt(self, timing):
+        if timing<1:
+            minuti=0
+            secondi=int(timing*100)
+            return {"min": f"{minuti:02}", "sec": f"{secondi:02}"}
         minuti, secondi = divmod(int(math.ceil(timing)), 60)
         return {"min": f"{minuti:02}", "sec": f"{secondi:02}"}
 

@@ -11,7 +11,7 @@ import json
 class GameConfigure(object):
     SERIE = "configurazione_serie.json"
 
-    DEFAULT = {"game_time": 480, "shot_time": 28, "periodi": 4, "shot_time_r": 18,
+    DEFAULT = {"game_time": 3, "shot_time": 28, "periodi": 4, "shot_time_r": 18,
                "shot_time_enable": True,"timeout_time": 60,"time_end_period":60,"half_time":120,
                "max_timeouts":2,"label_categoria":"Carica Categoria"}
 

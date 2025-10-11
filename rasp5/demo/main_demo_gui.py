@@ -18,6 +18,9 @@ import game_configure
 from gui import Tabellone
 
 
+BROKER = "10.42.0.1"
+# BROKER = "localhost"
+
 async def main_async(controller):
     # avvia i loop principali del controller
     await asyncio.gather(
@@ -36,10 +39,10 @@ def main():
     # NB: qui puoi passare il tuo game_configurator reale
     game_config = game_configure.GameConfigure("../var/configurazione_serie.json")
     game_config.read()
-    controller = GameController(game_config, "10.42.0.1")
+    controller = GameController(game_config, BROKER)
     controller.connect_to_broker()
 
-    gui = Tabellone(controller, "10.42.0.1")
+    gui = Tabellone(controller, BROKER)
     gui.show()
 
     # avvia i loop asyncio del controller
