@@ -258,15 +258,34 @@ class PnCremaMqtt(MQTTClient):
                 self._refresh_gol_casa(body["gol_casa"])
             if self._current_status.get("gol_trasferta") != body["gol_trasferta"]:
                 self._refresh_gol_trasferta(body["gol_trasferta"])
-            self._refresh_timer_gioco(body["tempo_gioco"])
+            _ct = self._current_status.get("tempo_gioco", {})
+            if _ct.get("min") != body["tempo_gioco"]["min"]:
+                self._refresh_timer_minuti(body["tempo_gioco"]["min"])
+            if _ct.get("sec") != body["tempo_gioco"]["sec"]:
+                self._refresh_timer_secondi(body["tempo_gioco"]["sec"])
             if self._current_status.get("sirena") != body["sirena"]:
                 self._stato_sirena(body["sirena"])
             self._current_status = body
         except KeyError:
             pass
 
+    def _refresh_after_sirena(self):
+        if not self._current_status:
+            return
+        try:
+            body = self._current_status.copy()
+            self._refresh_periodo(body["periodo"])
+            self._refresh_gol_casa(body["gol_casa"])
+            self._refresh_gol_trasferta(body["gol_trasferta"])
+            self._refresh_timer_minuti(body["tempo_gioco"]["min"])
+            self._refresh_timer_secondi(body["tempo_gioco"]["sec"])
+        except Exception:
+            pass
+
     def _stato_sirena(self, msg):
         self._display.af_set_sirena(int(msg))
+        if not int(msg):
+            self._refresh_after_sirena()
 
     def _refresh_periodo(self,value):
         self._display.af_refresh_periodo(int(value))
@@ -277,12 +296,18 @@ class PnCremaMqtt(MQTTClient):
     def _refresh_gol_trasferta(self,value):
         self._display.af_refresh_gol_trasferta(int(value))
 
-    def _refresh_timer_gioco(self,value):
-        _ct= self._current_status.get("tempo_gioco",{})
-        if _ct.get("min")!=value["min"]:
-            self._display.af_refresh_timer_minuti(int(value["min"]))
-        if _ct.get("sec") != value["sec"]:
-            self._display.af_refresh_timer_secondi(int(value["sec"]))
+    # def _refresh_timer_gioco(self,value):
+    #     _ct= self._current_status.get("tempo_gioco",{})
+    #     if _ct.get("min")!=value["min"]:
+    #         self._display.af_refresh_timer_minuti(int(value["min"]))
+    #     if _ct.get("sec") != value["sec"]:
+    #         self._display.af_refresh_timer_secondi(int(value["sec"]))
+
+    def _refresh_timer_minuti(self,value):
+        self._display.af_refresh_timer_minuti(int(value))
+
+    def _refresh_timer_secondi(self,value):
+        self._display.af_refresh_timer_secondi(int(value))
 
     def _update_sistema(self,msg):
         try:
