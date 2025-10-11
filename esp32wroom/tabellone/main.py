@@ -284,8 +284,7 @@ class PnCremaMqtt(MQTTClient):
 
     def _stato_sirena(self, msg):
         self._display.af_set_sirena(int(msg))
-        if not int(msg):
-            self._refresh_after_sirena()
+        self._refresh_after_sirena()
 
     def _refresh_periodo(self,value):
         self._display.af_refresh_periodo(int(value))
