@@ -278,7 +278,7 @@ class PnCremaMqtt(MQTTClient):
             self._refresh_timer_minuti(body["tempo_gioco"]["min"])
             self._refresh_timer_secondi(body["tempo_gioco"]["sec"])
         except Exception:
-            pass
+            self._refresh_periodo(6)
 
     def _stato_sirena(self, msg):
         self._display.af_set_sirena(int(msg))
@@ -291,13 +291,6 @@ class PnCremaMqtt(MQTTClient):
 
     def _refresh_gol_trasferta(self,value):
         self._display.af_refresh_gol_trasferta(int(value))
-
-    # def _refresh_timer_gioco(self,value):
-    #     _ct= self._current_status.get("tempo_gioco",{})
-    #     if _ct.get("min")!=value["min"]:
-    #         self._display.af_refresh_timer_minuti(int(value["min"]))
-    #     if _ct.get("sec") != value["sec"]:
-    #         self._display.af_refresh_timer_secondi(int(value["sec"]))
 
     def _refresh_timer_minuti(self,value):
         self._display.af_refresh_timer_minuti(int(value))
