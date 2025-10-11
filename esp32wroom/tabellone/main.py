@@ -252,7 +252,7 @@ class PnCremaMqtt(MQTTClient):
         try:
             body = json.loads(msg)
             if self._force_to_refresh:
-                self._current_status = {}
+                self._current_status = {"sirena":self._current_status.get("sirena")}
             if self._current_status.get("periodo")!=body["periodo"]:
                 self._refresh_periodo(body["periodo"])
             if self._current_status.get("gol_casa") != body["gol_casa"]:
@@ -266,8 +266,8 @@ class PnCremaMqtt(MQTTClient):
                 self._refresh_timer_secondi(body["tempo_gioco"]["sec"])
             if self._current_status.get("sirena") != body["sirena"]:
                 self._stato_sirena(body["sirena"])
-                if not int(body["sirena"]):
-                    self._force_to_refresh = True
+                # if not int(body["sirena"]):
+                self._force_to_refresh = True
             self._current_status = body
         except KeyError:
             pass
