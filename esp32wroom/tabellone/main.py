@@ -84,9 +84,9 @@ class Display(object):
     def _af_sirena(self, val):
         if self._last_sirena != val:
             self._last_sirena = val
-        self.sirena.value(val)
-        if not val:
-            self._refresh()
+            self.sirena.value(val)
+            if not val:
+                self._refresh()
 
     def _refresh(self):
         self.af_refresh_gol_casa(self._last_goal_home)
