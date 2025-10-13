@@ -71,9 +71,9 @@
     "periodi": 4,
     "shot_time_r": 0,
     "shot_time_enable": false,
-    "timeout_time": 60,
-    "time_end_period": 60,
+    "timeout_time": 120,
+    "time_end_period": 120,
     "half_time": 120,
-    "label_categoria": "UNDER 12"
+    "label_categoria": "ESORDIENTI"
   }
 }
