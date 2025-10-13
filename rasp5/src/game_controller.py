@@ -184,11 +184,9 @@ class GameController(object):
         self.sirena = 0
 
     def timeout_start(self):
-        if self.game_running:
+        if self.game_running or self.timeout_running:
             return
         if not self._current_time_out:
-            return
-        if self.timeout_running:
             return
         self.timeout_running = True
         self._task_timeout = asyncio.create_task(self._timeout_loop())
