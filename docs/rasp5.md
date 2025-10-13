@@ -41,6 +41,25 @@ Aprire il file **/boot/firmware/config.txt** e aggiungere
 dtoverlay=disable-wifi
 ```
 
+### Piccola diagnostica
+
+```sudo iwconfig 
+[sudo] password di davide: 
+lo        no wireless extensions.
+
+wlp0s20f3  IEEE 802.11  ESSID:"PallanuotoCrema"  
+          Mode:Managed  Frequency:2.412 GHz  Access Point: 14:5D:34:BF:3D:87   
+          Bit Rate=72.2 Mb/s   Tx-Power=22 dBm   
+          Retry short limit:7   RTS thr:off   Fragment thr:off
+          Encryption key:off
+          Power Management:on
+          Link Quality=48/70  Signal level=-62 dBm  
+          Rx invalid nwid:0  Rx invalid crypt:0  Rx invalid frag:0
+          Tx excessive retries:0  Invalid misc:33   Missed beacon:0
+```
+
+`sudo iw dev wlan0 scan | egrep "SSID|signal:|primary channel"` esegue lo scan delle reti
+
 ## Controllo temperatura ventola
 
 Usa il comando `vcgencmd measure_temp`
