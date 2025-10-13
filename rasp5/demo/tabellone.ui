@@ -649,7 +649,7 @@
 
         <action name="mc_actionUnder12">
             <property name="text">
-                <string>under 12</string>
+                <string>Esordienti</string>
             </property>
         </action>
         <action name="mc_actionragazzi">

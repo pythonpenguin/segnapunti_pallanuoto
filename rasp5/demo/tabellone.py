@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'tabellone.ui'
+# Form implementation generated from reading ui file 'rasp5/demo/tabellone.ui'
 #
 # Created by: PyQt6 UI code generator 6.9.1
 #
@@ -427,7 +427,7 @@ class Ui_TabelloneLED(object):
         self.buttonSirena.setText(_translate("TabelloneLED", "SIRENA"))
         self.buttonReset.setText(_translate("TabelloneLED", "RESET TOTALE"))
         self.menuCategoria.setTitle(_translate("TabelloneLED", "Categoria"))
-        self.mc_actionUnder12.setText(_translate("TabelloneLED", "under 12"))
+        self.mc_actionUnder12.setText(_translate("TabelloneLED", "Esordienti"))
         self.mc_actionragazzi.setText(_translate("TabelloneLED", "Ragazzi/e"))
         self.mc_actionallieve.setText(_translate("TabelloneLED", "Allieve 16F"))
         self.mc_actionallievi.setText(_translate("TabelloneLED", "Allievi 16M"))
