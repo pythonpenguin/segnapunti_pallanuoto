@@ -169,12 +169,18 @@ class GameController(object):
         self.timeout_away = max(self.timeout_away,0)
 
     def timeout_set_chiamato_squadre(self):
+        if self.timeout_running:
+            return
         self._current_time_out = self.tempo_timeout_chiamato_squadre
 
     def timeout_set_pausa_13(self):
+        if self.timeout_running:
+            return
         self._current_time_out = self.tempo_pausa_periodi_1_3
 
     def timeout_set_half_time(self):
+        if self.timeout_running:
+            return
         self._current_time_out = self.tempo_pause_meta_partita
 
     def sirena_on(self):
@@ -184,7 +190,7 @@ class GameController(object):
         self.sirena = 0
 
     def timeout_start(self):
-        if self.game_running or self.timeout_running:
+        if self.game_running:
             return
         if not self._current_time_out:
             return
@@ -195,9 +201,12 @@ class GameController(object):
         last = asyncio.get_event_loop().time()
         while self._current_time_out > 0.0:
             now = asyncio.get_event_loop().time()
-            delta = now - last
-            last = now
-            self._current_time_out -= delta
+            if self.timeout_running:
+                delta = now - last
+                last = now
+                self._current_time_out -= delta
+            else:
+                last = now
             await asyncio.sleep(0.05)
         self._current_time_out = 0.0
         self.timeout_running = False
@@ -210,7 +219,7 @@ class GameController(object):
         self._current_time_out = 0.0
 
     def timeout_stop(self):
-        pass
+        self._task_timeout.cancel()
 
     async def refresh(self):
         while self._loop_enable:
