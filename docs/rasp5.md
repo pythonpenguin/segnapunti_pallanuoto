@@ -40,3 +40,7 @@ Aprire il file **/boot/firmware/config.txt** e aggiungere
 ```[all]
 dtoverlay=disable-wifi
 ```
+
+## Controllo temperatura ventola
+
+Usa il comando `vcgencmd measure_temp`
