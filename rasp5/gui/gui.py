@@ -8,7 +8,7 @@
 
 import json
 import paho.mqtt.client as mqtt
-from PyQt6.QtWidgets import QMainWindow
+from PyQt6.QtWidgets import QMainWindow, QMessageBox
 import tabellone
 
 import game_controller
@@ -52,8 +52,8 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
 
         self.buttonStart.clicked.connect(self.start_game)
         self.buttonStop.clicked.connect(self.stop_game)
-        self.buttonTimeReload.clicked.connect(self.timeout_reload_time)
-        self.buttonReset.clicked.connect(self.reset_game)
+        self.buttonTimeReload.clicked.connect(self.safe_reload_time)
+        self.buttonReset.clicked.connect(self.on_reset_clicked)
         self.buttonSirena.clicked.connect(self.sirena)
 
         self.buttonTimeoutCalled.clicked.connect(self.timeout_chiamato)
@@ -130,8 +130,46 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
     def stop_game(self):
         self.controller.stop()
 
-    def reset_game(self):
-        self.controller.reset_match()
+    def on_reset_clicked(self):
+        if self.controller.game_running:
+            self.mostra_errore("Devi prima fermare il gicoo")
+            return
+        reply = QMessageBox.warning(
+            None,
+            "Conferma reset",
+            "⚠️ Sei sicuro di voler resettare tutto?\n\nQuesta azione non può essere annullata.",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No,
+        )
+
+        if reply == QMessageBox.StandardButton.Yes:
+            print("Eseguo reset totale...")
+            self._reset_game()
+        else:
+            print("Reset annullato")
+
+    def safe_reload_time(self):
+        if self.controller.game_running:
+            self.mostra_errore("Devi prima fermare il gicoo")
+            return
+        reply = QMessageBox.warning(None,
+            "Conferma Ricarica Tempo",
+            "⚠️ Premendo Yes riporti il tempo di gioco al valore iniziale",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No,
+        )
+
+        if reply == QMessageBox.StandardButton.Yes:
+            self.reload_time()
+        else:
+            print("Reset annullato")
+
+    def mostra_errore(self,msg):
+        QMessageBox.critical(self,
+            "Azione non consentita",
+            "⚠️ %s"%msg,
+            QMessageBox.StandardButton.Ok
+        )
 
     def sirena(self):
         self.controller.sirena_on()
@@ -151,7 +189,7 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
     def timeout_stop(self):
         self.controller.timeout_stop()
 
-    def timeout_reload_time(self):
+    def reload_time(self):
         self.controller.reset_tempo_periodo()
         self.controller.reset_possesso_palla()
 
@@ -176,6 +214,9 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
     def closeEvent(self, event):
         self.controller.shutdown()
         super().closeEvent(event)
+
+    def _reset_game(self):
+        self.controller.reset_match()
 
     def _load_categoria(self,value):
         self.controller.load_categoria(value)
