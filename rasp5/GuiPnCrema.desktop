@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Pallanuoto GUI
+Comment=Avvia l'interfaccia grafica della Pallanuoto Crema
+Exec=/home/davide/python_venv/bin/python /home/davide/segnapunti_pallanuoto/rasp5/gui
+Icon=/home/davide/segnapunti_pallanuoto/rasp5/icon.png
+Path=/home/davide/segnapunti_pallanuoto/
+Terminal=false
+Categories=Utility;
