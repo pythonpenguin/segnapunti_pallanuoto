@@ -46,7 +46,7 @@ class GameController(object):
         self.sirena = 0
         self.timeout_home = 0
         self.timeout_away = 0
-        self.max_timeout=0
+        self.max_timeout=2
 
         self.possesso_palla_enable=True
 
@@ -127,6 +127,30 @@ class GameController(object):
     def set_tempo_aggiuntivo(self):
         if self.tempo_possesso_palla < self.game_config.tempo_aggiuntivo():
             self.tempo_possesso_palla = min(self.game_config.tempo_aggiuntivo(),self.tempo_periodo)
+
+    def aggiungi_minuto_gioco(self):
+        if not self.game_running:
+            self.tempo_periodo = min(self.tempo_periodo+60,self.game_config.tempo_periodo())
+
+    def togli_minuto_gioco(self):
+        if not self.game_running:
+            self.tempo_periodo = max(self.tempo_periodo-60,0)
+
+    def aggiungi_secondo_gioco(self):
+        if not self.game_running:
+            self.tempo_periodo = min(self.tempo_periodo+1,self.game_config.tempo_periodo())
+
+    def togli_secondo_gioco(self):
+        if not self.game_running:
+            self.tempo_periodo = max(self.tempo_periodo-1,0)
+
+    def aggiungi_posesso_palla(self):
+        if not self.game_running and self.possesso_palla_enable:
+            self.tempo_possesso_palla = min(self.tempo_possesso_palla+1,self.game_config.tempo_gioco())
+
+    def togli_posesso_palla(self):
+        if not self.game_running and self.possesso_palla_enable:
+            self.tempo_possesso_palla = max(self.tempo_possesso_palla - 1, 0)
 
     def next_period(self):
         self.periodo += 1

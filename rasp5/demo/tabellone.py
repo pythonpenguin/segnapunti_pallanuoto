@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'rasp5/demo/tabellone.ui'
+# Form implementation generated from reading ui file 'tabellone.ui'
 #
 # Created by: PyQt6 UI code generator 6.9.1
 #

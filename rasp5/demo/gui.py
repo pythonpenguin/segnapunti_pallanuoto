@@ -35,6 +35,12 @@ class Tabellone(QMainWindow,tabellone.Ui_TabelloneLED):
         self.buttonGuestPlus.clicked.connect(self.goal_segnato_trasferta)
         self.buttonGuestMinus.clicked.connect(self.goal_tolto_trasferta)
 
+        self.buttonMinPlus.clicked.connect(self.add_min_plus)
+        self.buttonMinMinus.clicked.connect(self.rem_min_plus)
+
+        self.buttonSecPlus.clicked.connect(self.add_sec_plus)
+        self.buttonSecMinus.clicked.connect(self.rem_sec_plus)
+
         self.buttonPeriodPlus.clicked.connect(self.incrementa_periodo)
         self.buttonPeriodMinus.clicked.connect(self.decrementa_period)
 
@@ -56,6 +62,11 @@ class Tabellone(QMainWindow,tabellone.Ui_TabelloneLED):
         self.buttonTimeoutStart.clicked.connect(self.timeout_start)
         self.buttonTimeoutStop.clicked.connect(self.timeout_stop)
         self.buttonTimeoutReset.clicked.connect(self.timeout_reset)
+
+        self.buttonPossessoPlus.clicked.connect(self.add_possesso_palla_plus)
+        self.buttonPossessoMinus.clicked.connect(self.rem_possesso_palla_plus)
+
+
         self.mc_actionUnder12.triggered.connect(lambda:self._load_categoria("under12"))
         self.mc_actionragazzi.triggered.connect(lambda: self._load_categoria("ragazzi"))
         self.mc_actionallieve.triggered.connect(lambda: self._load_categoria("allieve"))
@@ -65,11 +76,29 @@ class Tabellone(QMainWindow,tabellone.Ui_TabelloneLED):
         self.mc_actionMaster.triggered.connect(lambda: self._load_categoria("master"))
 
 
+    def goal_tolto_home(self):
+        self.controller.goal_casa_meno()
+
     def goal_segnato_home(self):
         self.controller.goal_casa_piu()
 
-    def goal_tolto_home(self):
-        self.controller.goal_casa_meno()
+    def add_min_plus(self):
+        self.controller.aggiungi_minuto_gioco()
+
+    def rem_min_plus(self):
+        self.controller.togli_minuto_gioco()
+
+    def add_sec_plus(self):
+        self.controller.aggiungi_secondo_gioco()
+
+    def rem_sec_plus(self):
+        self.controller.togli_secondo_gioco()
+
+    def add_possesso_palla_plus(self):
+        self.controller.aggiungi_posesso_palla()
+
+    def rem_possesso_palla_plus(self):
+        self.controller.togli_posesso_palla()
 
     def goal_segnato_trasferta(self):
         self.controller.goal_tasferta_piu()
@@ -124,6 +153,7 @@ class Tabellone(QMainWindow,tabellone.Ui_TabelloneLED):
 
     def timeout_reload_time(self):
         self.controller.reset_tempo_periodo()
+        self.controller.reset_possesso_palla()
 
     def timeout_reset(self):
         self.controller.timeout_reset()
@@ -148,7 +178,6 @@ class Tabellone(QMainWindow,tabellone.Ui_TabelloneLED):
         super().closeEvent(event)
 
     def _load_categoria(self,value):
-        print("carico ",value)
         self.controller.load_categoria(value)
         self.labelCategoriaText.setText(self.controller.label_categoria())
 

@@ -8,7 +8,8 @@
     "timeout_time": 60,
     "time_end_period": 60,
     "half_time": 120,
-    "label_categoria": "ALLIEVE U16 F"
+    "label_categoria": "ALLIEVE U16 F",
+    "max_timeouts": 2
   },
   "allievi": {
     "game_time": 480,
@@ -19,7 +20,8 @@
     "timeout_time": 60,
     "time_end_period": 60,
     "half_time": 120,
-    "label_categoria": "ALLIEVI U16 M"
+    "label_categoria": "ALLIEVI U16 M",
+    "max_timeouts": 2
   },
   "junioresF": {
     "game_time": 480,
@@ -30,7 +32,8 @@
     "timeout_time": 60,
     "time_end_period": 60,
     "half_time": 120,
-    "label_categoria": "JUNIORES U18 F"
+    "label_categoria": "JUNIORES U18 F",
+    "max_timeouts": 2
   },
   "promozione": {
     "game_time": 480,
@@ -41,7 +44,8 @@
     "timeout_time": 60,
     "time_end_period": 60,
     "half_time": 120,
-    "label_categoria": "PROMOZIONE"
+    "label_categoria": "PROMOZIONE",
+    "max_timeouts": 2
   },
   "master": {
     "game_time": 480,
@@ -52,7 +56,8 @@
     "timeout_time": 60,
     "time_end_period": 60,
     "half_time": 120,
-    "label_categoria": "MASTER"
+    "label_categoria": "MASTER",
+    "max_timeouts": 2
   },
   "ragazzi": {
     "game_time": 420,
@@ -63,7 +68,8 @@
     "timeout_time": 60,
     "time_end_period": 60,
     "half_time": 120,
-    "label_categoria": "Ragazzi/e U14"
+    "label_categoria": "Ragazzi/e U14",
+    "max_timeouts": 2
   },
   "under12": {
     "game_time": 420,
@@ -74,6 +80,7 @@
     "timeout_time": 120,
     "time_end_period": 120,
     "half_time": 120,
-    "label_categoria": "ESORDIENTI"
+    "label_categoria": "ESORDIENTI",
+    "max_timeouts": 2
   }
 }

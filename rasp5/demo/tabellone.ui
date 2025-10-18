@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
     <class>TabelloneLED</class>
-    <!-- <widget class="QWidget" name="TabelloneLED"> -->
     <widget class="QMainWindow" name="TabelloneLED">
         <property name="geometry">
             <rect>
@@ -361,6 +360,8 @@
                         </item>
                     </layout>
                 </item>
+
+                <!-- RIGA TITOLI TIMEOUT -->
                 <item row="2" column="0">
                     <widget class="QLabel" name="labelTimeoutHomeText">
                         <property name="font">
@@ -409,6 +410,8 @@
                         </property>
                     </widget>
                 </item>
+
+                <!-- RIGA VALORI E COMANDI TIMEOUT -->
                 <item row="3" column="0">
                     <layout class="QHBoxLayout" name="layoutTimeoutHome">
                         <item>
@@ -589,6 +592,8 @@
                         </item>
                     </layout>
                 </item>
+
+                <!-- RIGA COMANDI FINALI -->
                 <item row="4" column="0" colspan="3">
                     <layout class="QHBoxLayout" name="layoutControls">
                         <item>
@@ -630,6 +635,7 @@
                 </item>
             </layout>
         </widget>
+
         <widget class="QMenuBar" name="menubar">
             <addaction name="menuCategoria"/>
         </widget>
