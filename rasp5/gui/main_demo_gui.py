@@ -15,7 +15,7 @@ from PyQt6.QtWidgets import QApplication
 from qasync import QEventLoop
 from game_controller import GameController
 import game_configure
-from rasp5.gui.gui import Tabellone
+from gui import Tabellone
 
 
 BROKER = "10.42.0.1"
