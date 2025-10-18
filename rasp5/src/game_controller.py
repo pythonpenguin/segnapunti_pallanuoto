@@ -111,7 +111,7 @@ class GameController(object):
             self.game_running = False
 
     def reset_possesso_palla(self):
-        self.tempo_possesso_palla = self.game_config.tempo_gioco()
+        self.tempo_possesso_palla = min(self.game_config.tempo_gioco(),self.tempo_periodo)
 
     def reset_tempo_periodo(self):
         if not self.game_running:
@@ -126,7 +126,7 @@ class GameController(object):
 
     def set_tempo_aggiuntivo(self):
         if self.tempo_possesso_palla < self.game_config.tempo_aggiuntivo():
-            self.tempo_possesso_palla = self.game_config.tempo_aggiuntivo()
+            self.tempo_possesso_palla = min(self.game_config.tempo_aggiuntivo(),self.tempo_periodo)
 
     def next_period(self):
         self.periodo += 1
