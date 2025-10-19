@@ -10,6 +10,8 @@ import sys
 import asyncio
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
+THIS_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__)))
+print(THIS_DIR)
 
 from PyQt6.QtWidgets import QApplication
 from qasync import QEventLoop
@@ -37,7 +39,10 @@ def main():
 
     # inizializza controller e GUI
     # NB: qui puoi passare il tuo game_configurator reale
-    game_config = game_configure.GameConfigure("../var/configurazione_serie.json")
+    var_dir = os.path.normpath(os.path.join(THIS_DIR,"..","var"))
+    file_cfg_path = os.path.join(var_dir,"configurazione_serie.json")
+    print(file_cfg_path)
+    game_config = game_configure.GameConfigure(file_cfg_path)
     game_config.read()
     controller = GameController(game_config, BROKER)
     controller.connect_to_broker()
