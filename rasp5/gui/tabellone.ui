@@ -197,7 +197,7 @@
                                         <property name="font">
                                             <font>
                                                 <family>DS-Digital</family>
-                                                <pointsize>50</pointsize>
+                                                <pointsize>40</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
@@ -251,7 +251,7 @@
                                         <property name="font">
                                             <font>
                                                 <family>DS-Digital</family>
-                                                <pointsize>40</pointsize>
+                                                <pointsize>30</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
@@ -294,12 +294,12 @@
                                         <property name="font">
                                             <font>
                                                 <family>DS-Digital</family>
-                                                <pointsize>14</pointsize>
+                                                <pointsize>20</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
                                         <property name="styleSheet">
-                                            <string notr="true">color:white;</string>
+                                            <string notr="true">color:blue;</string>
                                         </property>
                                         <property name="text">
                                             <string>1</string>
