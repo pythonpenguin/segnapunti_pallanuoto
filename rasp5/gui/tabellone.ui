@@ -464,9 +464,12 @@
                                     <widget class="QPushButton" name="buttonTimeoutCalled">
                                         <property name="font">
                                             <font>
-                                                <pointsize>10</pointsize>
+                                                <pointsize>20</pointsize>
                                                 <bold>true</bold>
                                             </font>
+                                        </property>
+                                        <property name="styleSheet">
+                                            <string notr="true">color:lightblue;</string>
                                         </property>
                                         <property name="text">
                                             <string>CHIAMATO</string>
@@ -475,9 +478,12 @@
                                 </item>
                                 <item>
                                     <widget class="QPushButton" name="buttonTimeout13">
+                                        <property name="styleSheet">
+                                            <string notr="true">color:lightblue;</string>
+                                        </property>
                                         <property name="font">
                                             <font>
-                                                <pointsize>10</pointsize>
+                                                <pointsize>20</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
@@ -488,9 +494,12 @@
                                 </item>
                                 <item>
                                     <widget class="QPushButton" name="buttonTimeoutHalf">
+                                        <property name="styleSheet">
+                                            <string notr="true">color:lightblue;</string>
+                                        </property>
                                         <property name="font">
                                             <font>
-                                                <pointsize>10</pointsize>
+                                                <pointsize>20</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
@@ -525,6 +534,9 @@
                             <layout class="QHBoxLayout" name="layoutTimeoutButtons">
                                 <item>
                                     <widget class="QPushButton" name="buttonTimeoutStart">
+                                        <property name="styleSheet">
+                                            <string notr="true">color:lightblue;</string>
+                                        </property>
                                         <property name="font">
                                             <font>
                                                 <pointsize>10</pointsize>
@@ -538,6 +550,9 @@
                                 </item>
                                 <item>
                                     <widget class="QPushButton" name="buttonTimeoutStop">
+                                        <property name="styleSheet">
+                                            <string notr="true">color:lightblue;</string>
+                                        </property>
                                         <property name="font">
                                             <font>
                                                 <pointsize>10</pointsize>
@@ -551,6 +566,9 @@
                                 </item>
                                 <item>
                                     <widget class="QPushButton" name="buttonTimeoutReset">
+                                        <property name="styleSheet">
+                                            <string notr="true">color:lightblue;</string>
+                                        </property>
                                         <property name="font">
                                             <font>
                                                 <pointsize>10</pointsize>
