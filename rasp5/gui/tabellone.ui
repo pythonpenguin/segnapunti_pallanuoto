@@ -33,10 +33,11 @@
                 #buttonStop { background-color: #B00000; min-height: 60px; font-size: 20pt; font-weight: bold; }
                 #buttonStop:pressed { background-color: #800000; min-height: 60px; font-size: 20pt; font-weight: bold; }
                 #buttonSirena { background-color: #FF8000; min-height: 60px; font-size: 20pt; font-weight: bold; }
-                #buttonSirena:pressed { background-color: #CC6600; min-height: 60px; font-size: 20pt; font-weight: bold; }
-                #buttonTimeReload { background-color: blue;  min-height: 60px; font-size: 20pt; font-weight: bold; }
+                #buttonSirena:pressed { background-color: #CC6600; min-height: 60px; font-size: 20pt; font-weight: bold;
+                }
+                #buttonTimeReload { background-color: blue; min-height: 60px; font-size: 20pt; font-weight: bold; }
                 #buttonReset { background-color: yellow; min-height: 60px; font-size: 20pt; font-weight: bold; }
-                #buttonReset:pressed { background-color: yellow;  min-height: 60px; font-size: 20pt; font-weight: bold; }
+                #buttonReset:pressed { background-color: yellow; min-height: 60px; font-size: 20pt; font-weight: bold; }
                 QPushButton[text="▲"], QPushButton[text="▼"] {
                 min-width: 60px;
                 max-width: 100px;
@@ -45,6 +46,13 @@
                 font-size: 25pt;
                 padding: 0px;
                 }
+                QMenuBar {
+                font-size: 25px;
+                }
+                QMenu {
+                font-size: 32px;
+                }
+
 
             </string>
         </property>
@@ -361,7 +369,7 @@
                     </layout>
                 </item>
 
-                
+
                 <item row="2" column="0">
                     <widget class="QLabel" name="labelTimeoutHomeText">
                         <property name="font">
@@ -411,7 +419,7 @@
                     </widget>
                 </item>
 
-                
+
                 <item row="3" column="0">
                     <layout class="QHBoxLayout" name="layoutTimeoutHome">
                         <item>
@@ -593,7 +601,7 @@
                     </layout>
                 </item>
 
-                
+
                 <item row="4" column="0" colspan="3">
                     <layout class="QHBoxLayout" name="layoutControls">
                         <item>
@@ -639,20 +647,20 @@
         </widget>
 
         <widget class="QMenuBar" name="menubar">
-            <addaction name="menuCategoria" />
+            <addaction name="menuCategoria"/>
         </widget>
 
         <widget class="QMenu" name="menuCategoria">
             <property name="title">
                 <string>Categoria</string>
             </property>
-            <addaction name="mc_actionUnder12" />
-            <addaction name="mc_actionragazzi" />
-            <addaction name="mc_actionallieve" />
-            <addaction name="mc_actionallievi" />
-            <addaction name="mc_actionjunioresF" />
-            <addaction name="mc_actionPromozione" />
-            <addaction name="mc_actionMaster" />
+            <addaction name="mc_actionUnder12"/>
+            <addaction name="mc_actionragazzi"/>
+            <addaction name="mc_actionallieve"/>
+            <addaction name="mc_actionallievi"/>
+            <addaction name="mc_actionjunioresF"/>
+            <addaction name="mc_actionPromozione"/>
+            <addaction name="mc_actionMaster"/>
         </widget>
 
         <action name="mc_actionUnder12">
@@ -691,6 +699,6 @@
             </property>
         </action>
     </widget>
-    <resources />
-    <connections />
+    <resources/>
+    <connections/>
 </ui>
