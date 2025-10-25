@@ -34,6 +34,7 @@ async def main_async(controller):
 
 def main():
     app = QApplication(sys.argv)
+    QApplication.setStyle("fusion")
     loop = QEventLoop(app)
     asyncio.set_event_loop(loop)
 

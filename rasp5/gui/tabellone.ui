@@ -55,8 +55,8 @@
                 min-width: 300px;
                 }
                 QMenu::item {
-                padding: 15px 40px; /* aumenta area cliccabile */
-                height: 60px; /* forza altezza minima item */
+                padding: 15px 20px; /* aumenta area cliccabile */
+                height: 30px; /* forza altezza minima item */
                 color: blue;
                 }
 

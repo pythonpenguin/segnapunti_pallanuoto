@@ -17,6 +17,7 @@ import game_controller
 BROKER = "localhost"
 TOPIC_STATO = "stato"
 
+
 class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
     def __init__(self, controller: game_controller.GameController,broker=BROKER):
         super().__init__()
