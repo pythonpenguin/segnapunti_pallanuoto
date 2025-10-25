@@ -321,6 +321,7 @@ class Ui_TabelloneLED(object):
         font.setPointSize(15)
         font.setBold(True)
         self.buttonTimeoutReset.setFont(font)
+        self.buttonTimeoutReset.setStyleSheet("color:lightblue;")
         self.buttonTimeoutReset.setObjectName("buttonTimeoutReset")
         self.layoutTimeoutButtons1.addWidget(self.buttonTimeoutReset)
         self.layoutTimeoutCenter.addLayout(self.layoutTimeoutButtons1)

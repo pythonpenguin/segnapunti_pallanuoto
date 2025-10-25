@@ -571,9 +571,9 @@
                                                 <pointsize>15</pointsize>
                                                 <bold>true</bold>
                                             </font>
-                                            <property name="styleSheet">
-                                                <string notr="true">color:lightblue;</string>
-                                            </property>
+                                        </property>
+                                        <property name="styleSheet">
+                                            <string notr="true">color:lightblue;</string>
                                         </property>
                                         <property name="text">
                                             <string>RESET</string>
