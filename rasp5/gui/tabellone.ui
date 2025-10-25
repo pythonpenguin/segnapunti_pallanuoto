@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <ui version="4.0">
     <class>TabelloneLED</class>
     <widget class="QMainWindow" name="TabelloneLED">
@@ -54,7 +54,7 @@
                     <widget class="QLabel" name="labelHomeText">
                         <property name="font">
                             <font>
-                                <pointsize>32</pointsize>
+                                <pointsize>28</pointsize>
                                 <bold>true</bold>
                             </font>
                         </property>
@@ -70,7 +70,7 @@
                     <widget class="QLabel" name="labelCategoriaText">
                         <property name="font">
                             <font>
-                                <pointsize>32</pointsize>
+                                <pointsize>28</pointsize>
                                 <bold>true</bold>
                             </font>
                         </property>
@@ -86,7 +86,7 @@
                     <widget class="QLabel" name="labelGuestText">
                         <property name="font">
                             <font>
-                                <pointsize>32</pointsize>
+                                <pointsize>28</pointsize>
                                 <bold>true</bold>
                             </font>
                         </property>
@@ -104,7 +104,7 @@
                             <widget class="QPushButton" name="buttonHomeMinus">
                                 <property name="font">
                                     <font>
-                                        <pointsize>9</pointsize>
+                                        <pointsize>8</pointsize>
                                     </font>
                                 </property>
                                 <property name="text">
@@ -123,7 +123,7 @@
                                 <property name="font">
                                     <font>
                                         <family>DS-Digital</family>
-                                        <pointsize>80</pointsize>
+                                        <pointsize>72</pointsize>
                                         <bold>true</bold>
                                     </font>
                                 </property>
@@ -142,7 +142,7 @@
                             <widget class="QPushButton" name="buttonHomePlus">
                                 <property name="font">
                                     <font>
-                                        <pointsize>9</pointsize>
+                                        <pointsize>8</pointsize>
                                     </font>
                                 </property>
                                 <property name="text">
@@ -179,7 +179,7 @@
                                         <property name="font">
                                             <font>
                                                 <family>DS-Digital</family>
-                                                <pointsize>150</pointsize>
+                                                <pointsize>135</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
@@ -220,7 +220,7 @@
                                     <widget class="QPushButton" name="buttonPossessoMinus">
                                         <property name="font">
                                             <font>
-                                                <pointsize>9</pointsize>
+                                                <pointsize>8</pointsize>
                                             </font>
                                         </property>
                                         <property name="text">
@@ -233,7 +233,7 @@
                                         <property name="font">
                                             <font>
                                                 <family>DS-Digital</family>
-                                                <pointsize>75</pointsize>
+                                                <pointsize>67</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
@@ -252,7 +252,7 @@
                                     <widget class="QPushButton" name="buttonPossessoPlus">
                                         <property name="font">
                                             <font>
-                                                <pointsize>9</pointsize>
+                                                <pointsize>8</pointsize>
                                             </font>
                                         </property>
                                         <property name="text">
@@ -276,7 +276,7 @@
                                         <property name="font">
                                             <font>
                                                 <family>DS-Digital</family>
-                                                <pointsize>40</pointsize>
+                                                <pointsize>36</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
@@ -308,7 +308,7 @@
                             <widget class="QPushButton" name="buttonGuestMinus">
                                 <property name="font">
                                     <font>
-                                        <pointsize>9</pointsize>
+                                        <pointsize>8</pointsize>
                                         <bold>false</bold>
                                     </font>
                                 </property>
@@ -328,7 +328,7 @@
                                 <property name="font">
                                     <font>
                                         <family>DS-Digital</family>
-                                        <pointsize>80</pointsize>
+                                        <pointsize>72</pointsize>
                                         <italic>false</italic>
                                         <bold>true</bold>
                                         <underline>false</underline>
@@ -350,7 +350,7 @@
                             <widget class="QPushButton" name="buttonGuestPlus">
                                 <property name="font">
                                     <font>
-                                        <pointsize>9</pointsize>
+                                        <pointsize>8</pointsize>
                                     </font>
                                 </property>
                                 <property name="text">
@@ -361,12 +361,12 @@
                     </layout>
                 </item>
 
-                <!-- RIGA TITOLI TIMEOUT -->
+                
                 <item row="2" column="0">
                     <widget class="QLabel" name="labelTimeoutHomeText">
                         <property name="font">
                             <font>
-                                <pointsize>32</pointsize>
+                                <pointsize>28</pointsize>
                                 <bold>true</bold>
                             </font>
                         </property>
@@ -382,7 +382,7 @@
                     <widget class="QLabel" name="labelTimeoutText">
                         <property name="font">
                             <font>
-                                <pointsize>32</pointsize>
+                                <pointsize>28</pointsize>
                                 <bold>true</bold>
                             </font>
                         </property>
@@ -398,7 +398,7 @@
                     <widget class="QLabel" name="labelTimeoutGuestText">
                         <property name="font">
                             <font>
-                                <pointsize>32</pointsize>
+                                <pointsize>28</pointsize>
                                 <bold>true</bold>
                             </font>
                         </property>
@@ -411,7 +411,7 @@
                     </widget>
                 </item>
 
-                <!-- RIGA VALORI E COMANDI TIMEOUT -->
+                
                 <item row="3" column="0">
                     <layout class="QHBoxLayout" name="layoutTimeoutHome">
                         <item>
@@ -426,7 +426,7 @@
                                 <property name="font">
                                     <font>
                                         <family>DS-Digital</family>
-                                        <pointsize>72</pointsize>
+                                        <pointsize>64</pointsize>
                                         <bold>true</bold>
                                     </font>
                                 </property>
@@ -455,7 +455,7 @@
                                     <widget class="QPushButton" name="buttonTimeoutCalled">
                                         <property name="font">
                                             <font>
-                                                <pointsize>12</pointsize>
+                                                <pointsize>10</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
@@ -468,7 +468,7 @@
                                     <widget class="QPushButton" name="buttonTimeout13">
                                         <property name="font">
                                             <font>
-                                                <pointsize>12</pointsize>
+                                                <pointsize>10</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
@@ -481,7 +481,7 @@
                                     <widget class="QPushButton" name="buttonTimeoutHalf">
                                         <property name="font">
                                             <font>
-                                                <pointsize>12</pointsize>
+                                                <pointsize>10</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
@@ -497,7 +497,7 @@
                                 <property name="font">
                                     <font>
                                         <family>DS-Digital</family>
-                                        <pointsize>96</pointsize>
+                                        <pointsize>86</pointsize>
                                         <bold>true</bold>
                                     </font>
                                 </property>
@@ -518,7 +518,7 @@
                                     <widget class="QPushButton" name="buttonTimeoutStart">
                                         <property name="font">
                                             <font>
-                                                <pointsize>12</pointsize>
+                                                <pointsize>10</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
@@ -531,7 +531,7 @@
                                     <widget class="QPushButton" name="buttonTimeoutStop">
                                         <property name="font">
                                             <font>
-                                                <pointsize>12</pointsize>
+                                                <pointsize>10</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
@@ -544,7 +544,7 @@
                                     <widget class="QPushButton" name="buttonTimeoutReset">
                                         <property name="font">
                                             <font>
-                                                <pointsize>12</pointsize>
+                                                <pointsize>10</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
@@ -571,7 +571,7 @@
                                 <property name="font">
                                     <font>
                                         <family>DS-Digital</family>
-                                        <pointsize>72</pointsize>
+                                        <pointsize>64</pointsize>
                                         <bold>true</bold>
                                     </font>
                                 </property>
@@ -593,7 +593,7 @@
                     </layout>
                 </item>
 
-                <!-- RIGA COMANDI FINALI -->
+                
                 <item row="4" column="0" colspan="3">
                     <layout class="QHBoxLayout" name="layoutControls">
                         <item>
@@ -639,20 +639,20 @@
         </widget>
 
         <widget class="QMenuBar" name="menubar">
-            <addaction name="menuCategoria"/>
+            <addaction name="menuCategoria" />
         </widget>
 
         <widget class="QMenu" name="menuCategoria">
             <property name="title">
                 <string>Categoria</string>
             </property>
-            <addaction name="mc_actionUnder12"/>
-            <addaction name="mc_actionragazzi"/>
-            <addaction name="mc_actionallieve"/>
-            <addaction name="mc_actionallievi"/>
-            <addaction name="mc_actionjunioresF"/>
-            <addaction name="mc_actionPromozione"/>
-            <addaction name="mc_actionMaster"/>
+            <addaction name="mc_actionUnder12" />
+            <addaction name="mc_actionragazzi" />
+            <addaction name="mc_actionallieve" />
+            <addaction name="mc_actionallievi" />
+            <addaction name="mc_actionjunioresF" />
+            <addaction name="mc_actionPromozione" />
+            <addaction name="mc_actionMaster" />
         </widget>
 
         <action name="mc_actionUnder12">
@@ -691,6 +691,6 @@
             </property>
         </action>
     </widget>
-    <resources/>
-    <connections/>
+    <resources />
+    <connections />
 </ui>
