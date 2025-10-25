@@ -464,7 +464,7 @@
                                     <widget class="QPushButton" name="buttonTimeoutCalled">
                                         <property name="font">
                                             <font>
-                                                <pointsize>20</pointsize>
+                                                <pointsize>15</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
@@ -483,7 +483,7 @@
                                         </property>
                                         <property name="font">
                                             <font>
-                                                <pointsize>20</pointsize>
+                                                <pointsize>15</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
@@ -499,7 +499,7 @@
                                         </property>
                                         <property name="font">
                                             <font>
-                                                <pointsize>20</pointsize>
+                                                <pointsize>15</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
@@ -539,7 +539,7 @@
                                         </property>
                                         <property name="font">
                                             <font>
-                                                <pointsize>10</pointsize>
+                                                <pointsize>15</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
@@ -555,7 +555,7 @@
                                         </property>
                                         <property name="font">
                                             <font>
-                                                <pointsize>10</pointsize>
+                                                <pointsize>15</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
@@ -571,7 +571,7 @@
                                         </property>
                                         <property name="font">
                                             <font>
-                                                <pointsize>10</pointsize>
+                                                <pointsize>15</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
