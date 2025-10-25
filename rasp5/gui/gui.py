@@ -77,6 +77,7 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
         self.mc_actionjunioresF.triggered.connect(lambda: self._load_categoria("junioresF"))
         self.mc_actionPromozione.triggered.connect(lambda: self._load_categoria("promozione"))
         self.mc_actionMaster.triggered.connect(lambda: self._load_categoria("master"))
+        self.mc_action3cvd.triggered.connect(lambda: self._load_categoria("torneo_donne_contro_violenza"))
         self.showFullScreen()
 
 

@@ -682,12 +682,14 @@
         </widget>
 
         <widget class="QMenuBar" name="menubar">
-            <addaction name="menuCategoria"/>
+            <addaction name="FIN"/>
+            <addaction name="PALLANUOTO_ITALIA"/>
+            <addaction name="TORNEI"/>
         </widget>
 
-        <widget class="QMenu" name="menuCategoria">
+        <widget class="QMenu" name="FIN">
             <property name="title">
-                <string>Categoria</string>
+                <string>FIN</string>
             </property>
             <addaction name="mc_actionUnder12"/>
             <addaction name="mc_actionragazzi"/>
@@ -695,7 +697,18 @@
             <addaction name="mc_actionallievi"/>
             <addaction name="mc_actionjunioresF"/>
             <addaction name="mc_actionPromozione"/>
+        </widget>
+        <widget class="QMenu" name="PALLANUOTO_ITALIA">
+            <property name="title">
+                <string>PALLANUOTO ITALIA</string>
+            </property>
             <addaction name="mc_actionMaster"/>
+        </widget>
+        <widget class="QMenu" name="TORNEI">
+            <property name="title">
+                <string>AMICHEVOLI</string>
+            </property>
+            <addaction name="mc_action3cvd"/>
         </widget>
 
         <action name="mc_actionUnder12">
@@ -731,6 +744,11 @@
         <action name="mc_actionMaster">
             <property name="text">
                 <string>MASTER</string>
+            </property>
+        </action>
+        <action name="mc_action3cvd">
+            <property name="text">
+                <string>Donne Contro la Violenza</string>
             </property>
         </action>
     </widget>

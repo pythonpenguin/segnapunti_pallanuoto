@@ -82,5 +82,17 @@
     "half_time": 120,
     "label_categoria": "ESORDIENTI",
     "max_timeouts": 2
+  },
+  "torneo_donne_contro_violenza": {
+    "game_time": 720,
+    "shot_time": 28,
+    "periodi": 2,
+    "shot_time_r": 18,
+    "shot_time_enable": true,
+    "timeout_time": 60,
+    "time_end_period": 60,
+    "half_time": 120,
+    "label_categoria": "DONNE CONTRO LA VIOLENZA",
+    "max_timeouts": 2
   }
 }
