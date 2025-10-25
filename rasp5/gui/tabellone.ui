@@ -247,6 +247,21 @@
                                     </widget>
                                 </item>
                                 <item>
+                                    <widget class="QPushButton" name="buttonPossessoReset">
+                                        <property name="font">
+                                            <font>
+                                                <pointsize>15</pointsize>
+                                            </font>
+                                        </property>
+                                        <property name="styleSheet">
+                                            <string notr="true">color:#FF0000;</string>
+                                        </property>
+                                        <property name="text">
+                                            <string>▲28▲</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
                                     <widget class="QLabel" name="labelPossesso">
                                         <property name="font">
                                             <font>
@@ -263,6 +278,21 @@
                                         </property>
                                         <property name="alignment">
                                             <set>Qt::AlignCenter</set>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="QPushButton" name="buttonPossessoExtend">
+                                        <property name="font">
+                                            <font>
+                                                <pointsize>15</pointsize>
+                                            </font>
+                                        </property>
+                                        <property name="styleSheet">
+                                            <string notr="true">color:#FF0000;</string>
+                                        </property>
+                                        <property name="text">
+                                            <string>▲18▲</string>
                                         </property>
                                     </widget>
                                 </item>

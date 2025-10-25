@@ -43,6 +43,9 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
         self.buttonSecPlus.clicked.connect(self.add_sec_plus)
         self.buttonSecMinus.clicked.connect(self.rem_sec_plus)
 
+        self.buttonPossessoReset.clicked.connect(self.on_possesso_reset_clicked)
+        self.buttonPossessoExtend.clicked.connect(self.on_possesso_add_clicked)
+
         self.buttonPeriodPlus.clicked.connect(self.incrementa_periodo)
         self.buttonPeriodMinus.clicked.connect(self.decrementa_period)
 
@@ -110,6 +113,12 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
 
     def goal_tolto_trasferta(self):
         self.controller.goal_tasferta_meno()
+
+    def on_possesso_reset_clicked(self):
+        self.controller.reset_possesso_palla()
+
+    def on_possesso_add_clicked(self):
+        self.controller.aggiungi_posesso_palla()
 
     def incrementa_periodo(self):
         self.controller.next_period()
