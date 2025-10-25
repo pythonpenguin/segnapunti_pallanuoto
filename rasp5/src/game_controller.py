@@ -216,6 +216,8 @@ class GameController(object):
     def timeout_start(self):
         if self.game_running:
             return
+        if self.timeout_running:
+            return
         if not self._current_time_out:
             return
         self.timeout_running = True
