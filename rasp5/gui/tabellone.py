@@ -240,7 +240,7 @@ class Ui_TabelloneLED(object):
         self.labelTimeOutHome = QtWidgets.QLabel(parent=self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("DS-Digital")
-        font.setPointSize(64)
+        font.setPointSize(20)
         font.setBold(True)
         self.labelTimeOutHome.setFont(font)
         self.labelTimeOutHome.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)

@@ -426,7 +426,7 @@
                                 <property name="font">
                                     <font>
                                         <family>DS-Digital</family>
-                                        <pointsize>64</pointsize>
+                                        <pointsize>20</pointsize>
                                         <bold>true</bold>
                                     </font>
                                 </property>
