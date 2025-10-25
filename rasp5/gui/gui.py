@@ -54,6 +54,7 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
         self.buttonStop.clicked.connect(self.stop_game)
         self.buttonTimeReload.clicked.connect(self.safe_reload_time)
         self.buttonReset.clicked.connect(self.on_reset_clicked)
+        self.buttonExit.clicked.connect(self.on_exit_clicked)
         self.buttonSirena.clicked.connect(self.sirena)
 
         self.buttonTimeoutCalled.clicked.connect(self.timeout_chiamato)
@@ -148,6 +149,21 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
             self._reset_game()
         else:
             print("Reset annullato")
+
+    def on_exit_clicked(self):
+        if self.controller.game_running:
+            self.mostra_errore("Devi prima fermare il gicoo")
+            return
+        reply = QMessageBox.warning(
+            None,
+            "Conferma uscita",
+            "⚠️ Sei sicuro di voler uscire?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No,
+        )
+
+        if reply == QMessageBox.StandardButton.Yes:
+            self.close()
 
     def safe_reload_time(self):
         if self.controller.game_running:

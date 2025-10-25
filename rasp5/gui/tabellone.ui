@@ -38,6 +38,7 @@
                 #buttonTimeReload { background-color: blue; min-height: 60px; font-size: 20pt; font-weight: bold; }
                 #buttonReset { background-color: yellow; min-height: 60px; font-size: 20pt; font-weight: bold; }
                 #buttonReset:pressed { background-color: yellow; min-height: 60px; font-size: 20pt; font-weight: bold; }
+                #buttonExit { background-color: purple; min-height: 60px; font-size: 20pt; font-weight: bold; }
                 QPushButton[text="▲"], QPushButton[text="▼"] {
                 min-width: 60px;
                 max-width: 100px;
@@ -637,6 +638,13 @@
                             <widget class="QPushButton" name="buttonReset">
                                 <property name="text">
                                     <string>RESET TOTALE</string>
+                                </property>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="QPushButton" name="buttonExit">
+                                <property name="text">
+                                    <string>ESCI</string>
                                 </property>
                             </widget>
                         </item>

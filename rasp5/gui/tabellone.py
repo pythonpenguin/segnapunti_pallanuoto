@@ -37,6 +37,7 @@ class Ui_TabelloneLED(object):
 "                #buttonTimeReload { background-color: blue; min-height: 60px; font-size: 20pt; font-weight: bold; }\n"
 "                #buttonReset { background-color: yellow; min-height: 60px; font-size: 20pt; font-weight: bold; }\n"
 "                #buttonReset:pressed { background-color: yellow; min-height: 60px; font-size: 20pt; font-weight: bold; }\n"
+"                #buttonExit { background-color: purple; min-height: 60px; font-size: 20pt; font-weight: bold; }\n"
 "                QPushButton[text=\"▲\"], QPushButton[text=\"▼\"] {\n"
 "                min-width: 60px;\n"
 "                max-width: 100px;\n"
@@ -354,6 +355,9 @@ class Ui_TabelloneLED(object):
         self.buttonReset = QtWidgets.QPushButton(parent=self.centralwidget)
         self.buttonReset.setObjectName("buttonReset")
         self.layoutControls.addWidget(self.buttonReset)
+        self.buttonExit = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.buttonExit.setObjectName("buttonExit")
+        self.layoutControls.addWidget(self.buttonExit)
         self.gridLayout.addLayout(self.layoutControls, 4, 0, 1, 3)
         self.gridLayout.setColumnStretch(0, 2)
         self.gridLayout.setColumnStretch(1, 1)
@@ -434,6 +438,7 @@ class Ui_TabelloneLED(object):
         self.buttonSirena.setText(_translate("TabelloneLED", "SIRENA"))
         self.buttonTimeReload.setText(_translate("TabelloneLED", "RICARICA TEMPO"))
         self.buttonReset.setText(_translate("TabelloneLED", "RESET TOTALE"))
+        self.buttonExit.setText(_translate("TabelloneLED", "ESCI"))
         self.menuCategoria.setTitle(_translate("TabelloneLED", "Categoria"))
         self.mc_actionUnder12.setText(_translate("TabelloneLED", "Esordienti"))
         self.mc_actionragazzi.setText(_translate("TabelloneLED", "Ragazzi/e"))
