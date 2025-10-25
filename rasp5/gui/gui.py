@@ -118,7 +118,7 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
         self.controller.reset_possesso_palla()
 
     def on_possesso_add_clicked(self):
-        self.controller.aggiungi_posesso_palla()
+        self.controller.set_tempo_aggiuntivo()
 
     def incrementa_periodo(self):
         self.controller.next_period()
