@@ -245,7 +245,9 @@ class GameController(object):
         self._current_time_out = 0.0
 
     def timeout_stop(self):
-        self._task_timeout.cancel()
+        if self._task_timeout:
+            self._task_timeout.cancel()
+            self.timeout_running = False
 
     async def refresh(self):
         while self._loop_enable:
