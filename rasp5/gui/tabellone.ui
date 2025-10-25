@@ -54,7 +54,7 @@
                     <widget class="QLabel" name="labelHomeText">
                         <property name="font">
                             <font>
-                                <pointsize>28</pointsize>
+                                <pointsize>20</pointsize>
                                 <bold>true</bold>
                             </font>
                         </property>
@@ -70,7 +70,7 @@
                     <widget class="QLabel" name="labelCategoriaText">
                         <property name="font">
                             <font>
-                                <pointsize>28</pointsize>
+                                <pointsize>20</pointsize>
                                 <bold>true</bold>
                             </font>
                         </property>
@@ -86,7 +86,7 @@
                     <widget class="QLabel" name="labelGuestText">
                         <property name="font">
                             <font>
-                                <pointsize>28</pointsize>
+                                <pointsize>20</pointsize>
                                 <bold>true</bold>
                             </font>
                         </property>
@@ -104,7 +104,7 @@
                             <widget class="QPushButton" name="buttonHomeMinus">
                                 <property name="font">
                                     <font>
-                                        <pointsize>12</pointsize>
+                                        <pointsize>20</pointsize>
                                     </font>
                                 </property>
                                 <property name="text">
@@ -123,7 +123,7 @@
                                 <property name="font">
                                     <font>
                                         <family>DS-Digital</family>
-                                        <pointsize>56</pointsize>
+                                        <pointsize>30</pointsize>
                                         <bold>true</bold>
                                     </font>
                                 </property>
@@ -142,7 +142,7 @@
                             <widget class="QPushButton" name="buttonHomePlus">
                                 <property name="font">
                                     <font>
-                                        <pointsize>12</pointsize>
+                                        <pointsize>20</pointsize>
                                     </font>
                                 </property>
                                 <property name="text">
@@ -179,7 +179,7 @@
                                         <property name="font">
                                             <font>
                                                 <family>DS-Digital</family>
-                                                <pointsize>80</pointsize>
+                                                <pointsize>50</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
@@ -220,7 +220,7 @@
                                     <widget class="QPushButton" name="buttonPossessoMinus">
                                         <property name="font">
                                             <font>
-                                                <pointsize>12</pointsize>
+                                                <pointsize>20</pointsize>
                                             </font>
                                         </property>
                                         <property name="text">
@@ -252,7 +252,7 @@
                                     <widget class="QPushButton" name="buttonPossessoPlus">
                                         <property name="font">
                                             <font>
-                                                <pointsize>12</pointsize>
+                                                <pointsize>20</pointsize>
                                             </font>
                                         </property>
                                         <property name="text">
@@ -308,7 +308,7 @@
                             <widget class="QPushButton" name="buttonGuestMinus">
                                 <property name="font">
                                     <font>
-                                        <pointsize>12</pointsize>
+                                        <pointsize>20</pointsize>
                                         <bold>false</bold>
                                     </font>
                                 </property>
@@ -328,7 +328,7 @@
                                 <property name="font">
                                     <font>
                                         <family>DS-Digital</family>
-                                        <pointsize>56</pointsize>
+                                        <pointsize>30</pointsize>
                                         <italic>false</italic>
                                         <bold>true</bold>
                                         <underline>false</underline>
@@ -350,7 +350,7 @@
                             <widget class="QPushButton" name="buttonGuestPlus">
                                 <property name="font">
                                     <font>
-                                        <pointsize>12</pointsize>
+                                        <pointsize>20</pointsize>
                                     </font>
                                 </property>
                                 <property name="text">
@@ -366,7 +366,7 @@
                     <widget class="QLabel" name="labelTimeoutHomeText">
                         <property name="font">
                             <font>
-                                <pointsize>28</pointsize>
+                                <pointsize>20</pointsize>
                                 <bold>true</bold>
                             </font>
                         </property>
@@ -382,7 +382,7 @@
                     <widget class="QLabel" name="labelTimeoutText">
                         <property name="font">
                             <font>
-                                <pointsize>28</pointsize>
+                                <pointsize>20</pointsize>
                                 <bold>true</bold>
                             </font>
                         </property>
@@ -398,7 +398,7 @@
                     <widget class="QLabel" name="labelTimeoutGuestText">
                         <property name="font">
                             <font>
-                                <pointsize>28</pointsize>
+                                <pointsize>20</pointsize>
                                 <bold>true</bold>
                             </font>
                         </property>
