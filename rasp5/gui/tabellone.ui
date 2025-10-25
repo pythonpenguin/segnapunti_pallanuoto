@@ -47,17 +47,20 @@
                 font-size: 15pt;
                 padding: 10px;
                 }
-                QMenuBar {
-                font-size: 25px;
-                }
                 QMenu {
-                padding: 20px;
+                font-size: 32px;
+                padding: 10px;
                 min-width: 300px;
                 }
+
                 QMenu::item {
-                padding: 15px 20px; /* aumenta area cliccabile */
-                height: 30px; /* forza altezza minima item */
-                color: blue;
+                padding: 15px 40px; /* aumenta spazio attorno al testo */
+                min-height: 60px; /* forza altezza minima “cliccabile” */
+                }
+
+                QMenu::item:selected {
+                background-color: #0066ff;
+                color: white;
                 }
 
 
