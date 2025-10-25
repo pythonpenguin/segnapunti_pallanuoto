@@ -28,21 +28,21 @@
                 QPushButton:pressed {
                 background-color: #111111;
                 }
-                #buttonStart { background-color: #008000; min-height: 90px; font-size: 20pt; font-weight: bold;}
-                #buttonStart:pressed { background-color: #004d00; min-height: 90px; font-size: 20pt; font-weight: bold;}
-                #buttonStop { background-color: #B00000; min-height: 90px; font-size: 20pt; font-weight: bold; }
-                #buttonStop:pressed { background-color: #800000; min-height: 90px; font-size: 20pt; font-weight: bold; }
-                #buttonSirena { background-color: #FF8000; min-height: 90px; font-size: 20pt; font-weight: bold; }
-                #buttonSirena:pressed { background-color: #CC6600; min-height: 90px; font-size: 20pt; font-weight: bold; }
-                #buttonTimeReload { background-color: blue;  min-height: 90px; font-size: 20pt; font-weight: bold; }
-                #buttonReset { background-color: yellow; min-height: 90px; font-size: 20pt; font-weight: bold; }
-                #buttonReset:pressed { background-color: yellow;  min-height: 90px; font-size: 20pt; font-weight: bold; }
+                #buttonStart { background-color: #008000; min-height: 60px; font-size: 20pt; font-weight: bold;}
+                #buttonStart:pressed { background-color: #004d00; min-height: 60px; font-size: 20pt; font-weight: bold;}
+                #buttonStop { background-color: #B00000; min-height: 60px; font-size: 20pt; font-weight: bold; }
+                #buttonStop:pressed { background-color: #800000; min-height: 60px; font-size: 20pt; font-weight: bold; }
+                #buttonSirena { background-color: #FF8000; min-height: 60px; font-size: 20pt; font-weight: bold; }
+                #buttonSirena:pressed { background-color: #CC6600; min-height: 60px; font-size: 20pt; font-weight: bold; }
+                #buttonTimeReload { background-color: blue;  min-height: 60px; font-size: 20pt; font-weight: bold; }
+                #buttonReset { background-color: yellow; min-height: 60px; font-size: 20pt; font-weight: bold; }
+                #buttonReset:pressed { background-color: yellow;  min-height: 60px; font-size: 20pt; font-weight: bold; }
                 QPushButton[text="▲"], QPushButton[text="▼"] {
-                min-width: 30px;
-                max-width: 40px;
-                min-height: 30px;
-                max-height: 40px;
-                font-size: 10pt;
+                min-width: 20px;
+                max-width: 30px;
+                min-height: 20px;
+                max-height: 30px;
+                font-size: 5pt;
                 padding: 0px;
                 }
 
@@ -104,7 +104,7 @@
                             <widget class="QPushButton" name="buttonHomeMinus">
                                 <property name="font">
                                     <font>
-                                        <pointsize>8</pointsize>
+                                        <pointsize>12</pointsize>
                                     </font>
                                 </property>
                                 <property name="text">
@@ -123,7 +123,7 @@
                                 <property name="font">
                                     <font>
                                         <family>DS-Digital</family>
-                                        <pointsize>72</pointsize>
+                                        <pointsize>56</pointsize>
                                         <bold>true</bold>
                                     </font>
                                 </property>
@@ -142,7 +142,7 @@
                             <widget class="QPushButton" name="buttonHomePlus">
                                 <property name="font">
                                     <font>
-                                        <pointsize>8</pointsize>
+                                        <pointsize>12</pointsize>
                                     </font>
                                 </property>
                                 <property name="text">
@@ -179,7 +179,7 @@
                                         <property name="font">
                                             <font>
                                                 <family>DS-Digital</family>
-                                                <pointsize>135</pointsize>
+                                                <pointsize>80</pointsize>
                                                 <bold>true</bold>
                                             </font>
                                         </property>
@@ -220,7 +220,7 @@
                                     <widget class="QPushButton" name="buttonPossessoMinus">
                                         <property name="font">
                                             <font>
-                                                <pointsize>8</pointsize>
+                                                <pointsize>12</pointsize>
                                             </font>
                                         </property>
                                         <property name="text">
@@ -252,7 +252,7 @@
                                     <widget class="QPushButton" name="buttonPossessoPlus">
                                         <property name="font">
                                             <font>
-                                                <pointsize>8</pointsize>
+                                                <pointsize>12</pointsize>
                                             </font>
                                         </property>
                                         <property name="text">
@@ -308,7 +308,7 @@
                             <widget class="QPushButton" name="buttonGuestMinus">
                                 <property name="font">
                                     <font>
-                                        <pointsize>8</pointsize>
+                                        <pointsize>12</pointsize>
                                         <bold>false</bold>
                                     </font>
                                 </property>
@@ -328,7 +328,7 @@
                                 <property name="font">
                                     <font>
                                         <family>DS-Digital</family>
-                                        <pointsize>72</pointsize>
+                                        <pointsize>56</pointsize>
                                         <italic>false</italic>
                                         <bold>true</bold>
                                         <underline>false</underline>
@@ -350,7 +350,7 @@
                             <widget class="QPushButton" name="buttonGuestPlus">
                                 <property name="font">
                                     <font>
-                                        <pointsize>8</pointsize>
+                                        <pointsize>12</pointsize>
                                     </font>
                                 </property>
                                 <property name="text">

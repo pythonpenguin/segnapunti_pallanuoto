@@ -27,21 +27,21 @@ class Ui_TabelloneLED(object):
 "                QPushButton:pressed {\n"
 "                background-color: #111111;\n"
 "                }\n"
-"                #buttonStart { background-color: #008000; min-height: 90px; font-size: 20pt; font-weight: bold;}\n"
-"                #buttonStart:pressed { background-color: #004d00; min-height: 90px; font-size: 20pt; font-weight: bold;}\n"
-"                #buttonStop { background-color: #B00000; min-height: 90px; font-size: 20pt; font-weight: bold; }\n"
-"                #buttonStop:pressed { background-color: #800000; min-height: 90px; font-size: 20pt; font-weight: bold; }\n"
-"                #buttonSirena { background-color: #FF8000; min-height: 90px; font-size: 20pt; font-weight: bold; }\n"
-"                #buttonSirena:pressed { background-color: #CC6600; min-height: 90px; font-size: 20pt; font-weight: bold; }\n"
-"                #buttonTimeReload { background-color: blue;  min-height: 90px; font-size: 20pt; font-weight: bold; }\n"
-"                #buttonReset { background-color: yellow; min-height: 90px; font-size: 20pt; font-weight: bold; }\n"
-"                #buttonReset:pressed { background-color: yellow;  min-height: 90px; font-size: 20pt; font-weight: bold; }\n"
+"                #buttonStart { background-color: #008000; min-height: 60px; font-size: 20pt; font-weight: bold;}\n"
+"                #buttonStart:pressed { background-color: #004d00; min-height: 60px; font-size: 20pt; font-weight: bold;}\n"
+"                #buttonStop { background-color: #B00000; min-height: 60px; font-size: 20pt; font-weight: bold; }\n"
+"                #buttonStop:pressed { background-color: #800000; min-height: 60px; font-size: 20pt; font-weight: bold; }\n"
+"                #buttonSirena { background-color: #FF8000; min-height: 60px; font-size: 20pt; font-weight: bold; }\n"
+"                #buttonSirena:pressed { background-color: #CC6600; min-height: 60px; font-size: 20pt; font-weight: bold; }\n"
+"                #buttonTimeReload { background-color: blue;  min-height: 60px; font-size: 20pt; font-weight: bold; }\n"
+"                #buttonReset { background-color: yellow; min-height: 60px; font-size: 20pt; font-weight: bold; }\n"
+"                #buttonReset:pressed { background-color: yellow;  min-height: 60px; font-size: 20pt; font-weight: bold; }\n"
 "                QPushButton[text=\"▲\"], QPushButton[text=\"▼\"] {\n"
-"                min-width: 30px;\n"
-"                max-width: 40px;\n"
-"                min-height: 30px;\n"
-"                max-height: 40px;\n"
-"                font-size: 10pt;\n"
+"                min-width: 20px;\n"
+"                max-width: 30px;\n"
+"                min-height: 20px;\n"
+"                max-height: 30px;\n"
+"                font-size: 5pt;\n"
 "                padding: 0px;\n"
 "                }\n"
 "\n"
@@ -78,7 +78,7 @@ class Ui_TabelloneLED(object):
         self.layoutHomeScore.setObjectName("layoutHomeScore")
         self.buttonHomeMinus = QtWidgets.QPushButton(parent=self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(8)
+        font.setPointSize(12)
         self.buttonHomeMinus.setFont(font)
         self.buttonHomeMinus.setObjectName("buttonHomeMinus")
         self.layoutHomeScore.addWidget(self.buttonHomeMinus)
@@ -86,7 +86,7 @@ class Ui_TabelloneLED(object):
         self.labelHomeScore.setSizeIncrement(QtCore.QSize(0, 0))
         font = QtGui.QFont()
         font.setFamily("DS-Digital")
-        font.setPointSize(72)
+        font.setPointSize(56)
         font.setBold(True)
         self.labelHomeScore.setFont(font)
         self.labelHomeScore.setStyleSheet("color:#00FF00;")
@@ -95,7 +95,7 @@ class Ui_TabelloneLED(object):
         self.layoutHomeScore.addWidget(self.labelHomeScore)
         self.buttonHomePlus = QtWidgets.QPushButton(parent=self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(8)
+        font.setPointSize(12)
         self.buttonHomePlus.setFont(font)
         self.buttonHomePlus.setObjectName("buttonHomePlus")
         self.layoutHomeScore.addWidget(self.buttonHomePlus)
@@ -116,7 +116,7 @@ class Ui_TabelloneLED(object):
         self.labelMainTime = QtWidgets.QLabel(parent=self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("DS-Digital")
-        font.setPointSize(135)
+        font.setPointSize(80)
         font.setBold(True)
         self.labelMainTime.setFont(font)
         self.labelMainTime.setStyleSheet("color:yellow;")
@@ -137,7 +137,7 @@ class Ui_TabelloneLED(object):
         self.layoutPossessoPalla.setObjectName("layoutPossessoPalla")
         self.buttonPossessoMinus = QtWidgets.QPushButton(parent=self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(8)
+        font.setPointSize(12)
         self.buttonPossessoMinus.setFont(font)
         self.buttonPossessoMinus.setObjectName("buttonPossessoMinus")
         self.layoutPossessoPalla.addWidget(self.buttonPossessoMinus)
@@ -153,7 +153,7 @@ class Ui_TabelloneLED(object):
         self.layoutPossessoPalla.addWidget(self.labelPossesso)
         self.buttonPossessoPlus = QtWidgets.QPushButton(parent=self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(8)
+        font.setPointSize(12)
         self.buttonPossessoPlus.setFont(font)
         self.buttonPossessoPlus.setObjectName("buttonPossessoPlus")
         self.layoutPossessoPalla.addWidget(self.buttonPossessoPlus)
@@ -182,7 +182,7 @@ class Ui_TabelloneLED(object):
         self.layoutGuestScore.setObjectName("layoutGuestScore")
         self.buttonGuestMinus = QtWidgets.QPushButton(parent=self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(8)
+        font.setPointSize(12)
         font.setBold(False)
         self.buttonGuestMinus.setFont(font)
         self.buttonGuestMinus.setObjectName("buttonGuestMinus")
@@ -191,7 +191,7 @@ class Ui_TabelloneLED(object):
         self.labelGuestScore.setMaximumSize(QtCore.QSize(16777215, 16777215))
         font = QtGui.QFont()
         font.setFamily("DS-Digital")
-        font.setPointSize(72)
+        font.setPointSize(56)
         font.setBold(True)
         font.setItalic(False)
         font.setUnderline(False)
@@ -203,7 +203,7 @@ class Ui_TabelloneLED(object):
         self.layoutGuestScore.addWidget(self.labelGuestScore)
         self.buttonGuestPlus = QtWidgets.QPushButton(parent=self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(8)
+        font.setPointSize(12)
         self.buttonGuestPlus.setFont(font)
         self.buttonGuestPlus.setObjectName("buttonGuestPlus")
         self.layoutGuestScore.addWidget(self.buttonGuestPlus)
