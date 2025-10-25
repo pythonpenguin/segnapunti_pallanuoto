@@ -78,7 +78,7 @@ class Ui_TabelloneLED(object):
         self.layoutHomeScore.setObjectName("layoutHomeScore")
         self.buttonHomeMinus = QtWidgets.QPushButton(parent=self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(30)
+        font.setPointSize(15)
         self.buttonHomeMinus.setFont(font)
         self.buttonHomeMinus.setObjectName("buttonHomeMinus")
         self.layoutHomeScore.addWidget(self.buttonHomeMinus)

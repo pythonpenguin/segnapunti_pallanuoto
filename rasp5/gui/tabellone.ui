@@ -104,7 +104,7 @@
                             <widget class="QPushButton" name="buttonHomeMinus">
                                 <property name="font">
                                     <font>
-                                        <pointsize>30</pointsize>
+                                        <pointsize>15</pointsize>
                                     </font>
                                 </property>
                                 <property name="text">
