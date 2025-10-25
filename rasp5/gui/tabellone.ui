@@ -38,10 +38,10 @@
                 #buttonReset { background-color: yellow; min-height: 60px; font-size: 20pt; font-weight: bold; }
                 #buttonReset:pressed { background-color: yellow;  min-height: 60px; font-size: 20pt; font-weight: bold; }
                 QPushButton[text="▲"], QPushButton[text="▼"] {
-                min-width: 80px;
-                max-width: 120px;
-                min-height: 80px;
-                max-height: 120px;
+                min-width: 60px;
+                max-width: 100px;
+                min-height: 60px;
+                max-height: 100px;
                 font-size: 25pt;
                 padding: 0px;
                 }
