@@ -48,10 +48,19 @@
                 padding: 10px;
                 }
                 QMenuBar {
-                font-size: 25px;
-                }
-                QMenu {
                 font-size: 32px;
+                spacing: 20px;
+                background-color: #0044cc;
+                }
+                QMenuBar::item {
+                background-color: #0044cc;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 8px;
+                }
+
+                QMenuBar::item:selected {
+                background-color: #0066ff;
                 }
 
 
