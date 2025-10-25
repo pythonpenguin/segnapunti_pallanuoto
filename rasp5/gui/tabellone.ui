@@ -40,12 +40,12 @@
                 #buttonReset:pressed { background-color: yellow; min-height: 60px; font-size: 20pt; font-weight: bold; }
                 #buttonExit { background-color: purple; min-height: 60px; font-size: 20pt; font-weight: bold; }
                 QPushButton[text="▲"], QPushButton[text="▼"] {
-                min-width: 60px;
-                max-width: 100px;
-                min-height: 60px;
-                max-height: 100px;
-                font-size: 25pt;
-                padding: 0px;
+                min-width: 40px;
+                max-width: 80px;
+                min-height: 40px;
+                max-height: 80px;
+                font-size: 15pt;
+                padding: 10px;
                 }
                 QMenuBar {
                 font-size: 25px;
@@ -629,7 +629,7 @@
                         <item>
                             <widget class="QPushButton" name="buttonTimeReload">
                                 <property name="text">
-                                    <string>RICARICA TEMPO</string>
+                                    <string>RICARICA</string>
                                 </property>
                             </widget>
                         </item>
@@ -637,7 +637,7 @@
                         <item>
                             <widget class="QPushButton" name="buttonReset">
                                 <property name="text">
-                                    <string>RESET TOTALE</string>
+                                    <string>RESETTA</string>
                                 </property>
                             </widget>
                         </item>

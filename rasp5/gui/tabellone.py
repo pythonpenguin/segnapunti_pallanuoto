@@ -39,12 +39,12 @@ class Ui_TabelloneLED(object):
 "                #buttonReset:pressed { background-color: yellow; min-height: 60px; font-size: 20pt; font-weight: bold; }\n"
 "                #buttonExit { background-color: purple; min-height: 60px; font-size: 20pt; font-weight: bold; }\n"
 "                QPushButton[text=\"▲\"], QPushButton[text=\"▼\"] {\n"
-"                min-width: 60px;\n"
-"                max-width: 100px;\n"
-"                min-height: 60px;\n"
-"                max-height: 100px;\n"
-"                font-size: 25pt;\n"
-"                padding: 0px;\n"
+"                min-width: 40px;\n"
+"                max-width: 80px;\n"
+"                min-height: 40px;\n"
+"                max-height: 80px;\n"
+"                font-size: 15pt;\n"
+"                padding: 10px;\n"
 "                }\n"
 "                QMenuBar {\n"
 "                font-size: 25px;\n"
@@ -436,8 +436,8 @@ class Ui_TabelloneLED(object):
         self.buttonStart.setText(_translate("TabelloneLED", "START"))
         self.buttonStop.setText(_translate("TabelloneLED", "STOP"))
         self.buttonSirena.setText(_translate("TabelloneLED", "SIRENA"))
-        self.buttonTimeReload.setText(_translate("TabelloneLED", "RICARICA TEMPO"))
-        self.buttonReset.setText(_translate("TabelloneLED", "RESET TOTALE"))
+        self.buttonTimeReload.setText(_translate("TabelloneLED", "RICARICA"))
+        self.buttonReset.setText(_translate("TabelloneLED", "RESETTA"))
         self.buttonExit.setText(_translate("TabelloneLED", "ESCI"))
         self.menuCategoria.setTitle(_translate("TabelloneLED", "Categoria"))
         self.mc_actionUnder12.setText(_translate("TabelloneLED", "Esordienti"))
