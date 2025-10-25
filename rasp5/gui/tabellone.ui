@@ -54,13 +54,13 @@
                 }
 
                 QMenu::item {
-                padding: 15px 40px; /* aumenta spazio attorno al testo */
-                min-height: 60px; /* forza altezza minima “cliccabile” */
+                padding: 10px 30px; /* aumenta spazio attorno al testo */
+                min-height: 40px; /* forza altezza minima “cliccabile” */
                 }
 
                 QMenu::item:selected {
                 background-color: #0066ff;
-                color: white;
+                color: yellow;
                 }
 
 
