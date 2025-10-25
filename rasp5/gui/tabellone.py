@@ -333,7 +333,7 @@ class Ui_TabelloneLED(object):
         self.labelTimeOutGuest = QtWidgets.QLabel(parent=self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("DS-Digital")
-        font.setPointSize(10)
+        font.setPointSize(20)
         font.setBold(True)
         self.labelTimeOutGuest.setFont(font)
         self.labelTimeOutGuest.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
