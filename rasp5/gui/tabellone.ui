@@ -38,11 +38,11 @@
                 #buttonReset { background-color: yellow; min-height: 60px; font-size: 20pt; font-weight: bold; }
                 #buttonReset:pressed { background-color: yellow;  min-height: 60px; font-size: 20pt; font-weight: bold; }
                 QPushButton[text="▲"], QPushButton[text="▼"] {
-                min-width: 20px;
-                max-width: 30px;
-                min-height: 20px;
-                max-height: 30px;
-                font-size: 5pt;
+                min-width: 80px;
+                max-width: 120px;
+                min-height: 80px;
+                max-height: 120px;
+                font-size: 25pt;
                 padding: 0px;
                 }
 
@@ -54,7 +54,7 @@
                     <widget class="QLabel" name="labelHomeText">
                         <property name="font">
                             <font>
-                                <pointsize>20</pointsize>
+                                <pointsize>45</pointsize>
                                 <bold>true</bold>
                             </font>
                         </property>
@@ -70,7 +70,7 @@
                     <widget class="QLabel" name="labelCategoriaText">
                         <property name="font">
                             <font>
-                                <pointsize>20</pointsize>
+                                <pointsize>45</pointsize>
                                 <bold>true</bold>
                             </font>
                         </property>
@@ -86,7 +86,7 @@
                     <widget class="QLabel" name="labelGuestText">
                         <property name="font">
                             <font>
-                                <pointsize>20</pointsize>
+                                <pointsize>45</pointsize>
                                 <bold>true</bold>
                             </font>
                         </property>
@@ -104,7 +104,7 @@
                             <widget class="QPushButton" name="buttonHomeMinus">
                                 <property name="font">
                                     <font>
-                                        <pointsize>20</pointsize>
+                                        <pointsize>245</pointsize>
                                     </font>
                                 </property>
                                 <property name="text">
@@ -142,7 +142,7 @@
                             <widget class="QPushButton" name="buttonHomePlus">
                                 <property name="font">
                                     <font>
-                                        <pointsize>20</pointsize>
+                                        <pointsize>45</pointsize>
                                     </font>
                                 </property>
                                 <property name="text">
@@ -220,7 +220,7 @@
                                     <widget class="QPushButton" name="buttonPossessoMinus">
                                         <property name="font">
                                             <font>
-                                                <pointsize>20</pointsize>
+                                                <pointsize>45</pointsize>
                                             </font>
                                         </property>
                                         <property name="text">
@@ -252,7 +252,7 @@
                                     <widget class="QPushButton" name="buttonPossessoPlus">
                                         <property name="font">
                                             <font>
-                                                <pointsize>20</pointsize>
+                                                <pointsize>45</pointsize>
                                             </font>
                                         </property>
                                         <property name="text">
@@ -308,7 +308,7 @@
                             <widget class="QPushButton" name="buttonGuestMinus">
                                 <property name="font">
                                     <font>
-                                        <pointsize>20</pointsize>
+                                        <pointsize>45</pointsize>
                                         <bold>false</bold>
                                     </font>
                                 </property>
@@ -350,7 +350,7 @@
                             <widget class="QPushButton" name="buttonGuestPlus">
                                 <property name="font">
                                     <font>
-                                        <pointsize>20</pointsize>
+                                        <pointsize>45</pointsize>
                                     </font>
                                 </property>
                                 <property name="text">
@@ -366,7 +366,7 @@
                     <widget class="QLabel" name="labelTimeoutHomeText">
                         <property name="font">
                             <font>
-                                <pointsize>20</pointsize>
+                                <pointsize>45</pointsize>
                                 <bold>true</bold>
                             </font>
                         </property>
@@ -382,7 +382,7 @@
                     <widget class="QLabel" name="labelTimeoutText">
                         <property name="font">
                             <font>
-                                <pointsize>20</pointsize>
+                                <pointsize>45</pointsize>
                                 <bold>true</bold>
                             </font>
                         </property>
@@ -398,7 +398,7 @@
                     <widget class="QLabel" name="labelTimeoutGuestText">
                         <property name="font">
                             <font>
-                                <pointsize>20</pointsize>
+                                <pointsize>45</pointsize>
                                 <bold>true</bold>
                             </font>
                         </property>

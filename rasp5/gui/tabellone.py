@@ -37,11 +37,11 @@ class Ui_TabelloneLED(object):
 "                #buttonReset { background-color: yellow; min-height: 60px; font-size: 20pt; font-weight: bold; }\n"
 "                #buttonReset:pressed { background-color: yellow;  min-height: 60px; font-size: 20pt; font-weight: bold; }\n"
 "                QPushButton[text=\"▲\"], QPushButton[text=\"▼\"] {\n"
-"                min-width: 20px;\n"
-"                max-width: 30px;\n"
-"                min-height: 20px;\n"
-"                max-height: 30px;\n"
-"                font-size: 5pt;\n"
+"                min-width: 80px;\n"
+"                max-width: 120px;\n"
+"                min-height: 80px;\n"
+"                max-height: 120px;\n"
+"                font-size: 25pt;\n"
 "                padding: 0px;\n"
 "                }\n"
 "\n"
@@ -52,7 +52,7 @@ class Ui_TabelloneLED(object):
         self.gridLayout.setObjectName("gridLayout")
         self.labelHomeText = QtWidgets.QLabel(parent=self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(20)
+        font.setPointSize(45)
         font.setBold(True)
         self.labelHomeText.setFont(font)
         self.labelHomeText.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -60,7 +60,7 @@ class Ui_TabelloneLED(object):
         self.gridLayout.addWidget(self.labelHomeText, 0, 0, 1, 1)
         self.labelCategoriaText = QtWidgets.QLabel(parent=self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(20)
+        font.setPointSize(45)
         font.setBold(True)
         self.labelCategoriaText.setFont(font)
         self.labelCategoriaText.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -68,7 +68,7 @@ class Ui_TabelloneLED(object):
         self.gridLayout.addWidget(self.labelCategoriaText, 0, 1, 1, 1)
         self.labelGuestText = QtWidgets.QLabel(parent=self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(20)
+        font.setPointSize(45)
         font.setBold(True)
         self.labelGuestText.setFont(font)
         self.labelGuestText.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -78,7 +78,7 @@ class Ui_TabelloneLED(object):
         self.layoutHomeScore.setObjectName("layoutHomeScore")
         self.buttonHomeMinus = QtWidgets.QPushButton(parent=self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(20)
+        font.setPointSize(245)
         self.buttonHomeMinus.setFont(font)
         self.buttonHomeMinus.setObjectName("buttonHomeMinus")
         self.layoutHomeScore.addWidget(self.buttonHomeMinus)
@@ -95,7 +95,7 @@ class Ui_TabelloneLED(object):
         self.layoutHomeScore.addWidget(self.labelHomeScore)
         self.buttonHomePlus = QtWidgets.QPushButton(parent=self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(20)
+        font.setPointSize(45)
         self.buttonHomePlus.setFont(font)
         self.buttonHomePlus.setObjectName("buttonHomePlus")
         self.layoutHomeScore.addWidget(self.buttonHomePlus)
@@ -137,7 +137,7 @@ class Ui_TabelloneLED(object):
         self.layoutPossessoPalla.setObjectName("layoutPossessoPalla")
         self.buttonPossessoMinus = QtWidgets.QPushButton(parent=self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(20)
+        font.setPointSize(45)
         self.buttonPossessoMinus.setFont(font)
         self.buttonPossessoMinus.setObjectName("buttonPossessoMinus")
         self.layoutPossessoPalla.addWidget(self.buttonPossessoMinus)
@@ -153,7 +153,7 @@ class Ui_TabelloneLED(object):
         self.layoutPossessoPalla.addWidget(self.labelPossesso)
         self.buttonPossessoPlus = QtWidgets.QPushButton(parent=self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(20)
+        font.setPointSize(45)
         self.buttonPossessoPlus.setFont(font)
         self.buttonPossessoPlus.setObjectName("buttonPossessoPlus")
         self.layoutPossessoPalla.addWidget(self.buttonPossessoPlus)
@@ -182,7 +182,7 @@ class Ui_TabelloneLED(object):
         self.layoutGuestScore.setObjectName("layoutGuestScore")
         self.buttonGuestMinus = QtWidgets.QPushButton(parent=self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(20)
+        font.setPointSize(45)
         font.setBold(False)
         self.buttonGuestMinus.setFont(font)
         self.buttonGuestMinus.setObjectName("buttonGuestMinus")
@@ -203,14 +203,14 @@ class Ui_TabelloneLED(object):
         self.layoutGuestScore.addWidget(self.labelGuestScore)
         self.buttonGuestPlus = QtWidgets.QPushButton(parent=self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(20)
+        font.setPointSize(45)
         self.buttonGuestPlus.setFont(font)
         self.buttonGuestPlus.setObjectName("buttonGuestPlus")
         self.layoutGuestScore.addWidget(self.buttonGuestPlus)
         self.gridLayout.addLayout(self.layoutGuestScore, 1, 2, 1, 1)
         self.labelTimeoutHomeText = QtWidgets.QLabel(parent=self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(20)
+        font.setPointSize(45)
         font.setBold(True)
         self.labelTimeoutHomeText.setFont(font)
         self.labelTimeoutHomeText.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -218,7 +218,7 @@ class Ui_TabelloneLED(object):
         self.gridLayout.addWidget(self.labelTimeoutHomeText, 2, 0, 1, 1)
         self.labelTimeoutText = QtWidgets.QLabel(parent=self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(20)
+        font.setPointSize(45)
         font.setBold(True)
         self.labelTimeoutText.setFont(font)
         self.labelTimeoutText.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -226,7 +226,7 @@ class Ui_TabelloneLED(object):
         self.gridLayout.addWidget(self.labelTimeoutText, 2, 1, 1, 1)
         self.labelTimeoutGuestText = QtWidgets.QLabel(parent=self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(20)
+        font.setPointSize(45)
         font.setBold(True)
         self.labelTimeoutGuestText.setFont(font)
         self.labelTimeoutGuestText.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
