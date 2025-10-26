@@ -93,8 +93,8 @@ class GameController(object):
             return
         self.client.connect(self.mqtt_host, keepalive=self.mqtt_keepalive)
 
-    def publish(self, topic, msg, retain=False):
-        self.client.publish(topic, msg, retain=retain)
+    def publish(self, topic, msg, retain=False,qos=0):
+        self.client.publish(topic, msg, retain=retain,qos=qos)
 
     def load_categoria(self, categoria):
         self.game_config.set_categoria(categoria)
@@ -261,8 +261,8 @@ class GameController(object):
                                    "sirena": self.sirena
                                    },
                      "display": {"tempo": self._formato_tempo_possesso_palla(), "sirena": self.sirena}}
-            self.publish(self.CANALE_DISPLAY_STATO, json.dumps(stato["display"]))
-            self.publish(self.CANALE_TABELLONE_STATO, json.dumps(stato["tabellone"]))
+            self.publish(self.CANALE_DISPLAY_STATO, json.dumps(stato["display"]),qos=1)
+            self.publish(self.CANALE_TABELLONE_STATO, json.dumps(stato["tabellone"]),qos=1)
             self.publish(self.REFRESH_GLOBALE, json.dumps(stato))
             if 0<self.tempo_periodo<1.0 or 0<self._current_time_out<1.0:
                 self._current_tempo_refresh=0.1
