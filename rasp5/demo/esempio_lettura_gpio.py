@@ -8,12 +8,13 @@
 
 import gpiod
 from gpiod.line import Direction,Bias,Edge
+from datetime import timedelta
 
 GPIOS = [4.17,14,15,18,27,22,23,24,5,6,13]
 
 def main():
     chip = gpiod.Chip('gpiochip0')
-    cfg = {x:gpiod.LineSettings(direction=Direction.INPUT,edge_detection=Edge.FALLING,debounce_period_us=10000,
+    cfg = {x:gpiod.LineSettings(direction=Direction.INPUT,edge_detection=Edge.FALLING,debounce_period=timedelta(milliseconds=10),
                                 bias=Bias.PULL_DOWN) for x in GPIOS}
     request = chip.request_lines(cfg,"console")
     try:
