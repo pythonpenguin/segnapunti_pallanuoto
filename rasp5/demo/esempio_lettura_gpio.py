@@ -11,12 +11,14 @@ GPIOS = [4, 17, 14, 15, 18, 27, 22, 23, 24, 5, 6, 13]
 DEBOUNCE_TIME = 0.010  # 10 millisecondi
 VERIFY_DELAY = 0.002  # 2ms per verifica stato stabile
 
+# Handle globale del chip
+chip_handle = None
 last_event_time = {gpio: 0 for gpio in GPIOS}
 
 
 def gpio_callback(chip, gpio, level, tick):
     """Callback con debounce e verifica stato stabile"""
-    global last_event_time
+    global last_event_time, chip_handle
 
     current_time = time.time()
 
@@ -28,13 +30,15 @@ def gpio_callback(chip, gpio, level, tick):
     time.sleep(VERIFY_DELAY)
 
     # Verifica che lo stato sia ancora basso (pressione vera)
-    if lgpio.gpio_read(chip, gpio) == 0:
+    if lgpio.gpio_read(chip_handle, gpio) == 0:
         print(f"GPIO RILEVATO ---> {gpio}")
         last_event_time[gpio] = current_time
 
 
 def main():
-    h = lgpio.gpiochip_open(0)
+    global chip_handle
+    chip_handle = lgpio.gpiochip_open(0)
+    h = chip_handle
 
     try:
         callbacks = []
