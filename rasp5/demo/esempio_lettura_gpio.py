@@ -8,8 +8,8 @@ import lgpio
 import time
 
 GPIOS = [4, 17, 14, 15, 18, 27, 22, 23, 24, 5, 6, 13]
-DEBOUNCE_TIME = 0.050  # 10 millisecondi
-VERIFY_DELAY = 0.010  # 2ms per verifica stato stabile
+DEBOUNCE_TIME = 0.200  # 10 millisecondi
+VERIFY_DELAY = 0.050  # 2ms per verifica stato stabile
 
 # Handle globale del chip
 chip_handle = None
