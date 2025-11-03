@@ -27,16 +27,16 @@ def validate_button_press(gpio, expected_level):
 
 def gpio_callback(chip, gpio, level, tick):
     """Callback per pulsanti in pull-down con validazione multipla"""
-    # Per PULL_DOWN + RISING_EDGE, ci aspettiamo level=1 quando premuto
-    expected_level = 1
-
-    # Valida con letture multiple
-    if validate_button_press(gpio, expected_level):
-        print(f"⚡ GPIO PREMUTO (VALIDATO) ---> {gpio}")
+    # Valida con letture multiple usando il livello ricevuto dall'evento
+    if validate_button_press(gpio, level):
+        if level == 1:
+            print(f"⚡ GPIO PREMUTO (VALIDATO) ---> {gpio}")
+        else:
+            print(f"🔄 GPIO RILASCIATO (VALIDATO) ---> {gpio}")
         print(f"⚡ VALUE ---> {level}")
         print(f"⚡ lgpio.gpio_read() ---> {lgpio.gpio_read(chip_handle, gpio)}")
     else:
-        print(f"⚠ GPIO {gpio} - Evento spurio ignorato")
+        print(f"⚠ GPIO {gpio} - Evento spurio ignorato (level={level})")
 
 
 def main():
@@ -47,18 +47,26 @@ def main():
     try:
         callbacks = []
         for gpio in GPIOS:
-            # Rileva RISING_EDGE (0→1) quando si preme il pulsante!
-            lgpio.gpio_claim_alert(h, gpio, lgpio.RISING_EDGE, lgpio.SET_PULL_DOWN)
+            # GPIO 13: rileva entrambi i fronti (pressione + rilascio)
+            if gpio == 13:
+                edge_type = lgpio.BOTH_EDGES
+                config_msg = "BOTH_EDGES"
+            else:
+                # Altri GPIO: solo RISING_EDGE (pressione)
+                edge_type = lgpio.RISING_EDGE
+                config_msg = "RISING_EDGE"
+
+            lgpio.gpio_claim_alert(h, gpio, edge_type, lgpio.SET_PULL_DOWN)
 
             # Imposta il debounce hardware
             lgpio.gpio_set_debounce_micros(h, gpio, DEBOUNCE_MICROS)
 
             # Registra la callback
-            cb = lgpio.callback(h, gpio, lgpio.RISING_EDGE, gpio_callback)
+            cb = lgpio.callback(h, gpio, edge_type, gpio_callback)
             callbacks.append(cb)
 
         print("✓ In attesa di eventi GPIO (CTRL+C per terminare)...")
-        print(f"✓ Configurazione: PULL_DOWN + RISING_EDGE")
+        print(f"✓ Configurazione: PULL_DOWN + RISING_EDGE (GPIO 13: BOTH_EDGES)")
         print(f"✓ Debounce hardware: {DEBOUNCE_MICROS / 1000}ms")
         print(f"✓ GPIO monitorati: {GPIOS}\n")
 
