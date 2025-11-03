@@ -17,7 +17,7 @@ last_event_time = {gpio: 0 for gpio in GPIOS}
 
 def gpio_callback(chip, gpio, level, tick):
     """Callback con debounce per pulsanti in pull-down"""
-    global last_event_time
+    # global last_event_time
 
     current_time = time.time()
 
@@ -39,10 +39,10 @@ def main():
         callbacks = []
         for gpio in GPIOS:
             # Configura input con pull-down
-            lgpio.gpio_claim_input(h, gpio, lgpio.SET_PULL_DOWN)
+            # lgpio.gpio_claim_input(h, gpio, lgpio.SET_PULL_DOWN)
 
             # Rileva RISING_EDGE (0→1) quando si preme il pulsante!
-            lgpio.gpio_claim_alert(h, gpio, lgpio.RISING_EDGE)
+            lgpio.gpio_claim_alert(h, gpio, lgpio.RISING_EDGE, lgpio.SET_PULL_DOWN)
             cb = lgpio.callback(h, gpio, lgpio.RISING_EDGE, gpio_callback)
             callbacks.append(cb)
 
@@ -52,7 +52,7 @@ def main():
         print(f"✓ GPIO monitorati: {GPIOS}\n")
 
         while True:
-            time.sleep(1)
+            time.sleep(0.2)
 
     except KeyboardInterrupt:
         print("\n✓ Programma terminato")
