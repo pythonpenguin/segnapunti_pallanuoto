@@ -28,6 +28,7 @@ def gpio_callback(chip, gpio, level, tick):
     # Evento valido
     print(f"⚡ GPIO PREMUTO ---> {gpio}")
     print(f"⚡ VALUE ---> {level}")
+    print(f"⚡ lgpio.gpio_read() ---> {lgpio.gpio_read(chip, gpio)}")
     last_event_time[gpio] = current_time
 
 
