@@ -16,9 +16,9 @@ chip_handle = None
 
 def gpio_callback(chip, gpio, level, tick):
     """Callback per pulsanti in pull-down (debounce gestito da lgpio)"""
-    print(f"⚡ GPIO PREMUTO ---> {gpio}")
-    print(f"⚡ VALUE ---> {level}")
-    print(f"⚡ lgpio.gpio_read() ---> {lgpio.gpio_read(chip_handle, gpio)}")
+    if level:
+        print(f"⚡ GPIO PREMUTO ---> {gpio}")
+        print(f"⚡ VALUE ---> {level}")
 
 
 def main():
