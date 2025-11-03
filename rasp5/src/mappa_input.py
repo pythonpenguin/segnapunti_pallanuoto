@@ -49,7 +49,8 @@ class MappaInput:
         self.chip_handle = None
         self.callbacks = []
         self._loop_enable = True
-        self._event_queue = asyncio.Queue()
+        self._event_queue = None  # Creata quando l'event loop è disponibile
+        self._event_loop = None
 
     def validate_button_press(self, gpio: int, expected_level: int) -> bool:
         """
@@ -75,19 +76,25 @@ class MappaInput:
         :param level: Livello del segnale (0 o 1)
         :param tick: Timestamp
         """
+        # Ignora se event loop non è ancora pronto
+        if self._event_queue is None or self._event_loop is None:
+            return
+
         # Valida l'evento
         if not self.validate_button_press(gpio, level):
-            print(f"⚠ GPIO {gpio} - Evento spurio ignorato (level={level})")
+            # Silenzioso per GPIO non mappati, altrimenti avvisa
+            action, _ = self.GPIO_MAPPING.get(gpio, (None, None))
+            if action is not None:
+                print(f"⚠ GPIO {gpio} - Evento spurio ignorato (level={level})")
             return
 
         # Metti l'evento validato nella queue per processing asincrono
         try:
-            asyncio.get_event_loop().call_soon_threadsafe(
+            self._event_loop.call_soon_threadsafe(
                 self._event_queue.put_nowait, (gpio, level)
             )
-        except RuntimeError:
-            # Event loop non disponibile
-            print(f"⚠ Event loop non disponibile per GPIO {gpio}")
+        except Exception as e:
+            print(f"⚠ Errore nella callback GPIO {gpio}: {e}")
 
     async def _process_events(self):
         """
@@ -168,6 +175,11 @@ class MappaInput:
         Avvia il processing degli eventi GPIO.
         Deve essere chiamato all'interno di un event loop asyncio.
         """
+        # Inizializza event loop e queue
+        self._event_loop = asyncio.get_event_loop()
+        self._event_queue = asyncio.Queue()
+
+        # Setup GPIO dopo aver preparato la queue
         self.setup_gpio()
         print("\n✓ MappaInput attivo - In attesa di eventi GPIO...")
         await self._process_events()
