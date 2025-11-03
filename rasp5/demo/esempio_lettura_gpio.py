@@ -15,8 +15,8 @@ chip_handle = None
 
 
 def gpio_callback(chip, gpio, level, tick):
-    """Callback per pulsanti in pull-down (debounce gestito da lgpio)"""
-    if level:
+    """Callback per pulsanti in pull-up (debounce gestito da lgpio)"""
+    if not level:  # FALLING_EDGE: level passa da 1 a 0 quando si preme
         print(f"⚡ GPIO PREMUTO ---> {gpio}")
         print(f"⚡ VALUE ---> {level}")
 
@@ -29,18 +29,18 @@ def main():
     try:
         callbacks = []
         for gpio in GPIOS:
-            # Rileva RISING_EDGE (0→1) quando si preme il pulsante!
-            lgpio.gpio_claim_alert(h, gpio, lgpio.RISING_EDGE, lgpio.SET_PULL_DOWN)
+            # Rileva FALLING_EDGE (1→0) quando si preme il pulsante con pull-up
+            lgpio.gpio_claim_alert(h, gpio, lgpio.FALLING_EDGE, lgpio.SET_PULL_UP)
 
             # Imposta il debounce hardware
             lgpio.gpio_set_debounce_micros(h, gpio, DEBOUNCE_MICROS)
 
             # Registra la callback
-            cb = lgpio.callback(h, gpio, lgpio.RISING_EDGE, gpio_callback)
+            cb = lgpio.callback(h, gpio, lgpio.FALLING_EDGE, gpio_callback)
             callbacks.append(cb)
 
         print("✓ In attesa di eventi GPIO (CTRL+C per terminare)...")
-        print(f"✓ Configurazione: PULL_DOWN + RISING_EDGE")
+        print(f"✓ Configurazione: PULL_UP + FALLING_EDGE")
         print(f"✓ Debounce hardware: {DEBOUNCE_MICROS / 1000}ms")
         print(f"✓ GPIO monitorati: {GPIOS}\n")
 
