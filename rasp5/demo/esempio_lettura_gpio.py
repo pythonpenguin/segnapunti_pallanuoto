@@ -8,17 +8,35 @@ import lgpio
 import time
 
 GPIOS = [4, 17, 14, 15, 18, 27, 22, 23, 24, 5, 6, 13]
-DEBOUNCE_MICROS = 100000  # 100ms in microsecondi per debounce hardware
+DEBOUNCE_MICROS = 10000  # 100ms in microsecondi per debounce hardware
+VALIDATION_READS = 3  # Numero di letture consecutive per validare
+VALIDATION_DELAY = 0.002  # 2ms tra una lettura e l'altra
 
 # Handle globale del chip
 chip_handle = None
 
 
+def validate_button_press(gpio, expected_level):
+    """Valida la pressione del pulsante con letture multiple"""
+    for _ in range(VALIDATION_READS):
+        if lgpio.gpio_read(chip_handle, gpio) != expected_level:
+            return False
+        time.sleep(VALIDATION_DELAY)
+    return True
+
+
 def gpio_callback(chip, gpio, level, tick):
-    """Callback per pulsanti in pull-down (debounce gestito da lgpio)"""
-    print(f"⚡ GPIO PREMUTO ---> {gpio}")
-    print(f"⚡ VALUE ---> {level}")
-    print(f"⚡ lgpio.gpio_read() ---> {lgpio.gpio_read(chip_handle, gpio)}")
+    """Callback per pulsanti in pull-down con validazione multipla"""
+    # Per PULL_DOWN + RISING_EDGE, ci aspettiamo level=1 quando premuto
+    expected_level = 1
+
+    # Valida con letture multiple
+    if validate_button_press(gpio, expected_level):
+        print(f"⚡ GPIO PREMUTO (VALIDATO) ---> {gpio}")
+        print(f"⚡ VALUE ---> {level}")
+        print(f"⚡ lgpio.gpio_read() ---> {lgpio.gpio_read(chip_handle, gpio)}")
+    else:
+        print(f"⚠ GPIO {gpio} - Evento spurio ignorato")
 
 
 def main():
