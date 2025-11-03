@@ -18,17 +18,19 @@ from qasync import QEventLoop
 from game_controller import GameController
 import game_configure
 from gui import Tabellone
+from mappa_input import MappaInput
 
 
 # BROKER = "10.42.0.1"
 BROKER = "localhost"
 
-async def main_async(controller):
-    # avvia i loop principali del controller
+async def main_async(controller, mapper):
+    # avvia i loop principali del controller + input GPIO
     await asyncio.gather(
         controller.tempo_gioco_loop(),
         controller.refresh(),
-        controller.input_loop(),
+        controller.input_loop(),  # Input da tastiera
+        mapper.start()             # Input da GPIO
     )
 
 
@@ -47,11 +49,14 @@ def main():
     controller = GameController(game_config, BROKER)
     controller.connect_to_broker()
 
+    # inizializza il mapper GPIO
+    mapper = MappaInput(controller)
+
     gui = Tabellone(controller, BROKER)
     gui.show()
 
-    # avvia i loop asyncio del controller
-    asyncio.ensure_future(main_async(controller))
+    # avvia i loop asyncio del controller + GPIO mapper
+    asyncio.ensure_future(main_async(controller, mapper))
 
     with loop:
         loop.run_forever()
