@@ -48,7 +48,7 @@ def main():
         callbacks = []
         for gpio in GPIOS:
             # GPIO 13: rileva entrambi i fronti (pressione + rilascio)
-            if gpio == 13:
+            if gpio in (13,5,6):
                 edge_type = lgpio.BOTH_EDGES
                 config_msg = "BOTH_EDGES"
             else:
