@@ -8,8 +8,8 @@ import lgpio
 import time
 
 GPIOS = [4, 17, 14, 15, 18, 27, 22, 23, 24, 5, 6, 13]
-DEBOUNCE_MICROS = 10000  # 100ms in microsecondi per debounce hardware
-VALIDATION_READS = 3  # Numero di letture consecutive per validare
+DEBOUNCE_MICROS = 1000  # 1ms in microsecondi per debounce hardware
+VALIDATION_READS = 5  # Numero di letture consecutive per validare
 VALIDATION_DELAY = 0.002  # 2ms tra una lettura e l'altra
 
 # Handle globale del chip
