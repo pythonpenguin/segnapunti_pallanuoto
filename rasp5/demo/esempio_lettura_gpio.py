@@ -8,7 +8,7 @@ import lgpio
 import time
 
 GPIOS = [4, 17, 14, 15, 18, 27, 22, 23, 24, 5, 6, 13]
-DEBOUNCE_MICROS = 500000  # 50ms in microsecondi per debounce hardware
+DEBOUNCE_MICROS = 100000  # 100ms in microsecondi per debounce hardware
 
 # Handle globale del chip
 chip_handle = None
