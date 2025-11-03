@@ -8,28 +8,17 @@ import lgpio
 import time
 
 GPIOS = [4, 17, 14, 15, 18, 27, 22, 23, 24, 5, 6, 13]
-DEBOUNCE_TIME = 0.05  # 50ms (aumentato per eliminare rimbalzi)
+DEBOUNCE_MICROS = 50000  # 50ms in microsecondi per debounce hardware
 
 # Handle globale del chip
 chip_handle = None
-last_event_time = {gpio: 0 for gpio in GPIOS}
 
 
 def gpio_callback(chip, gpio, level, tick):
-    """Callback con debounce per pulsanti in pull-down"""
-    # global last_event_time
-
-    current_time = time.time()
-
-    # Debounce: ignora se troppo vicino all'ultimo evento
-    if current_time - last_event_time[gpio] < DEBOUNCE_TIME:
-        return
-
-    # Evento valido
+    """Callback per pulsanti in pull-down (debounce gestito da lgpio)"""
     print(f"⚡ GPIO PREMUTO ---> {gpio}")
     print(f"⚡ VALUE ---> {level}")
     print(f"⚡ lgpio.gpio_read() ---> {lgpio.gpio_read(chip_handle, gpio)}")
-    last_event_time[gpio] = current_time
 
 
 def main():
@@ -40,17 +29,19 @@ def main():
     try:
         callbacks = []
         for gpio in GPIOS:
-            # Configura input con pull-down
-            # lgpio.gpio_claim_input(h, gpio, lgpio.SET_PULL_DOWN)
-
             # Rileva RISING_EDGE (0→1) quando si preme il pulsante!
             lgpio.gpio_claim_alert(h, gpio, lgpio.RISING_EDGE, lgpio.SET_PULL_DOWN)
+
+            # Imposta il debounce hardware
+            lgpio.gpio_set_debounce_micros(h, gpio, DEBOUNCE_MICROS)
+
+            # Registra la callback
             cb = lgpio.callback(h, gpio, lgpio.RISING_EDGE, gpio_callback)
             callbacks.append(cb)
 
         print("✓ In attesa di eventi GPIO (CTRL+C per terminare)...")
         print(f"✓ Configurazione: PULL_DOWN + RISING_EDGE")
-        print(f"✓ Debounce: {DEBOUNCE_TIME * 1000}ms")
+        print(f"✓ Debounce hardware: {DEBOUNCE_MICROS / 1000}ms")
         print(f"✓ GPIO monitorati: {GPIOS}\n")
 
         while True:
