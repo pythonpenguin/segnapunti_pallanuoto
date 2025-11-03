@@ -20,8 +20,8 @@ import game_configure
 from gui import Tabellone
 
 
-BROKER = "10.42.0.1"
-# BROKER = "localhost"
+# BROKER = "10.42.0.1"
+BROKER = "localhost"
 
 async def main_async(controller):
     # avvia i loop principali del controller
@@ -39,7 +39,6 @@ def main():
     asyncio.set_event_loop(loop)
 
     # inizializza controller e GUI
-    # NB: qui puoi passare il tuo game_configurator reale
     var_dir = os.path.normpath(os.path.join(THIS_DIR,"..","var"))
     file_cfg_path = os.path.join(var_dir,"configurazione_serie.json")
     print(file_cfg_path)
