@@ -47,15 +47,7 @@ def main():
     try:
         callbacks = []
         for gpio in GPIOS:
-            # GPIO 13: rileva entrambi i fronti (pressione + rilascio)
-            if gpio in (13, 5, 6):
-                edge_type = lgpio.BOTH_EDGES
-                config_msg = "BOTH_EDGES"
-            else:
-                # Altri GPIO: solo RISING_EDGE (pressione)
-                edge_type = lgpio.RISING_EDGE
-                config_msg = "RISING_EDGE"
-
+            edge_type = lgpio.BOTH_EDGES
             lgpio.gpio_claim_alert(h, gpio, edge_type, lgpio.SET_PULL_DOWN)
 
             # Imposta il debounce hardware
@@ -66,7 +58,7 @@ def main():
             callbacks.append(cb)
 
         print("✓ In attesa di eventi GPIO (CTRL+C per terminare)...")
-        print(f"✓ Configurazione: PULL_DOWN + RISING_EDGE (GPIO 13: BOTH_EDGES)")
+        print(f"✓ Configurazione: PULL_DOWN + BOTH_EDGES")
         print(f"✓ Debounce hardware: {DEBOUNCE_MICROS / 1000}ms")
         print(f"✓ GPIO monitorati: {GPIOS}\n")
 
