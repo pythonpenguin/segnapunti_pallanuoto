@@ -28,9 +28,9 @@ class MappaInput:
         23: ("goal_casa_piu", "RISING_EDGE"),           # Bottone 1
         17: ("goal_casa_meno", "RISING_EDGE"),          # Bottone 2
         24: (None, "RISING_EDGE"),                       # Bottone 3 - non mappato
-        6: (None, "RISING_EDGE"),                        # Bottone 4 - non mappato
+        6: ("reset_possesso_palla", "RISING_EDGE"),      # Bottone 4 - 28 secondi
         13: ("start_stop", "BOTH_EDGES"),                # Bottone 5 - start/stop
-        5: (None, "RISING_EDGE"),                        # Bottone 6 - non mappato
+        5: ("set_tempo_aggiuntivo", "RISING_EDGE"),      # Bottone 6 - 18 secondi
         18: ("goal_tasferta_piu", "RISING_EDGE"),       # Bottone 7
         27: ("goal_tasferta_meno", "RISING_EDGE"),      # Bottone 8
         15: (None, "RISING_EDGE"),                       # Bottone 9 - non mappato
