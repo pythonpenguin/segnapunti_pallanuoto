@@ -36,7 +36,7 @@ class MappaInput:
         15: ("prev_period", "RISING_EDGE"),                       # Bottone 9 - non mappato
         22: (None, "RISING_EDGE"),                       # Bottone 10 - non mappato
         14: (None, "RISING_EDGE"),                       # Bottone 11 - non mappato
-        4: (None, "RISING_EDGE"),                        # Bottone 12 - non mappato
+        4: ("sirena_on_off", "BOTH_EDGES"),                        # Bottone 12 - non mappato
     }
 
     def __init__(self, game_controller):
@@ -132,15 +132,26 @@ class MappaInput:
             else:
                 print(f"⏸ STOP (GPIO {gpio})")
                 self.game_controller.stop()
-        else:
-            # Azioni normali: esegui solo su RISING_EDGE (level=1)
-            if level == 1:
-                method = getattr(self.game_controller, action, None)
-                if method and callable(method):
-                    print(f"⚡ Azione: {action} (GPIO {gpio})")
-                    method()
-                else:
-                    print(f"⚠ Metodo {action} non trovato nel GameController")
+            return
+        if action == "sirena_on_off":
+            match level:
+                case 0:
+                    self.game_controller.sirena_off()
+                    print(f"⏸ SIRENA OFF (GPIO {gpio})")
+                case 1:
+                    self.game_controller.sirena_on()
+                    print(f"⏸ SIRENA ON (GPIO {gpio})")
+                case _:
+                    print(f"⏸ INVALID VALUE (GPIO {gpio})")
+            return
+        # Azioni normali: esegui solo su RISING_EDGE (level=1)
+        if level == 1:
+            method = getattr(self.game_controller, action, None)
+            if method and callable(method):
+                print(f"⚡ Azione: {action} (GPIO {gpio})")
+                method()
+            else:
+                print(f"⚠ Metodo {action} non trovato nel GameController")
 
     def setup_gpio(self):
         """
