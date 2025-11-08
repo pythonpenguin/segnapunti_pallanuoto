@@ -9,6 +9,7 @@
 import json
 import paho.mqtt.client as mqtt
 from PyQt6.QtWidgets import QMainWindow, QMessageBox
+from PyQt6.QtCore import QEvent, Qt
 import tabellone
 import asyncio
 
@@ -85,7 +86,42 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
         # Rendi i menu persistenti (rimangono aperti fino a selezione)
         self.menubar.setNativeMenuBar(False)
 
+        # Abilita il comportamento touch-friendly per i menu
+        self._setup_touch_friendly_menus()
+
         self.showFullScreen()
+
+    def _setup_touch_friendly_menus(self):
+        """Rende i menu più facili da usare su touchscreen"""
+        # Imposta attributo touch per Qt
+        self.setAttribute(Qt.WidgetAttribute.WA_AcceptTouchEvents, True)
+
+        # Installa event filter per ogni menu
+        for action in self.menubar.actions():
+            menu = action.menu()
+            if menu:
+                # Imposta il menu per accettare eventi touch
+                menu.setAttribute(Qt.WidgetAttribute.WA_AcceptTouchEvents, True)
+                menu.installEventFilter(self)
+
+    def eventFilter(self, obj, event):
+        """Gestisce gli eventi per rendere i menu touch-friendly"""
+        from PyQt6.QtWidgets import QMenu
+
+        # Previeni chiusura accidentale del menu
+        if isinstance(obj, QMenu) and obj.isVisible():
+            # Ignora eventi MouseButtonRelease fuori dal menu quando è aperto
+            if event.type() == QEvent.Type.MouseButtonRelease:
+                # Controlla se il click è dentro il menu
+                if not obj.rect().contains(event.pos()):
+                    # Click fuori dal menu - chiudi il menu
+                    obj.close()
+                    return True
+            # Previeni chiusura su Leave
+            elif event.type() == QEvent.Type.Leave:
+                return True
+
+        return super().eventFilter(obj, event)
 
 
     def goal_tolto_home(self):
