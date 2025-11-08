@@ -71,7 +71,18 @@
 
                 QMenuBar::item {
                 padding: 12px 20px;
-                min-height: 40px; /* forza altezza minima “cliccabile” */
+                min-height: 40px; /* forza altezza minima "cliccabile" */
+                }
+
+                QMessageBox {
+                font-size: 40px;
+                }
+
+                QMessageBox QPushButton {
+                min-width: 300px;
+                min-height: 100px;
+                font-size: 30px;
+                padding: 10px 20px;
                 }
 
             </string>

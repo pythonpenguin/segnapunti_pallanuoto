@@ -148,8 +148,7 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
         if self.controller.game_running:
             self.mostra_errore("Devi prima fermare il gicoo")
             return
-        reply = QMessageBox.warning(
-            None,
+        reply = QMessageBox.warning(            self,
             "Conferma reset",
             "⚠️ Sei sicuro di voler resettare tutto?\n\nQuesta azione non può essere annullata.",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
@@ -167,7 +166,7 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
             self.mostra_errore("Devi prima fermare il gicoo")
             return
         reply = QMessageBox.warning(
-            None,
+            self,
             "Conferma uscita",
             "⚠️ Sei sicuro di voler uscire?",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
@@ -185,7 +184,7 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
         if self.controller.game_running:
             self.mostra_errore("Devi prima fermare il gicoo")
             return
-        reply = QMessageBox.warning(None,
+        reply = QMessageBox.warning(self,
             "Conferma Ricarica Tempo",
             "⚠️ Premendo Yes riporti il tempo di gioco al valore iniziale",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
