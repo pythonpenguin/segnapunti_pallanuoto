@@ -66,12 +66,12 @@
                 QMenuBar {
                 font-size: 24px;
                 padding: 8px;
-                min-height: 50px;
+                min-height: 30px;
                 }
 
                 QMenuBar::item {
                 padding: 12px 20px;
-                min-height: 40px; /* forza altezza minima "cliccabile" */
+                min-height: 30px; /* forza altezza minima "cliccabile" */
                 }
 
                 QMessageBox {
