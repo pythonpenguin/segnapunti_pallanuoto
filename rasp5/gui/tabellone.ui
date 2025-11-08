@@ -64,7 +64,7 @@
                 }
 
                 QMenuBar {
-                font-size: 24px;
+                font-size: 15px;
                 padding: 8px;
                 min-height: 30px;
                 }
