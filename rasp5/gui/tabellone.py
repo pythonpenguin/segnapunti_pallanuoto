@@ -62,6 +62,16 @@ class Ui_TabelloneLED(object):
 "                color: yellow;\n"
 "                }\n"
 "\n"
+"                QMenuBar {\n"
+"                font-size: 24px;\n"
+"                padding: 8px;\n"
+"                min-height: 50px;\n"
+"                }\n"
+"\n"
+"                QMenuBar::item {\n"
+"                padding: 12px 20px;\n"
+"                min-height: 40px; /* forza altezza minima “cliccabile” */\n"
+"                }\n"
 "\n"
 "            ")
         self.centralwidget = QtWidgets.QWidget(parent=TabelloneLED)
