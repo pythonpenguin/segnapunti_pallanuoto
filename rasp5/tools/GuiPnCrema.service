@@ -1,0 +1,13 @@
+[Unit]
+Description=PallanuotoCrema GUI (user session)
+After=graphical-session.target network-online.target
+
+[Service]
+WorkingDirectory=/home/davide/segnapunti_pallanuoto/
+ExecStart=/home/davide/python_venv/bin/python /home/davide/segnapunti_pallanuoto/rasp5/gui/giuria_gui.py
+Restart=always
+RestartSec=2
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+
+[Install]
+WantedBy=default.target
