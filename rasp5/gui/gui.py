@@ -12,6 +12,7 @@ from PyQt6.QtWidgets import QMainWindow, QMessageBox
 from PyQt6.QtCore import QEvent, Qt
 import tabellone
 import asyncio
+import os
 
 import game_controller
 
@@ -214,12 +215,12 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
 
     def on_exit_clicked(self):
         if self.controller.game_running:
-            self.mostra_errore("Devi prima fermare il gicoo")
+            self.mostra_errore("Devi prima fermare il GIOCO")
             return
         reply = QMessageBox.warning(
             self,
-            "Conferma uscita",
-            "⚠️ Sei sicuro di voler uscire?",
+            "Confermi Spegnimento",
+            "⚠️ Sei sicuro di voler SPEGNERE?",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.No,
         )
@@ -230,6 +231,7 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
                 asyncio.get_event_loop().stop()
             except:
                 pass
+            os.system("sudo poweroff")
 
     def safe_reload_time(self):
         if self.controller.game_running:

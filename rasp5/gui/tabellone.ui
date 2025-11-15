@@ -722,7 +722,7 @@
                         <item>
                             <widget class="QPushButton" name="buttonExit">
                                 <property name="text">
-                                    <string>ESCI</string>
+                                    <string>SPEGNI</string>
                                 </property>
                             </widget>
                         </item>

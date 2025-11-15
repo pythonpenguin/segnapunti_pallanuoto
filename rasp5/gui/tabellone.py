@@ -499,7 +499,7 @@ class Ui_TabelloneLED(object):
         self.buttonSirena.setText(_translate("TabelloneLED", "SIRENA"))
         self.buttonTimeReload.setText(_translate("TabelloneLED", "RICARICA"))
         self.buttonReset.setText(_translate("TabelloneLED", "RESETTA"))
-        self.buttonExit.setText(_translate("TabelloneLED", "ESCI"))
+        self.buttonExit.setText(_translate("TabelloneLED", "SPEGNI"))
         self.FIN.setTitle(_translate("TabelloneLED", "FIN"))
         self.PALLANUOTO_ITALIA.setTitle(_translate("TabelloneLED", "PALLANUOTO ITALIA"))
         self.TORNEI.setTitle(_translate("TabelloneLED", "AMICHEVOLI"))
