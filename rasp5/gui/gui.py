@@ -231,7 +231,10 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
                 asyncio.get_event_loop().stop()
             except:
                 pass
-            os.system("sudo poweroff")
+            self.shutdown()
+
+    def shutdown(self):
+        os.system("sudo poweroff")
 
     def safe_reload_time(self):
         if self.controller.game_running:
