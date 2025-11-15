@@ -89,6 +89,17 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
         # Abilita il comportamento touch-friendly per i menu
         self._setup_touch_friendly_menus()
 
+        #self.showFullScreen()
+        # Forza modalità kiosk a tutto schermo non ridimensionabile
+        self.setWindowFlags(
+            Qt.WindowType.FramelessWindowHint |  # Nessun bordo o titolo
+            Qt.WindowType.WindowStaysOnTopHint |  # Sempre sopra
+            Qt.WindowType.Window  # Finestra "normale"
+        )
+        screen = self.screen()
+        if screen:
+            size = screen.size()
+            self.setFixedSize(size.width(), size.height())  # Blocca le dimensioni al monitor
         self.showFullScreen()
 
     def _setup_touch_friendly_menus(self):
