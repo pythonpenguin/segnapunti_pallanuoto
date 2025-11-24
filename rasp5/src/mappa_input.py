@@ -31,9 +31,9 @@ class MappaInput:
 
     # Configurazione GPIO
     GPIOS = [4, 17, 14, 15, 18, 27, 22, 23, 24, 5, 6, 13]
-    DEBOUNCE_MICROS = 1000  # 1ms debounce hardware
-    VALIDATION_READS = 5  # Numero di letture per validare
-    VALIDATION_DELAY = 0.002  # 2ms tra letture
+    DEBOUNCE_MICROS = 25000  # 25ms debounce hardware (era 1ms)
+    VALIDATION_READS = 3  # Numero di letture per validare (era 3)
+    VALIDATION_DELAY = 0.005  # 5ms tra letture (era 2ms)
 
     # Mappatura GPIO -> Azione secondo mappa_bottoni.md
     GPIO_MAPPING = {
