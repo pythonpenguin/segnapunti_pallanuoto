@@ -8,9 +8,22 @@
 import asyncio
 import sys
 import math
+import logging
+from datetime import datetime
 
 import json
 from paho.mqtt import client as mqtt
+
+# Configurazione logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('/tmp/game_controller.log'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger('GameController')
 
 
 class GameController(object):
@@ -28,10 +41,16 @@ class GameController(object):
         :param mqtt_host:
         :param keepalive:
         """
+        logger.info("Inizializzazione GameController")
         self.game_config = game_configurator
         self.mqtt_host = mqtt_host
         self.mqtt_keepalive = keepalive
         self.client = mqtt.Client()
+
+        # Statistiche per diagnostica CPU
+        self._stats_tempo_gioco_loops = 0
+        self._stats_refresh_loops = 0
+        self._stats_start_time = None
 
         self.tempo_periodo = 0  # in secondi
         self.tempo_possesso_palla = 0
@@ -62,6 +81,7 @@ class GameController(object):
         self.reset_match()
 
     def reset_match(self):
+        logger.info("Reset match")
         self.tempo_periodo = self.game_config.tempo_periodo()  # in secondi
         self.tempo_possesso_palla = self.game_config.tempo_gioco()
         self.tempo_timeout_chiamato_squadre = self.game_config.tempo_timeout()
@@ -90,8 +110,11 @@ class GameController(object):
 
     def connect_to_broker(self):
         if self.client.is_connected():
+            logger.debug("Già connesso al broker MQTT")
             return
+        logger.info(f"Connessione al broker MQTT: {self.mqtt_host}")
         self.client.connect(self.mqtt_host, keepalive=self.mqtt_keepalive)
+        logger.info("Connesso al broker MQTT")
 
     def publish(self, topic, msg, retain=False):
         self.client.publish(topic, msg, retain=retain)
@@ -104,10 +127,12 @@ class GameController(object):
         return self.game_config.get_label_categoria()
 
     def start(self):
+        logger.info("Game START")
         self.game_running = True
 
     def stop(self):
         if self.game_running:
+            logger.info("Game STOP")
             self.game_running = False
 
     def reset_possesso_palla(self):
@@ -251,7 +276,18 @@ class GameController(object):
             self.timeout_running = False
 
     async def refresh(self):
+        logger.info("Avvio loop refresh()")
+        self._stats_start_time = datetime.now()
         while self._loop_enable:
+            self._stats_refresh_loops += 1
+
+            # Log statistiche ogni 100 iterazioni
+            if self._stats_refresh_loops % 100 == 0:
+                elapsed = (datetime.now() - self._stats_start_time).total_seconds()
+                refresh_rate = self._stats_refresh_loops / elapsed
+                tempo_gioco_rate = self._stats_tempo_gioco_loops / elapsed
+                logger.info(f"STATS - refresh: {refresh_rate:.1f}/s, tempo_gioco: {tempo_gioco_rate:.1f}/s, game_running: {self.game_running}, tempo_refresh: {self._current_tempo_refresh:.3f}s")
+
             stato = {"tabellone": {"gol_casa": self.score_home,
                                    "gol_trasferta": self.score_away,
                                    "periodo": self.periodo,
@@ -273,7 +309,10 @@ class GameController(object):
 
     async def tempo_gioco_loop(self):
         _tempo_sleep = 0.01
+        logger.info(f"Avvio loop tempo_gioco_loop() - sleep: {_tempo_sleep}s = {1/_tempo_sleep:.0f} iterazioni/sec")
         while self._loop_enable:
+            self._stats_tempo_gioco_loops += 1
+
             now = asyncio.get_event_loop().time()
             if self.game_running and self.tempo_periodo > 0:
                 delta = now - self._game_time_last_update
@@ -281,21 +320,25 @@ class GameController(object):
                 if self.tempo_periodo <= 0:
                     self.tempo_periodo = 0
                     self.game_running = False
+                    logger.warning("TEMPO SCADUTO - sirena attivata")
                     self.sirena_on()
                 if self.possesso_palla_enable:
                     self.tempo_possesso_palla -= delta
                     if self.tempo_possesso_palla <= 0:
                         self.game_running = False
                         self.reset_possesso_palla()
+                        logger.warning("POSSESSO PALLA SCADUTO - sirena attivata")
                         self.sirena_on()
             self._game_time_last_update = now
             self._check_stato_sirena()
             await asyncio.sleep(_tempo_sleep)
 
     async def input_loop(self):
+        logger.info("Avvio loop input_loop() - in attesa di comandi da stdin")
         while self._loop_enable:
             cmd = await asyncio.get_event_loop().run_in_executor(None, sys.stdin.readline)
             cmd = cmd.strip().lower()
+            logger.debug(f"Comando ricevuto: '{cmd}'")
             match cmd:
                 case "a":
                     self.start()

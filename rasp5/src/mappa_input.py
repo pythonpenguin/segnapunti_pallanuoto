@@ -11,7 +11,19 @@ usando lgpio e asyncio.
 import lgpio
 import asyncio
 import time
+import logging
 from typing import Callable, Optional
+
+# Configurazione logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('/tmp/mappa_input.log'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger('MappaInput')
 
 
 class MappaInput:
@@ -45,6 +57,7 @@ class MappaInput:
 
         :param game_controller.GameController game_controller: Il controller di gioco
         """
+        logger.info("Inizializzazione MappaInput")
         self.game_controller = game_controller
         self.chip_handle = None
         self.callbacks = []
@@ -62,8 +75,10 @@ class MappaInput:
         """
         for _ in range(self.VALIDATION_READS):
             if lgpio.gpio_read(self.chip_handle, gpio) != expected_level:
+                logger.debug(f"GPIO {gpio} - Validazione fallita, lettura inconsistente")
                 return False
             time.sleep(self.VALIDATION_DELAY)
+        logger.debug(f"GPIO {gpio} - Validazione OK (level={expected_level})")
         return True
 
     def _gpio_callback(self, chip, gpio, level, tick):
@@ -78,6 +93,7 @@ class MappaInput:
         """
         # Ignora se event loop non è ancora pronto
         if self._event_queue is None or self._event_loop is None:
+            logger.warning(f"GPIO {gpio} - Event loop non ancora pronto, evento ignorato")
             return
 
         # Valida l'evento
@@ -85,7 +101,7 @@ class MappaInput:
             # Silenzioso per GPIO non mappati, altrimenti avvisa
             action, _ = self.GPIO_MAPPING.get(gpio, (None, None))
             if action is not None:
-                print(f"⚠ GPIO {gpio} - Evento spurio ignorato (level={level})")
+                logger.warning(f"GPIO {gpio} - Evento spurio ignorato (level={level})")
             return
 
         # Metti l'evento validato nella queue per processing asincrono
@@ -93,22 +109,27 @@ class MappaInput:
             self._event_loop.call_soon_threadsafe(
                 self._event_queue.put_nowait, (gpio, level)
             )
+            logger.debug(f"GPIO {gpio} - Evento accodato (level={level})")
         except Exception as e:
-            print(f"⚠ Errore nella callback GPIO {gpio}: {e}")
+            logger.error(f"Errore nella callback GPIO {gpio}: {e}", exc_info=True)
 
     async def _process_events(self):
         """
         Processa gli eventi GPIO dalla queue in modo asincrono.
         """
+        logger.info("Avvio loop _process_events() - processing eventi GPIO dalla queue")
         while self._loop_enable:
             try:
                 gpio, level = await asyncio.wait_for(
                     self._event_queue.get(),
                     timeout=0.1
                 )
+                logger.debug(f"Processing evento GPIO {gpio}, level={level}")
                 await self._handle_gpio_event(gpio, level)
             except asyncio.TimeoutError:
                 continue
+            except Exception as e:
+                logger.error(f"Errore nel processing eventi GPIO: {e}", exc_info=True)
 
     async def _handle_gpio_event(self, gpio: int, level: int):
         """
@@ -121,42 +142,43 @@ class MappaInput:
         action, edge_type = self.GPIO_MAPPING.get(gpio, (None, None))
 
         if action is None:
-            print(f"ℹ GPIO {gpio} - Non mappato")
+            logger.info(f"GPIO {gpio} - Non mappato")
             return
 
         # Gestione speciale per start/stop (GPIO 13)
         if action == "start_stop":
             if level == 1:
-                print(f"▶ START (GPIO {gpio})")
+                logger.info(f"START richiesto (GPIO {gpio})")
                 self.game_controller.start()
             else:
-                print(f"⏸ STOP (GPIO {gpio})")
+                logger.info(f"STOP richiesto (GPIO {gpio})")
                 self.game_controller.stop()
             return
         if action == "sirena_on_off":
             match level:
                 case 0:
                     self.game_controller.sirena_off()
-                    print(f"⏸ SIRENA OFF (GPIO {gpio})")
+                    logger.info(f"SIRENA OFF (GPIO {gpio})")
                 case 1:
                     self.game_controller.sirena_on()
-                    print(f"⏸ SIRENA ON (GPIO {gpio})")
+                    logger.info(f"SIRENA ON (GPIO {gpio})")
                 case _:
-                    print(f"⏸ INVALID VALUE (GPIO {gpio})")
+                    logger.warning(f"INVALID VALUE per sirena (GPIO {gpio}, level={level})")
             return
         # Azioni normali: esegui solo su RISING_EDGE (level=1)
         if level == 1:
             method = getattr(self.game_controller, action, None)
             if method and callable(method):
-                print(f"⚡ Azione: {action} (GPIO {gpio})")
+                logger.info(f"Azione: {action} (GPIO {gpio})")
                 method()
             else:
-                print(f"⚠ Metodo {action} non trovato nel GameController")
+                logger.error(f"Metodo {action} non trovato nel GameController")
 
     def setup_gpio(self):
         """
         Configura i GPIO e registra le callback.
         """
+        logger.info("Setup GPIO - apertura chip")
         self.chip_handle = lgpio.gpiochip_open(0)
 
         for gpio in self.GPIOS:
@@ -179,26 +201,28 @@ class MappaInput:
             self.callbacks.append(cb)
 
             status = "MAPPATO" if action else "NON MAPPATO"
-            print(f"✓ GPIO {gpio:2d} configurato - {edge_type:12s} - {status:12s} - {action or ''}")
+            logger.info(f"GPIO {gpio:2d} configurato - {edge_type:12s} - {status:12s} - {action or ''}")
 
     async def start(self):
         """
         Avvia il processing degli eventi GPIO.
         Deve essere chiamato all'interno di un event loop asyncio.
         """
+        logger.info("Avvio MappaInput")
         # Inizializza event loop e queue
         self._event_loop = asyncio.get_event_loop()
         self._event_queue = asyncio.Queue()
 
         # Setup GPIO dopo aver preparato la queue
         self.setup_gpio()
-        print("\n✓ MappaInput attivo - In attesa di eventi GPIO...")
+        logger.info("MappaInput attivo - In attesa di eventi GPIO")
         await self._process_events()
 
     def shutdown(self):
         """
         Chiude le risorse GPIO in modo pulito.
         """
+        logger.info("Shutdown MappaInput")
         self._loop_enable = False
 
         # Cancella le callback
@@ -209,7 +233,7 @@ class MappaInput:
         if self.chip_handle is not None:
             lgpio.gpiochip_close(self.chip_handle)
 
-        print("\n✓ MappaInput terminato")
+        logger.info("MappaInput terminato")
 
 
 async def main():
