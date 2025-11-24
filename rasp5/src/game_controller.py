@@ -308,8 +308,9 @@ class GameController(object):
             await asyncio.sleep(self._current_tempo_refresh)
 
     async def tempo_gioco_loop(self):
-        _tempo_sleep = 0.01
-        logger.info(f"Avvio loop tempo_gioco_loop() - sleep: {_tempo_sleep}s = {1/_tempo_sleep:.0f} iterazioni/sec")
+        _tempo_sleep_active = 0.01    # 10ms quando il gioco è attivo (100 Hz)
+        _tempo_sleep_idle = 0.1       # 100ms quando il gioco è fermo (10 Hz)
+        logger.info(f"Avvio loop tempo_gioco_loop() - active: {_tempo_sleep_active}s, idle: {_tempo_sleep_idle}s")
         while self._loop_enable:
             self._stats_tempo_gioco_loops += 1
 
@@ -331,7 +332,10 @@ class GameController(object):
                         self.sirena_on()
             self._game_time_last_update = now
             self._check_stato_sirena()
-            await asyncio.sleep(_tempo_sleep)
+
+            # Sleep variabile: veloce quando il gioco è attivo, lento quando è fermo
+            sleep_time = _tempo_sleep_active if self.game_running else _tempo_sleep_idle
+            await asyncio.sleep(sleep_time)
 
     async def input_loop(self):
         logger.info("Avvio loop input_loop() - in attesa di comandi da stdin")
