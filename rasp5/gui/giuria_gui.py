@@ -29,7 +29,7 @@ async def main_async(controller, mapper):
     await asyncio.gather(
         controller.tempo_gioco_loop(),
         controller.refresh(),
-        controller.input_loop(),  # Input da tastiera
+        #controller.input_loop(),  # Input da tastiera
         mapper.start()             # Input da GPIO
     )
 
