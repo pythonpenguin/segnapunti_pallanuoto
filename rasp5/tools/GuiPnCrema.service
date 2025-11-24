@@ -1,13 +1,21 @@
 [Unit]
-Description=PallanuotoCrema GUI (user session)
-After=graphical-session.target network-online.target
+  Description=PallanuotoCrema GUI (user session)
+  After=graphical-session.target network-online.target
+  # IMPORTANTE: Aspetta che la sessione grafica sia pronta
+  Wants=graphical-session.target
 
-[Service]
-WorkingDirectory=/home/davide/segnapunti_pallanuoto/
-ExecStart=/home/davide/python_venv/bin/python /home/davide/segnapunti_pallanuoto/rasp5/gui/giuria_gui.py
-Restart=always
-RestartSec=2
-Environment=XDG_RUNTIME_DIR=/run/user/1000
+  [Service]
+  Type=simple
+  WorkingDirectory=/home/davide/segnapunti_pallanuoto/
+  ExecStart=/home/davide/python_venv/bin/python /home/davide/segnapunti_pallanuoto/rasp5/gui/giuria_gui.py
+  Restart=on-failure
+  RestartSec=5
 
-[Install]
-WantedBy=default.target
+  # Variabili d'ambiente per Qt/X11
+  Environment=DISPLAY=:0
+  Environment=XDG_RUNTIME_DIR=/run/user/1000
+  Environment=XAUTHORITY=/home/davide/.Xauthority
+  Environment=QT_QPA_PLATFORM=xcb
+
+  [Install]
+  WantedBy=graphical-session.target
