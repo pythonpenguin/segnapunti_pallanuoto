@@ -13,7 +13,7 @@ class GameConfigure(object):
 
     DEFAULT = {"game_time": 30, "shot_time": 28, "periodi": 4, "shot_time_r": 18,
                "shot_time_enable": True,"timeout_time": 60,"time_end_period":60,"half_time":120,
-               "max_timeouts":2,"label_categoria":"Carica Categoria"}
+               "max_timeouts":2,"label_categoria":"Carica Categoria","shot_time_end_restart":False}
 
     def __init__(self, ppathname=SERIE):
         self.file_cfg = ppathname
@@ -42,6 +42,9 @@ class GameConfigure(object):
 
     def tempo_effettivo(self):
         return self._get("shot_time_enable")
+
+    def restart_fine_tempo_effettivo(self):
+        return self._get("shot_time_end_restart")
 
     def tempo_timeout(self):
         return self._get("timeout_time")

@@ -9,7 +9,8 @@
     "time_end_period": 60,
     "half_time": 120,
     "label_categoria": "ALLIEVE U16 F",
-    "max_timeouts": 2
+    "max_timeouts": 2,
+    "shot_time_end_restart": false
   },
   "allievi": {
     "game_time": 480,
@@ -21,7 +22,8 @@
     "time_end_period": 60,
     "half_time": 120,
     "label_categoria": "ALLIEVI U16 M",
-    "max_timeouts": 2
+    "max_timeouts": 2,
+    "shot_time_end_restart": false
   },
   "junioresF": {
     "game_time": 480,
@@ -33,7 +35,8 @@
     "time_end_period": 60,
     "half_time": 120,
     "label_categoria": "JUNIORES U18 F",
-    "max_timeouts": 2
+    "max_timeouts": 2,
+    "shot_time_end_restart": false
   },
   "promozione": {
     "game_time": 480,
@@ -45,19 +48,99 @@
     "time_end_period": 60,
     "half_time": 120,
     "label_categoria": "PROMOZIONE",
+    "max_timeouts": 2,
+    "shot_time_end_restart": false
+  },
+  "pni_master": {
+    "game_time": 480,
+    "shot_time": 40,
+    "periodi": 4,
+    "shot_time_r": 40,
+    "shot_time_enable": true,
+    "shot_time_end_restart": true,
+    "timeout_time": 60,
+    "time_end_period": 60,
+    "half_time": 90,
+    "label_categoria": "MASTER",
     "max_timeouts": 2
   },
-  "master": {
-    "game_time": 480,
-    "shot_time": 28,
+  "pni_u11": {
+    "game_time": 360,
+    "shot_time": 40,
     "periodi": 4,
-    "shot_time_r": 18,
+    "shot_time_r": 40,
     "shot_time_enable": true,
     "timeout_time": 60,
     "time_end_period": 60,
-    "half_time": 120,
-    "label_categoria": "MASTER",
-    "max_timeouts": 2
+    "half_time": 90,
+    "label_categoria": "Under 11",
+    "max_timeouts": 2,
+    "shot_time_end_restart": true
+  },
+  "pni_u13": {
+    "game_time": 360,
+    "shot_time": 40,
+    "periodi": 4,
+    "shot_time_r": 40,
+    "shot_time_enable": true,
+    "timeout_time": 60,
+    "time_end_period": 60,
+    "half_time": 90,
+    "label_categoria": "Under 13",
+    "max_timeouts": 2,
+    "shot_time_end_restart": true
+  },
+  "pni_u15": {
+    "game_time": 420,
+    "shot_time": 40,
+    "periodi": 4,
+    "shot_time_r": 40,
+    "shot_time_enable": true,
+    "timeout_time": 60,
+    "time_end_period": 60,
+    "half_time": 90,
+    "label_categoria": "Under 15",
+    "max_timeouts": 2,
+    "shot_time_end_restart": true
+  },
+  "pni_u17": {
+    "game_time": 420,
+    "shot_time": 40,
+    "periodi": 4,
+    "shot_time_r": 40,
+    "shot_time_enable": true,
+    "timeout_time": 60,
+    "time_end_period": 60,
+    "half_time": 90,
+    "label_categoria": "Under 17",
+    "max_timeouts": 2,
+    "shot_time_end_restart": true
+  },
+  "pni_u19": {
+    "game_time": 480,
+    "shot_time": 40,
+    "periodi": 4,
+    "shot_time_r": 40,
+    "shot_time_enable": true,
+    "timeout_time": 60,
+    "time_end_period": 60,
+    "half_time": 90,
+    "label_categoria": "Under 19",
+    "max_timeouts": 2,
+    "shot_time_end_restart": true
+  },
+  "pni_u22": {
+    "game_time": 480,
+    "shot_time": 40,
+    "periodi": 4,
+    "shot_time_r": 40,
+    "shot_time_enable": true,
+    "timeout_time": 60,
+    "time_end_period": 60,
+    "half_time": 90,
+    "label_categoria": "Under 22",
+    "max_timeouts": 2,
+    "shot_time_end_restart": true
   },
   "ragazzi": {
     "game_time": 420,
@@ -69,7 +152,8 @@
     "time_end_period": 60,
     "half_time": 120,
     "label_categoria": "Ragazzi/e U14",
-    "max_timeouts": 2
+    "max_timeouts": 2,
+    "shot_time_end_restart": false
   },
   "under12": {
     "game_time": 420,
@@ -81,7 +165,8 @@
     "time_end_period": 120,
     "half_time": 120,
     "label_categoria": "ESORDIENTI",
-    "max_timeouts": 2
+    "max_timeouts": 2,
+    "shot_time_end_restart": false
   },
   "torneo_donne_contro_violenza": {
     "game_time": 480,
@@ -93,6 +178,7 @@
     "time_end_period": 60,
     "half_time": 120,
     "label_categoria": "DONNE CONTRO LA VIOLENZA",
-    "max_timeouts": 2
+    "max_timeouts": 2,
+    "shot_time_end_restart": false
   }
 }

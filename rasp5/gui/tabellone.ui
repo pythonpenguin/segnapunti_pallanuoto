@@ -278,7 +278,7 @@
                                             <string notr="true">color:#FF0000;</string>
                                         </property>
                                         <property name="text">
-                                            <string>▲28▲</string>
+                                            <string>FULL_T</string>
                                         </property>
                                     </widget>
                                 </item>
@@ -313,7 +313,7 @@
                                             <string notr="true">color:#FF0000;</string>
                                         </property>
                                         <property name="text">
-                                            <string>▲18▲</string>
+                                            <string>ADD_T</string>
                                         </property>
                                     </widget>
                                 </item>
@@ -753,7 +753,13 @@
             <property name="title">
                 <string>PALLANUOTO ITALIA</string>
             </property>
-            <addaction name="mc_actionMaster"/>
+            <addaction name="mc_action_pni_u11"/>
+            <addaction name="mc_action_pni_u13"/>
+            <addaction name="mc_action_pni_u15"/>
+            <addaction name="mc_action_pni_u17"/>
+            <addaction name="mc_action_pni_u19"/>
+            <addaction name="mc_action_pni_u22"/>
+            <addaction name="mc_action_pni_master"/>
         </widget>
         <widget class="QMenu" name="TORNEI">
             <property name="title">
@@ -792,7 +798,37 @@
                 <string>Promozione</string>
             </property>
         </action>
-        <action name="mc_actionMaster">
+        <action name="mc_action_pni_u11">
+            <property name="text">
+                <string>UNDER 11</string>
+            </property>
+        </action>
+        <action name="mc_action_pni_u13">
+            <property name="text">
+                <string>UNDER 13</string>
+            </property>
+        </action>
+        <action name="mc_action_pni_u15">
+            <property name="text">
+                <string>UNDER 15</string>
+            </property>
+        </action>
+        <action name="mc_action_pni_u17">
+            <property name="text">
+                <string>UNDER 17</string>
+            </property>
+        </action>
+        <action name="mc_action_pni_u19">
+            <property name="text">
+                <string>UNDER 19</string>
+            </property>
+        </action>
+        <action name="mc_action_pni_u22">
+            <property name="text">
+                <string>UNDER 22</string>
+            </property>
+        </action>
+        <action name="mc_action_pni_master">
             <property name="text">
                 <string>MASTER</string>
             </property>
