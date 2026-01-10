@@ -74,7 +74,7 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
         self.buttonPossessoPlus.clicked.connect(self.add_possesso_palla_plus)
         self.buttonPossessoMinus.clicked.connect(self.rem_possesso_palla_plus)
 
-
+        self.mc_habawaba.triggered.connect(lambda:self._load_categoria("habawaba_aquagol"))
         self.mc_actionUnder12.triggered.connect(lambda:self._load_categoria("under12"))
         self.mc_actionragazzi.triggered.connect(lambda: self._load_categoria("ragazzi"))
         self.mc_actionallieve.triggered.connect(lambda: self._load_categoria("allieve"))

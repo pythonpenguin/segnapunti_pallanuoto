@@ -180,5 +180,18 @@
     "label_categoria": "DONNE CONTRO LA VIOLENZA",
     "max_timeouts": 2,
     "shot_time_end_restart": false
+  },
+  "habawaba_aquagol": {
+    "game_time": 600,
+    "shot_time": 0,
+    "periodi": 1,
+    "shot_time_r": 0,
+    "shot_time_enable": false,
+    "timeout_time": 0,
+    "time_end_period": 0,
+    "half_time": 0,
+    "label_categoria": "HABAWABA-AQUAGOL",
+    "max_timeouts": 0,
+    "shot_time_end_restart": false
   }
 }
