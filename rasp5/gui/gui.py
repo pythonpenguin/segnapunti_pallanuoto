@@ -29,8 +29,9 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
         # MQTT client per ricevere aggiornamenti
         self.client = mqtt.Client()
         self.client.on_message = self.on_message
-        self.client.connect(broker,keepalive=5)
-        self.client.subscribe(TOPIC_STATO)
+        self.client.on_connect = self.on_connect
+        self.client.reconnect_delay_set(min_delay=1, max_delay=5)
+        self.client.connect_async(broker,keepalive=5)
         self.client.loop_start()
 
         self.buttonHomePlus.clicked.connect(self.goal_segnato_home)
@@ -290,6 +291,11 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
     def timeout_reset(self):
         self.controller.timeout_reset()
 
+    def on_connect(self, client, userdata, flags, rc):
+        # la sottoscrizione va rifatta a ogni riconnessione (mosquitto non ha persistenza)
+        if rc == 0:
+            client.subscribe(TOPIC_STATO)
+
     def on_message(self, client, userdata, msg):
         try:
             stato = json.loads(msg.payload.decode())
@@ -306,6 +312,8 @@ class Tabellone(QMainWindow, tabellone.Ui_TabelloneLED):
             print("Errore parsing stato:", e)
 
     def closeEvent(self, event):
+        self.client.disconnect()
+        self.client.loop_stop()
         self.controller.shutdown()
         super().closeEvent(event)
 

@@ -46,6 +46,10 @@ class GameController(object):
         self.mqtt_host = mqtt_host
         self.mqtt_keepalive = keepalive
         self.client = mqtt.Client()
+        self.client.on_connect = self._on_connect
+        self.client.on_disconnect = self._on_disconnect
+        self.client.reconnect_delay_set(min_delay=1, max_delay=5)
+        self._mqtt_avviato = False
 
         # Statistiche per diagnostica CPU
         self._stats_tempo_gioco_loops = 0
@@ -109,14 +113,31 @@ class GameController(object):
     def shutdown(self):
         self.timeout_reset()
         self._loop_enable = False
+        if self._mqtt_avviato:
+            self.client.disconnect()
+            self.client.loop_stop()
+            self._mqtt_avviato = False
 
     def connect_to_broker(self):
-        if self.client.is_connected():
-            logger.debug("Già connesso al broker MQTT")
+        # Il loop di paho gira in un thread: gestisce keepalive e riconnessione
+        # automatica se mosquitto si riavvia (anche se non è ancora partito).
+        if self._mqtt_avviato:
+            logger.debug("Connessione al broker MQTT già avviata")
             return
         logger.info(f"Connessione al broker MQTT: {self.mqtt_host}")
-        self.client.connect(self.mqtt_host, keepalive=self.mqtt_keepalive)
-        logger.info("Connesso al broker MQTT")
+        self.client.connect_async(self.mqtt_host, keepalive=self.mqtt_keepalive)
+        self.client.loop_start()
+        self._mqtt_avviato = True
+
+    def _on_connect(self, client, userdata, flags, rc):
+        if rc == 0:
+            logger.info("Connesso al broker MQTT")
+        else:
+            logger.error(f"Connessione al broker MQTT rifiutata: rc={rc}")
+
+    def _on_disconnect(self, client, userdata, rc):
+        if rc != 0:
+            logger.warning(f"Connessione al broker MQTT persa (rc={rc}), riconnessione automatica")
 
     def publish(self, topic, msg, retain=False):
         self.client.publish(topic, msg, retain=retain)

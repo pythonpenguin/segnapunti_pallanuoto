@@ -33,10 +33,20 @@ class TestGameController(unittest.TestCase):
 
     def test_connect(self):
         controller = GameController(self.configuratore)
-        self.mock_client.connect.assert_not_called()
-        self.mock_client.is_connected.return_value = False
+        self.mock_client.connect_async.assert_not_called()
         controller.connect_to_broker()
-        self.mock_client.connect.assert_called_once_with("localhost", 300)
+        self.mock_client.connect_async.assert_called_once_with("localhost", keepalive=5)
+        self.mock_client.loop_start.assert_called_once_with()
+        controller.connect_to_broker()
+        self.mock_client.connect_async.assert_called_once()
+        self.mock_client.loop_start.assert_called_once()
+
+    def test_shutdown_ferma_mqtt(self):
+        controller = GameController(self.configuratore)
+        controller.connect_to_broker()
+        controller.shutdown()
+        self.mock_client.disconnect.assert_called_once_with()
+        self.mock_client.loop_stop.assert_called_once_with()
 
     def test_publish(self):
         controller = GameController(self.configuratore)
