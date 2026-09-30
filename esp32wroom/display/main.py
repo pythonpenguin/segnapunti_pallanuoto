@@ -83,11 +83,13 @@ class Display(object):
 
 
 class PnCremaMqtt(MQTTClient):
+    PING_INTERVAL_MS = 5000
+    SILENZIO_MAX_MS = 15000  # il Raspberry pubblica lo stato ogni 250 ms
     MSG = "display"
     MSG_TEMPO = "tempo"
     MSG_SIRENA = "sirena"
 
-    def __init__(self, client_id, server, port=0, user=None, password=None, keepalive=0, ssl=None, ssl_params={},
+    def __init__(self, client_id, server, port=0, user=None, password=None, keepalive=15, ssl=None, ssl_params={},
                  connection_params={}):
         super().__init__(client_id, server, port, user, password, keepalive, ssl, ssl_params)
         self._connection_param = connection_params
@@ -98,6 +100,8 @@ class PnCremaMqtt(MQTTClient):
         self._display = Display()
         self._is_connected_to_server = False
         self._current_status = {}
+        self._ultimo_msg = time.ticks_ms()
+        self._ultimo_ping = time.ticks_ms()
 
     def connect(self, clean_session=False, timeout=None):
         self.crea_connessione_rete()
@@ -116,15 +120,29 @@ class PnCremaMqtt(MQTTClient):
 
     def reconnect(self):
         self._is_connected_to_server = False
+        self._display.af_set_sirena(0)
+        try:
+            self.sock.close()
+        except Exception:
+            pass
         self.crea_connessione_rete()
         try:
             super().reconnect()
+            self._connection_ready()
+            self.subscribe_all_topic()
         except OSError as error:
             self._is_connected_to_server = False
             return False
-        self._connection_ready()
         self._is_connected_to_server = True
         return True
+
+    def verifica_connessione(self):
+        adesso = time.ticks_ms()
+        if time.ticks_diff(adesso, self._ultimo_msg) > self.SILENZIO_MAX_MS:
+            raise OSError("nessun messaggio dal broker")
+        if time.ticks_diff(adesso, self._ultimo_ping) > self.PING_INTERVAL_MS:
+            self._ultimo_ping = adesso
+            self.ping()
 
     def crea_connessione_rete(self):
         if self._is_connected_to_server:
@@ -170,6 +188,7 @@ class PnCremaMqtt(MQTTClient):
         return False
 
     def _dispatch(self, topic, msg):
+        self._ultimo_msg = time.ticks_ms()
         try:
             self._topics[topic](msg)
         except KeyError:
@@ -201,6 +220,9 @@ class PnCremaMqtt(MQTTClient):
         self._reboot()
 
     def _connection_ready(self):
+        self._current_status = {}
+        self._ultimo_msg = time.ticks_ms()
+        self._ultimo_ping = time.ticks_ms()
         self._display.af_set_value(88)
 
     def _on_connection(self):
@@ -247,15 +269,11 @@ try:
                          cfg_mqtt.get("server", "10.42.0.1"), connection_params=cfg_net)
     client.connect()
     client.subscribe_all_topic()
-    _count = 0
     while True:
         try:
             client.check_msg()
+            client.verifica_connessione()
             time.sleep_us(500)
-            _count + 1
-            if _count > 10:
-                client.ping()
-                _count = 0
         except OSError as error:
             client.reconnect()
 except OSError as error:
