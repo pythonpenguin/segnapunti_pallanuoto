@@ -14,6 +14,7 @@ import urequests
 import ubinascii
 
 from umqtt.robust import MQTTClient
+from umqtt.simple import MQTTClient as MQTTClientSemplice
 
 
 class Display(object):
@@ -85,6 +86,9 @@ class Display(object):
 class PnCremaMqtt(MQTTClient):
     PING_INTERVAL_MS = 5000
     SILENZIO_MAX_MS = 15000  # il Raspberry pubblica lo stato ogni 250 ms
+    ATTESA_WIFI_MS = 10000  # tempo lasciato a nm.connect() prima di riprovare
+    RITENTA_MQTT_S = 2
+    RESET_WIFI_OGNI = 5  # tentativi MQTT falliti prima di rifare anche il WiFi
     MSG = "display"
     MSG_TEMPO = "tempo"
     MSG_SIRENA = "sirena"
@@ -119,24 +123,32 @@ class PnCremaMqtt(MQTTClient):
             self.subscribe(topic, qos=1)
 
     def reconnect(self):
+        # Al posto del ciclo infinito di umqtt.robust, che non si accorge se cade il WiFi:
+        # riprova ogni 2 s e rifà il WiFi se è caduto o ogni RESET_WIFI_OGNI tentativi.
         self._is_connected_to_server = False
         self._display.af_set_sirena(0)
-        try:
-            self.sock.close()
-        except Exception:
-            pass
-        self.crea_connessione_rete()
-        try:
-            super().reconnect()
-            self._connection_ready()
-            self.subscribe_all_topic()
-        except OSError as error:
-            self._is_connected_to_server = False
-            return False
-        self._is_connected_to_server = True
-        return True
+        tentativi = 0
+        while True:
+            try:
+                self.sock.close()
+            except Exception:
+                pass
+            if tentativi % self.RESET_WIFI_OGNI == 0 or not self.nm.isconnected():
+                self.crea_connessione_rete()
+            try:
+                MQTTClientSemplice.connect(self, False)
+                self._connection_ready()
+                self.subscribe_all_topic()
+                self._is_connected_to_server = True
+                return True
+            except OSError as error:
+                print(error)
+                tentativi += 1
+                time.sleep(self.RITENTA_MQTT_S)
 
     def verifica_connessione(self):
+        if not self.nm.isconnected():
+            raise OSError("WiFi perso")
         adesso = time.ticks_ms()
         if time.ticks_diff(adesso, self._ultimo_msg) > self.SILENZIO_MAX_MS:
             raise OSError("nessun messaggio dal broker")
@@ -160,7 +172,18 @@ class PnCremaMqtt(MQTTClient):
                 self.nm.connect(self._connection_param["ssid"], self._connection_param["password"])
             except OSError:
                 self._on_connection()
+                continue
+            self._attendi_wifi()
         print(self.nm.ifconfig())
+
+    def _attendi_wifi(self):
+        # connect() è asincrono: un nuovo scan/connect subito interromperebbe il tentativo
+        inizio = time.ticks_ms()
+        while time.ticks_diff(time.ticks_ms(), inizio) < self.ATTESA_WIFI_MS:
+            if self.is_connected():
+                return
+            self._on_connection()
+        self.nm.disconnect()
 
     def is_connected(self):
         if not self.nm.isconnected():
@@ -179,6 +202,10 @@ class PnCremaMqtt(MQTTClient):
         self.nm.active(False)
         time.sleep(1)
         self.nm.active(True)
+        try:
+            self.nm.config(pm=self.nm.PM_NONE)  # niente risparmio energetico: meno latenza
+        except Exception as error:
+            print(error)  # firmware senza PM_NONE: si prosegue lo stesso
 
     def _cerca_ssid(self):
         for _rt in self.nm.scan():
@@ -267,8 +294,10 @@ try:
     cfg_mqtt = make_client_id_unique(cfg_mqtt)
     client = PnCremaMqtt(cfg_mqtt.get("client_id", "esp32_display"),
                          cfg_mqtt.get("server", "10.42.0.1"), connection_params=cfg_net)
-    client.connect()
-    client.subscribe_all_topic()
+    if client.connect():
+        client.subscribe_all_topic()
+    else:
+        client.reconnect()  # broker non ancora raggiungibile (es. Raspberry in avvio)
     while True:
         try:
             client.check_msg()
