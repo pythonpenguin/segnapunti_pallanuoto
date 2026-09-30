@@ -88,7 +88,7 @@ class PnCremaMqtt(MQTTClient):
     SILENZIO_MAX_MS = 15000  # il Raspberry pubblica lo stato ogni 250 ms
     ATTESA_WIFI_MS = 10000  # tempo lasciato a nm.connect() prima di riprovare
     RITENTA_MQTT_S = 2
-    RESET_WIFI_OGNI = 5  # tentativi MQTT falliti prima di rifare anche il WiFi
+    RESET_WIFI_OGNI = 15  # tentativi MQTT falliti (~45 s) prima di rifare anche il WiFi
     MSG = "display"
     MSG_TEMPO = "tempo"
     MSG_SIRENA = "sirena"
