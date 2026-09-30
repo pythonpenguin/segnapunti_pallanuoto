@@ -99,45 +99,47 @@ class Display(object):
 
     def _write_second_tens(self, val):
         self._reset_table()
-        self.second_tens.value(0)
         self._write(val)
+        self.second_tens.value(0)
 
     def _write_second_units(self, val):
         self._reset_table()
-        self.second_units.value(0)
         self._write(val)
+        self.second_units.value(0)
 
     def _write_minutes(self, val):
         self._reset_table()
-        self.minutes.value(0)
         self._write(val)
+        self.minutes.value(0)
 
     def _write_home_units(self, val):
         self._reset_table()
-        self.home_units.value(0)
         self._write(val)
+        self.home_units.value(0)
 
     def _write_home_tens(self, val):
         self._reset_table()
-        self.home_tens.value(0)
         self._write(val)
+        self.home_tens.value(0)
 
     def _write_away_units(self, val):
         self._reset_table()
-        self.away_units.value(0)
         self._write(val)
+        self.away_units.value(0)
 
     def _write_away_tens(self, val):
         self._reset_table()
-        self.away_tens.value(0)
         self._write(val)
+        self.away_tens.value(0)
 
     def _write_period(self, val):
         self._reset_table()
-        self.period.value(0)
         self._write(val)
+        self.period.value(0)
 
     def _write(self,val):
+        # va chiamata con tutti i latch chiusi: il dato è sul bus prima che il latch si apra,
+        # così la cifra non mostra valori intermedi (sfarfallio)
         for _x in range(4):
             self.pins[_x].value((val >> _x) & 1)
 
@@ -298,7 +300,9 @@ class PnCremaMqtt(MQTTClient):
         try:
             body = json.loads(msg)
             if self._force_to_refresh:
+                # una sola riscrittura completa dopo un cambio di sirena, non a ogni messaggio
                 self._current_status = {"sirena":self._current_status.get("sirena")}
+                self._force_to_refresh = False
             if self._current_status.get("periodo")!=body["periodo"]:
                 self._refresh_periodo(body["periodo"])
             if self._current_status.get("gol_casa") != body["gol_casa"]:

@@ -58,8 +58,9 @@ class Display(object):
     def _write_tens(self, val):
         self._last_tens = val
         self.units.value(1)
+        self.tens.value(1)
+        self._write(val)  # dato sul bus prima di aprire il latch: niente cifre spurie
         self.tens.value(0)
-        self._write(val)
 
     def _af_write_units(self, val):
         if self._last_units == val:
@@ -69,8 +70,9 @@ class Display(object):
     def _write_units(self, val):
         self._last_units = val
         self.tens.value(1)
+        self.units.value(1)
+        self._write(val)  # dato sul bus prima di aprire il latch: niente cifre spurie
         self.units.value(0)
-        self._write(val)
 
     def _write(self, val):
         for _x in range(4):
@@ -230,10 +232,11 @@ class PnCremaMqtt(MQTTClient):
     def _json_msg(self, msg):
         try:
             body = json.loads(msg)
-            if self._current_status.get(self.MSG_TEMPO) != body[self.MSG_TEMPO]:
-                self._mostra_numero(body[self.MSG_TEMPO])
             if self._current_status.get(self.MSG_SIRENA) != body[self.MSG_SIRENA]:
                 self._stato_sirena(body[self.MSG_SIRENA])
+            if not int(body[self.MSG_SIRENA]):  # con la sirena accesa resta "00"
+                self._mostra_numero(body[self.MSG_TEMPO])
+            self._current_status = body
         except KeyError:
             pass
 
