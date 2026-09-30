@@ -10,7 +10,7 @@ Ogni intervallo stampa, per ogni dispositivo collegato all'hotspot:
 segnale WiFi, bitrate, ping (perdite e latenza) e stato MQTT.
 Gli eventi vengono segnalati appena accadono: disconnessioni WiFi,
 riconnessioni e timeout MQTT, buchi nella pubblicazione dello stato.
-Con CTRL+C stampa un riepilogo.
+Con CTRL+C (o `kill`, se lanciato in background) stampa un riepilogo.
 
 Usa solo la libreria standard e i comandi iw, ping, ip, journalctl, tail, mosquitto_sub.
 """
@@ -19,6 +19,7 @@ import argparse
 import csv
 import os
 import re
+import signal
 import subprocess
 import sys
 import threading
@@ -85,9 +86,26 @@ def evento(messaggio):
 
 
 def avvia(comando):
-    proc = subprocess.Popen(comando, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
+    # sessione separata: i figli ricevono solo i segnali che mandiamo noi alla chiusura
+    proc = subprocess.Popen(comando, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True,
+                            start_new_session=True)
     processi.append(proc)
     return proc
+
+
+def ferma_processi():
+    # mosquitto_sub intercetta SIGTERM e ignora SIGPIPE: se non esce, va ucciso
+    for proc in processi:
+        proc.terminate()
+    for proc in processi:
+        try:
+            proc.wait(timeout=2)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+
+
+def interrompi(_segnale, _frame):
+    raise KeyboardInterrupt
 
 
 def in_background(funzione, *args):
@@ -339,6 +357,8 @@ def main():
         scrittore.writerow(["ora", "dispositivo", "mac", "ip", "segnale", "segnale_medio", "bitrate",
                             "ping_persi", "rtt_medio", "rtt_max", "inattivo_ms", "connesso_s", "mqtt", "esito"])
 
+    signal.signal(signal.SIGTERM, interrompi)
+    signal.signal(signal.SIGINT, interrompi)  # anche se lanciato in background con &
     for funzione in (segui_log_mosquitto, segui_wifi, segui_stato):
         in_background(funzione)
     print(f"Controllo connessione su {IFACE} ogni {args.intervallo:.0f} s. CTRL+C per il riepilogo.")
@@ -353,8 +373,7 @@ def main():
     except KeyboardInterrupt:
         pass
     finally:
-        for proc in processi:
-            proc.terminate()
+        ferma_processi()
         riepilogo(inizio)
         if file_csv:
             file_csv.close()
